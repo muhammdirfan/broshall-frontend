@@ -1,0 +1,137 @@
+import InputField from "components/fields/InputField";
+import { Label } from "flowbite-react";
+import React, { useState } from "react";
+import Select from "react-select";
+import { fetchProffesionalCategory } from "services/professionalApis";
+import { addspecialities } from "services/professionalApis";
+import Notify from "simple-notify";
+import spaceUtilities from "tailwindcss-rtl/src/spaceUtilities";
+
+const SpecialityModal = ({ setOpenSpecialityModal, fetchProfessionals }) => {
+  const [professions, setprofessions] = React.useState([]);
+  const [speciality, setSpeciality] = React.useState();
+  const [selectedProfession, setSelectedProfession] = React.useState({
+    selectedOption: null,
+  });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchHcps = async () => {
+    try {
+      const Hcps = await fetchProffesionalCategory();
+      setprofessions(
+        Hcps?.map((item) => ({
+          value: item?.name,
+          label: item?.name,
+        }))
+      );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchHcps();
+  }, []);
+
+  const handleProfessionChange = (selectedOption) => {
+    setSelectedProfession({ selectedOption });
+  };
+
+  const handleChange = (value) => {
+    setSpeciality(value);
+  };
+
+  const handleSave = async () => {
+    const data = {
+      name: speciality,
+      type: selectedProfession?.selectedOption?.label,
+    };
+    try {
+      if (selectedProfession?.selectedOption?.label && speciality) {
+        setIsLoading(true);
+        const specialities = await addspecialities(data);
+        if (spaceUtilities) {
+          setOpenSpecialityModal(false);
+          setIsLoading(false);
+          new Notify({
+            status: "success",
+            title: "Success",
+            text: "Speciality added Successfully!",
+            effect: "fade",
+            speed: 300,
+            customClass: null,
+            customIcon: null,
+            showIcon: true,
+            showCloseButton: true,
+            autoclose: true,
+            autotimeout: 3000,
+            gap: 20,
+            distance: 20,
+            type: 1,
+            position: "right bottom",
+          });
+          setSpeciality("");
+          setSelectedProfession({ selectedOption: null });
+          fetchProfessionals();
+        }
+      } else {
+        new Notify({
+          status: "error",
+          title: "Error",
+          text: "Please fill all the fields",
+          effect: "fade",
+          speed: 300,
+          customClass: null,
+          customIcon: null,
+          showIcon: true,
+          showCloseButton: true,
+          autoclose: true,
+          autotimeout: 3000,
+          gap: 20,
+          distance: 20,
+          type: 1,
+          position: "right bottom",
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  return (
+    <div className="h-96 space-y-6">
+      <div className="mt-3 grid grid-cols-1 items-center gap-5 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-3">
+        <div className="max-w-md" id="select">
+          <Label className="text-md">Select Profession</Label>
+          <Select
+            isSearchable
+            value={selectedProfession.selectedOption}
+            onChange={handleProfessionChange}
+            options={professions}
+            className="py-3"
+          />
+        </div>
+        <InputField
+          variant="auth"
+          extra="mb-3"
+          label="Speciality"
+          placeholder="Example: Surgeon, Cardiologist etc"
+          id="profession"
+          type="text"
+          value={speciality}
+          onChange={(e) => handleChange(e.target.value)}
+        />
+        <div className="mt-3 grid grid-cols-1 items-center gap-5 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-3">
+          <button
+            onClick={handleSave}
+            className="mt-4 w-full rounded-xl bg-brand-500 py-3 text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
+          >
+            {isLoading ? "loading..." : "Save"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default SpecialityModal;

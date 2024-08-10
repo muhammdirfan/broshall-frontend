@@ -1,0 +1,69 @@
+.CustomToggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  .Box {
+    position: relative;
+    width: 50px;
+    height: 16px;
+    .togglebox {
+      appearance: none;
+      width: 100%;
+      height: 100%;
+      background: #2b2b2b;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+    .checkmark {
+      position: absolute;
+      inset: 0;
+      padding: 1px;
+      top: 0;
+      left: 1px;
+      width: 15px;
+      height: 100%;
+      background-color: #d9d9d9;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+    .checkmarked {
+      position: absolute;
+      inset: 0;
+      padding: 1px;
+      top: 0;
+      left: 33px;
+      width: 15px;
+      height: 100%;
+      background-color: #fe961b;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+  }
+  .label {
+    color: #75767a;
+    margin: 0 0 0 10px;
+    font-size: 1rem;
+    transition: color 0.1s ease-out;
+    cursor: pointer;
+    .highlight {
+      color: #fe961b;
+    }
+  }
+
+  &.disabled {
+    * {
+      cursor: default;
+    }
+    .CustomToggle {
+      .Box {
+        .checkbox {
+          border: 1px solid darken(#e8e8e8, 50%);
+        }
+      }
+      .label {
+        font-style: italic;
+        font-weight: 300;
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+[
+  {
+    "catgoryname": "Marketplace",
+    "catgorytype": [
+      { "value": "professionals", "label": "Professionals" },
+      { "value": "establishments", "label": "Establishments" },
+      { "value": "students", "label": "Students" }
+    ],
+    "associateslinks": [{ "value": "2458", "label": "2458" }]
+  }
+]
