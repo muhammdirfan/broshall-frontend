@@ -8,12 +8,10 @@ import SignIn from "views/auth/SignIn";
 
 // Icon Imports
 import { MdHome, MdRequestPage, MdOutlineBusiness } from "react-icons/md";
-import { IoMdPaper, IoMdSwap, IoMdUnlock } from "react-icons/io";
-import AllProfessionals from "views/admin/Directory/Childs/AllProfessionals";
-import FeedbackReviews from "views/admin/FeedbackReviews";
-import ProjectDetails from "views/admin/ProjectDetails";
-import AllContacts from "views/admin/Directory/Childs/AllContacts";
+import { IoMdPaper, IoMdUnlock } from "react-icons/io";
 import Projects from "views/admin/Projects";
+import AllContacts from "views/admin/AllContacts";
+import ProjectDetails from "views/admin/ProjectDetails";
 
 const routes = [
   {
@@ -32,34 +30,18 @@ const routes = [
     secondary: true,
   },
   {
-    name: "Directory",
-    layout: "/admin",
-    path: "directory/allProfessionals",
-    icon: <MdRequestPage className="h-6 w-6" />,
-    component: <AllProfessionals />,
-    clilds: [
-      {
-        name: "All Contacts",
-        layout: "/admin",
-        path: "directory/allcontacts",
-        icon: <MdRequestPage className="h-6 w-6" />,
-        component: <AllContacts />,
-      },
-    ],
-  },
-  {
-    name: "Feedback & Reviews",
-    layout: "/admin",
-    path: "reviews",
-    icon: <IoMdSwap className="h-6 w-6" />,
-    component: <FeedbackReviews />,
-  },
-  {
-    name: "Project Details",
+    // name: "Project Details",
     layout: "/admin",
     path: "project-details/:id",
-    icon: <IoMdPaper className="h-6 w-6" />,
+    // icon: <IoMdPaper className="h-6 w-6" />,
     component: <ProjectDetails />,
+  },
+  {
+    name: "All Contacts",
+    layout: "/admin",
+    path: "allcontacts",
+    icon: <MdRequestPage className="h-6 w-6" />,
+    component: <AllContacts />,
   },
   {
     name: "Sign out",
