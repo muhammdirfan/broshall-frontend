@@ -12,6 +12,8 @@ import { IoMdPaper, IoMdUnlock } from "react-icons/io";
 import Projects from "views/admin/Projects";
 import AllContacts from "views/admin/AllContacts";
 import ProjectDetails from "views/admin/ProjectDetails";
+import { FaUsers } from "react-icons/fa";
+import Employees from "views/admin/Employees";
 
 const routes = [
   {
@@ -42,6 +44,13 @@ const routes = [
     path: "allcontacts",
     icon: <MdRequestPage className="h-6 w-6" />,
     component: <AllContacts />,
+  },
+  {
+    name: "Employees",
+    layout: "/admin",
+    path: "employees",
+    icon: <FaUsers className="h-6 w-6" />,
+    component: <Employees />,
   },
   {
     name: "Sign out",
