@@ -24,7 +24,11 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
       if (
         !projectData?.name ||
         !projectData.contract_value ||
-        !projectData.contract_role
+        !projectData.contract_role ||
+        !projectData.client ||
+        !projectData.location ||
+        !projectData.descripton ||
+        !projectData.started_date
       ) {
         new Notify({
           status: "error",
@@ -80,7 +84,24 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
         }
       }
     } catch (e) {
-      console.log(e);
+      console.log(e, "error");
+      new Notify({
+        status: "error",
+        title: e.code,
+        text: e.message,
+        effect: "fade",
+        speed: 300,
+        customClass: null,
+        customIcon: null,
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right bottom",
+      });
     }
   };
 
