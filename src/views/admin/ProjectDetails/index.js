@@ -72,6 +72,14 @@ const ProjectDetails = () => {
             <GiMoneyStack className="text-purple-500" />
             <span>Contract Value: {projectDetails.contract_value}</span>
           </p>
+          <p className="flex items-center space-x-3">
+            <FaUserTie className="text-purple-500" />
+            <span>Created By: {projectDetails.createdBy}</span>
+          </p>
+          <p className="flex items-center space-x-3">
+            <FaUserTie className="text-purple-500" />
+            <span>Updated By: {projectDetails.updatedBy}</span>
+          </p>
         </div>
         <p className="text-lg text-gray-600">{projectDetails.descripton}</p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">

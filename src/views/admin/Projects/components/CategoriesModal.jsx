@@ -182,7 +182,7 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
           <TextField
             variant="auth"
             extra="mb-3"
-            label="descripton"
+            label="Descripton"
             placeholder="Some words about the project"
             id="name"
             type="text"
@@ -228,6 +228,7 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
         <div className="col-span-12 md:col-span-6">
           <button
             onClick={handleSave}
+            disabled={isLoading}
             className="mt-4 w-full rounded-xl bg-brand-500 py-3 text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
           >
             {isLoading ? "loading..." : "Save"}

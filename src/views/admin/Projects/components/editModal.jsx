@@ -180,7 +180,7 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
           <TextField
             variant="auth"
             extra="mb-3"
-            label="descripton"
+            label="Descripton"
             placeholder="Some words about the project"
             id="name"
             type="text"

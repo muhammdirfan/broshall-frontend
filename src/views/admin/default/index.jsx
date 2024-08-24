@@ -39,32 +39,15 @@ const Dashboard = () => {
 
   return (
     <div>
-      {/* Card widget */}
-
-      <div className="z-10 mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {/* <Widget
-          icon={<MdBarChart className="h-7 w-7" />}
-          title={"Total Professionals"}
-          subtitle={dashData?.professionals}
-        />
-        <Widget
-          icon={<IoDocuments className="h-6 w-6" />}
-          title={"Total Establishments"}
-          subtitle={dashData?.Establishments}
-        />
-        <Widget
-          icon={<MdBarChart className="h-7 w-7" />}
-          title={"Total Students"}
-          subtitle={dashData?.students}
-        /> */}
+      <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         <Widget
           icon={<MdDashboard className="h-6 w-6" />}
-          title={"------"}
+          title={"Total Projects"}
           subtitle={"0"}
         />
         <Widget
           icon={<MdBarChart className="h-7 w-7" />}
-          title={"------"}
+          title={"Total Employees"}
           subtitle={"0"}
         />
         <Widget

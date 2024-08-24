@@ -35,6 +35,7 @@ const ContactModel = ({ setOpenContactModal, fetchFreshData }) => {
       } else {
         setIsLoading(true);
         const contact = await CreateContact(accessToken, contactData);
+        console.log("contact", contact);
         if (contact) {
           setOpenContactModal(false);
           setIsLoading(false);
@@ -65,6 +66,24 @@ const ContactModel = ({ setOpenContactModal, fetchFreshData }) => {
       }
     } catch (e) {
       console.log(e);
+      new Notify({
+        status: "error",
+        title: e.code || "Error",
+        text: e.message || "Something went wrong!",
+        effect: "fade",
+        speed: 300,
+        customClass: null,
+        customIcon: null,
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right bottom",
+      });
+      setIsLoading(false);
     }
   };
 
