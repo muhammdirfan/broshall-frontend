@@ -1,5 +1,7 @@
+import CustomDatePicker from "components/CustomDatePicker";
 import InputField from "components/fields/InputField";
 import TextField from "components/fields/TextField";
+import MultiFileInput from "components/MultiFileInput";
 import React, { useEffect } from "react";
 import { UpdateProject } from "services/projectAPIs";
 import Notify from "simple-notify";
@@ -191,42 +193,31 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
           />
         </div>
         <div className="col-span-12 md:col-span-6">
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="Started Date"
-            placeholder="14 Jan-2022"
-            id="name"
-            type="text"
-            value={formatDate(projectData.started_date)}
-            onChange={(e) =>
-              setProjectData({ ...projectData, started_date: e.target.value })
+          <CustomDatePicker
+            label={"Started Date"}
+            value={projectData.started_date}
+            handleChange={(date) =>
+              setProjectData({ ...projectData, started_date: date })
             }
           />
         </div>
         <div className="col-span-12 md:col-span-6">
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="Completed Date"
-            placeholder="14 Jan-2022"
-            id="name"
-            type="text"
-            value={
-              projectData.completed_date
-                ? formatDate(projectData.completed_date)
-                : "In Progress"
-            }
-            onChange={(e) =>
-              setProjectData({ ...projectData, completed_date: e.target.value })
+          <CustomDatePicker
+            label={"Started Date"}
+            value={projectData.completed_date}
+            handleChange={(date) =>
+              setProjectData({ ...projectData, completed_date: date })
             }
           />
         </div>
-        <div className="col-span-12 md:col-span-6"></div>
         <div className="col-span-12 md:col-span-6">
+          <MultiFileInput />
+        </div>
+        {/* <div className="col-span-12 md:col-span-6"></div> */}
+        <div className="col-span-12 flex justify-center md:col-span-6">
           <button
             onClick={() => handleUpdate(selected)}
-            className="mt-4 w-full rounded-xl bg-brand-500 py-3 text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
+            className="w-8/12 rounded-xl bg-brand-500 py-3 text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
           >
             {isLoading ? "loading..." : "Update"}
           </button>

@@ -1,3 +1,4 @@
+import CustomDatePicker from "components/CustomDatePicker";
 import InputField from "components/fields/InputField";
 import TextField from "components/fields/TextField";
 import MultiFileInput from "components/MultiFileInput";
@@ -6,19 +7,32 @@ import { CreateProject } from "services/projectAPIs";
 import Notify from "simple-notify";
 
 const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
-  const [projectData, setProjectData] = React.useState({
+  const [projectData, setProjectData] = useState({
     name: "",
     contract_value: "",
     contract_role: "",
     client: "",
     location: "",
     descripton: "",
-    started_date: "",
+    started_date: new Date(),
     completed_date: "",
   });
+  const [images, setImages] = useState([]); // This will store File objects
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSave = async () => {
+    const formData = new FormData();
+
+    // Append form fields
+    for (const key in projectData) {
+      formData.append(key, projectData[key]);
+    }
+
+    // Append multiple images
+    images.forEach((image, index) => {
+      formData.append("images", image); // "images" is the field name in your backend multer
+    });
+
     const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
       if (
@@ -49,7 +63,7 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
         });
       } else {
         setIsLoading(true);
-        const project = await CreateProject(accessToken, projectData);
+        const project = await CreateProject(accessToken, formData);
         if (project) {
           setOpenModal(false);
           setIsLoading(false);
@@ -128,7 +142,7 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
             extra="mb-3"
             label="Contract Value"
             placeholder="2,64,28,025.00"
-            id="name"
+            id="contract_value"
             type="text"
             value={projectData.contract_value}
             onChange={(e) =>
@@ -142,7 +156,7 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
             extra="mb-3"
             label="Contract Role"
             placeholder="Full Contractor"
-            id="name"
+            id="contract_role"
             type="text"
             value={projectData.contract_role}
             onChange={(e) =>
@@ -156,7 +170,7 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
             extra="mb-3"
             label="Client"
             placeholder="PWD"
-            id="name"
+            id="client"
             type="text"
             value={projectData.client}
             onChange={(e) =>
@@ -170,7 +184,7 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
             extra="mb-3"
             label="Location"
             placeholder="Hisper, Nagar"
-            id="name"
+            id="location"
             type="text"
             value={projectData.location}
             onChange={(e) =>
@@ -184,7 +198,7 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
             extra="mb-3"
             label="Descripton"
             placeholder="Some words about the project"
-            id="name"
+            id="descripton"
             type="text"
             value={projectData.descripton}
             onChange={(e) =>
@@ -193,37 +207,26 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
           />
         </div>
         <div className="col-span-12 md:col-span-6">
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="Started Date"
-            placeholder="14 Jan-2022"
-            id="name"
-            type="text"
+          <CustomDatePicker
+            label={"Started Date"}
             value={projectData.started_date}
-            onChange={(e) =>
-              setProjectData({ ...projectData, started_date: e.target.value })
+            handleChange={(date) =>
+              setProjectData({ ...projectData, started_date: date })
             }
           />
         </div>
         <div className="col-span-12 md:col-span-6">
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="Completed Date"
-            placeholder="14 Jan-2022"
-            id="name"
-            type="text"
+          <CustomDatePicker
+            label={"Completed Date"}
             value={projectData.completed_date}
-            onChange={(e) =>
-              setProjectData({ ...projectData, completed_date: e.target.value })
+            handleChange={(date) =>
+              setProjectData({ ...projectData, completed_date: date })
             }
           />
         </div>
         <div className="col-span-12 md:col-span-6">
-          <MultiFileInput />
+          <MultiFileInput allImages={images} setAllImages={setImages} />
         </div>
-
         <div className="col-span-12 md:col-span-6"></div>
         <div className="col-span-12 md:col-span-6">
           <button

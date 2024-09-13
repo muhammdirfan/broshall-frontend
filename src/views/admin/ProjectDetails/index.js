@@ -31,7 +31,7 @@ const ProjectDetails = () => {
     );
   }
 
-  const backendUrl = "http://localhost:5002"; // Adjust this to match your backend URL
+  const backendUrl = "http://localhost:5000"; // Adjust this to match your backend URL
 
   return (
     <div className="container mx-auto p-6">
@@ -83,14 +83,19 @@ const ProjectDetails = () => {
         </div>
         <p className="text-lg text-gray-600">{projectDetails.descripton}</p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {projectDetails.images.map((image, index) => (
-            <img
-              key={index}
-              src={`${backendUrl}${image}`}
-              alt={`Project Image ${index + 1}`}
-              className="rounded-lg shadow-lg"
-            />
-          ))}
+          {projectDetails.images.map(
+            (image, index) => (
+              console.log("image", image),
+              (
+                <img
+                  key={index}
+                  src={`${backendUrl}${image}`}
+                  alt={`Project Image ${index + 1}`}
+                  className="rounded-lg shadow-lg"
+                />
+              )
+            )
+          )}
         </div>
       </div>
     </div>

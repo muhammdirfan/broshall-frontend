@@ -31,6 +31,7 @@ export const CreateProject = async (token, payload) => {
   const res = await service.post("/projects", payload, {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
     },
   });
   return res.data;

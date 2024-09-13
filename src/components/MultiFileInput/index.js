@@ -1,21 +1,25 @@
-"use client";
+import React from "react";
 
-import { FileInput, Label } from "flowbite-react";
-import { useState } from "react";
+const MultiFileInput = ({ allImages, setAllImages }) => {
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files); // Get all selected files
+    setAllImages(files); // Store the File objects directly
+  };
 
-const MultiFileInput = () => {
-  const [AllImages, setAllImages] = useState();
-  console.log("AllImages", AllImages);
   return (
     <div>
-      <div>
-        <Label htmlFor="multiple-file-upload" value="Upload multiple files" />
-      </div>
-      <FileInput
-        id="multiple-file-upload"
+      <label
+        htmlFor="multiFileUpload"
+        className="block text-sm font-medium text-gray-700"
+      >
+        Upload Images
+      </label>
+      <input
+        id="multiFileUpload"
+        type="file"
         multiple
-        helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
-        onChange={(e) => setAllImages(e)}
+        onChange={handleFileChange}
+        className="mt-1 block w-full"
       />
     </div>
   );
