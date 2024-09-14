@@ -1,19 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FetchProject } from "services/projectAPIs";
-import { MdLocationOn, MdDateRange } from "react-icons/md";
-import { FaUserTie, FaBuilding } from "react-icons/fa";
-import { GiMoneyStack } from "react-icons/gi";
+import CustomTabs from "components/CustomTabs";
+import Select from "react-select";
+import { FetchAllEmployees } from "services/employeesApis";
+import { FetchAllMachines } from "services/machinesApi";
+import { FetchAllEquipments } from "services/equipmentsApis";
 
 const ProjectDetails = () => {
   const { id } = useParams();
   const [projectDetails, setProjectDetail] = useState(null);
+  const [employees, setEmployees] = useState([]);
+  const [machines, setMachines] = useState([]);
+  const [equipments, setEquipments] = useState([]);
+  const [selectedMachines, setSelectedMachines] = useState([]);
 
   const fetchProjectDetails = async () => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken"));
       const project = await FetchProject(id, accessToken);
       setProjectDetail(project);
+      const employee = await FetchAllEmployees(accessToken);
+      setEmployees(employee);
+      const machine = await FetchAllMachines(accessToken);
+      setMachines(machine);
+      const equipments = await FetchAllEquipments(accessToken);
+      setEquipments(equipments);
     } catch (e) {
       console.log(e);
     }
@@ -33,71 +45,74 @@ const ProjectDetails = () => {
 
   const backendUrl = "http://localhost:5000"; // Adjust this to match your backend URL
 
+  const machinesOptions = machines.map((machine) => ({
+    value: machine._id, // Using unique `_id` as value
+    label: machine.name, // Using 'name' for the dropdown label
+    color: "#FF8B00", // You can assign colors if needed
+    isFixed: true, // Example property (optional)
+  }));
+
+  const employeesOptions = employees.map((employee) => ({
+    value: employee._id,
+    label: employee.name,
+    color: "#FF8B00",
+  }));
+
+  const equipmentsOptions = equipments.map((equipment) => ({
+    value: equipment._id,
+    label: equipment.name,
+    color: "#FF8B00",
+  }));
+
+  const handleChange = (selected) => {
+    setSelectedMachines(selected);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      console.log("Selected Options:", selectedMachines);
+    }
+  };
+
   return (
     <div className="container mx-auto p-6">
-      <div className="space-y-6 rounded-xl bg-white p-6 shadow-xl">
-        <h2 className="text-3xl font-bold text-gray-800">
-          {projectDetails.name}
-        </h2>
-        <div className="grid grid-cols-1 gap-6 text-gray-700 md:grid-cols-2">
-          <p className="flex items-center space-x-3">
-            <FaBuilding className="text-green-500" />
-            <span>Client: {projectDetails.client}</span>
-          </p>
-          <p className="flex items-center space-x-3">
-            <FaUserTie className="text-blue-500" />
-            <span>Role: {projectDetails.contract_role}</span>
-          </p>
-          <p className="flex items-center space-x-3">
-            <MdLocationOn className="text-red-500" />
-            <span>Location: {projectDetails.location}</span>
-          </p>
-          <p className="flex items-center space-x-3">
-            <MdDateRange className="text-yellow-500" />
-            <span>
-              Start Date:{" "}
-              {new Date(projectDetails.started_date).toLocaleDateString()}
-            </span>
-          </p>
-          {projectDetails.completed_date && (
-            <p className="flex items-center space-x-3">
-              <MdDateRange className="text-yellow-500" />
-              <span>
-                Completion Date:{" "}
-                {new Date(projectDetails.completed_date).toLocaleDateString()}
-              </span>
-            </p>
-          )}
-          <p className="flex items-center space-x-3">
-            <GiMoneyStack className="text-purple-500" />
-            <span>Contract Value: {projectDetails.contract_value}</span>
-          </p>
-          <p className="flex items-center space-x-3">
-            <FaUserTie className="text-purple-500" />
-            <span>Created By: {projectDetails.createdBy}</span>
-          </p>
-          <p className="flex items-center space-x-3">
-            <FaUserTie className="text-purple-500" />
-            <span>Updated By: {projectDetails.updatedBy}</span>
-          </p>
+      <h2 className="mb-5 text-lg">Project Details</h2>
+      <div className="grid grid-cols-12 gap-5">
+        <div className="col-span-12 md:col-span-4">
+          <p>All Employees</p>
+          <Select
+            isMulti
+            name="colors"
+            options={employeesOptions}
+            className="basic-multi-select w-full"
+            classNamePrefix="select"
+          />
         </div>
-        <p className="text-lg text-gray-600">{projectDetails.descripton}</p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-          {projectDetails.images.map(
-            (image, index) => (
-              console.log("image", image),
-              (
-                <img
-                  key={index}
-                  src={`${backendUrl}${image}`}
-                  alt={`Project Image ${index + 1}`}
-                  className="rounded-lg shadow-lg"
-                />
-              )
-            )
-          )}
+        <div className="col-span-12 md:col-span-4">
+          <p>All Machines</p>
+          <Select
+            isMulti
+            name="colors"
+            options={machinesOptions}
+            className="basic-multi-select w-full"
+            classNamePrefix="select"
+            onChange={handleChange}
+            value={selectedMachines}
+            onKeyDown={handleKeyPress}
+          />
+        </div>
+        <div className="col-span-12 md:col-span-4">
+          <p>All Equipments</p>
+          <Select
+            isMulti
+            name="colors"
+            options={equipmentsOptions}
+            className="basic-multi-select w-full"
+            classNamePrefix="select"
+          />
         </div>
       </div>
+      <CustomTabs projectDetails={projectDetails} backendUrl={backendUrl} />
     </div>
   );
 };

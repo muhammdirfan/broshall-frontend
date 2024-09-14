@@ -20,6 +20,8 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
     completed_date: "",
   });
   // eslint-disable-next-line react-hooks/rules-of-hooks
+  const [productImages, setProductImages] = React.useState([]);
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [isLoading, setIsLoading] = React.useState(false);
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -37,9 +39,23 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
         completed_date: item.completed_date,
       });
     });
+
+    if (selectedProject?.length) {
+      setProductImages(selectedProject[0]?.images);
+    }
   }, [selected, data]);
 
   const handleUpdate = async (id) => {
+    const formData = new FormData();
+
+    for (const key in projectData) {
+      formData.append(key, projectData[key]);
+    }
+
+    productImages.forEach((image, index) => {
+      formData.append("images", image);
+    });
+
     const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
       if (
@@ -66,7 +82,7 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
         });
       } else {
         setIsLoading(true);
-        const project = await UpdateProject(accessToken, id, projectData);
+        const project = await UpdateProject(accessToken, id, formData);
         if (project) {
           setOpenModal(false);
           setIsLoading(false);
@@ -210,8 +226,12 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
             }
           />
         </div>
+        {console.log("productImages", productImages)}
         <div className="col-span-12 md:col-span-6">
-          <MultiFileInput />
+          <MultiFileInput
+            allImages={productImages}
+            setAllImages={setProductImages}
+          />
         </div>
         {/* <div className="col-span-12 md:col-span-6"></div> */}
         <div className="col-span-12 flex justify-center md:col-span-6">

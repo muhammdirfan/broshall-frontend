@@ -17,20 +17,18 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
     started_date: new Date(),
     completed_date: "",
   });
-  const [images, setImages] = useState([]); // This will store File objects
+  const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSave = async () => {
     const formData = new FormData();
 
-    // Append form fields
     for (const key in projectData) {
       formData.append(key, projectData[key]);
     }
 
-    // Append multiple images
     images.forEach((image, index) => {
-      formData.append("images", image); // "images" is the field name in your backend multer
+      formData.append("images", image);
     });
 
     const accessToken = JSON.parse(localStorage.getItem("accessToken"));

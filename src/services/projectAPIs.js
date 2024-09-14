@@ -22,6 +22,7 @@ export const UpdateProject = async (token, id, payload) => {
   const res = await service.put(`/projects/${id}`, payload, {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
     },
   });
   return res.data;
