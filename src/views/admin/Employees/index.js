@@ -13,6 +13,7 @@ const Employees = () => {
   const [openModal, setOpenModal] = useState(false);
   const [Employees, setEmployees] = useState();
   const [isLoading, setIsloading] = useState(false);
+  const [AvailableEmployees, setAvailableEmployees] = useState([]);
 
   const [modalData, setModalData] = useState({
     type: "",
@@ -33,6 +34,13 @@ const Employees = () => {
   useEffect(() => {
     fetchEmployees();
   }, []);
+
+  useEffect(() => {
+    const filterEquipments = Employees?.filter(
+      (item) => !item?.projects?.length
+    );
+    setAvailableEmployees(filterEquipments);
+  }, [Employees]);
 
   const handleEmployeeDelete = async (id) => {
     try {
@@ -94,8 +102,8 @@ const Employees = () => {
         />
         <Widget
           icon={<IoDocuments className="h-6 w-6" />}
-          title={"HCP specialities"}
-          subtitle={"0"}
+          title={"Available Employees"}
+          subtitle={AvailableEmployees?.length}
         />
         <div className="rounded-[20px] bg-white px-3 py-2">
           <button

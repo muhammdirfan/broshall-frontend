@@ -46,3 +46,18 @@ export const DeleteProject = async (token, id) => {
   });
   return res.data;
 };
+
+// add an employee to a project
+
+export const AddEmployeeToProject = async (token, projectId, payload) => {
+  const res = await service.post(
+    `/projects/${projectId}/add_machine`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+};

@@ -1,11 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdLocationOn, MdDateRange } from "react-icons/md";
 import { FaUserTie, FaBuilding } from "react-icons/fa";
 import { GiMoneyStack } from "react-icons/gi";
 import { Carousel } from "flowbite-react";
+import SimpleTable from "components/SimpleTable";
+import {
+  employeesColumns,
+  equipementColumns,
+  machineryColumns,
+} from "./variables/columnsData";
 
-const CustomTabs = ({ projectDetails, backendUrl }) => {
+const CustomTabs = ({
+  projectDetails,
+  backendUrl,
+  employees,
+  machines,
+  equipments,
+}) => {
   const [tab, setTab] = useState("details");
+  const [associatedEmployees, setAssociatedEmployees] = useState([]);
+  const [associatedMechinery, setAssociatedMechinery] = useState([]);
+  const [associatedEquipments, setAssociatedEquipments] = useState([]);
+
+  useEffect(() => {
+    const filteredEmployees = employees.filter((emp) =>
+      projectDetails.employees.includes(emp._id)
+    );
+    setAssociatedEmployees(filteredEmployees);
+
+    const filteredMachinery = machines.filter((emp) =>
+      projectDetails.machines.includes(emp._id)
+    );
+    setAssociatedMechinery(filteredMachinery);
+
+    const filteredEquipments = equipments.filter((emp) =>
+      projectDetails.equipments.includes(emp._id)
+    );
+    setAssociatedEquipments(filteredEquipments);
+  }, [projectDetails, employees, machines, equipments]);
 
   return (
     <div className="my-5 space-y-6 overflow-hidden rounded-xl bg-white shadow-xl">
@@ -31,14 +63,14 @@ const CustomTabs = ({ projectDetails, backendUrl }) => {
           Employees
         </button>
         <button
-          onClick={() => setTab("machines")}
+          onClick={() => setTab("Machinery")}
           className={`${
-            tab === "machines"
+            tab === "Machinery"
               ? "border-b-2 border-blue-500 text-blue-500"
               : "text-dark"
           } py-2`}
         >
-          Machines
+          Machinery
         </button>
         <button
           onClick={() => setTab("equipments")}
@@ -51,9 +83,9 @@ const CustomTabs = ({ projectDetails, backendUrl }) => {
           Equipments
         </button>
       </div>
-      <div className="px-5 py-3">
+      <div className="py-3">
         <div className={`${tab === "details" ? "block" : "hidden"}`}>
-          <div className="space-y-6">
+          <div className="space-y-6 px-5">
             <h2 className="text-3xl font-bold text-gray-800">
               {projectDetails.name}
             </h2>
@@ -126,14 +158,31 @@ const CustomTabs = ({ projectDetails, backendUrl }) => {
           </div>
         </div>
         <div className={`${tab === "employees" ? "block" : "hidden"}`}>
-          Employees content
+          <SimpleTable
+            tableData={associatedEmployees}
+            tableHeader="Available Employees"
+            columnsData={employeesColumns}
+            // handleDelete={handleProjectDelete}
+            // isLoading={isLoading}
+            // setIsloading={setIsloading}
+            // selectedProfession={selectedProfession}
+            // fetchProjects={fetchProjects}
+            // modalData={modalData}
+            // setModalData={setModalData}
+          />
         </div>
-        <div className={`${tab === "machines" ? "block" : "hidden"}`}>
-          Machines content
+        <div className={`${tab === "Machinery" ? "block" : "hidden"}`}>
+          <SimpleTable
+            tableData={associatedMechinery}
+            tableHeader="Available Machinery"
+            columnsData={machineryColumns}
+          />
         </div>
-        <div className={`${tab === "equipments" ? "block" : "hidden"}`}>
-          Equipments content
-        </div>
+        <SimpleTable
+          tableData={associatedEquipments}
+          tableHeader="Available Equipments"
+          columnsData={equipementColumns}
+        />
       </div>
     </div>
   );

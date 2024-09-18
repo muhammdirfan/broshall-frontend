@@ -49,9 +49,6 @@ export default function CategoriesTable(props) {
         width: 100,
         renderCell: (params) => (
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            {/* <a href={`project-details/${params.row._id}`}>
-              <IoMdEye className="mx-1 h-6 w-6 rounded p-1 hover:cursor-pointer hover:bg-gray-300" />
-            </a> */}
             {renderEditButton(params)}
             {renderDeleteButton(params)}
           </div>
