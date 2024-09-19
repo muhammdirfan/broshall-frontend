@@ -51,7 +51,82 @@ export const DeleteProject = async (token, id) => {
 
 export const AddEmployeeToProject = async (token, projectId, payload) => {
   const res = await service.post(
+    `/projects/${projectId}/add_employee`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+// remove an employee from a project
+
+export const RemoveEmployeeFromProject = async (token, projectId, payload) => {
+  const res = await service.post(
+    `/projects/${projectId}/remove_employee`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+// add a machine to a project
+
+export const AddMachineToProject = async (token, projectId, payload) => {
+  const res = await service.post(
     `/projects/${projectId}/add_machine`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+// remove a machine from a project
+
+export const removeMachineFromProject = async (token, projectId, payload) => {
+  const res = await service.post(
+    `/projects/${projectId}/remove_machine`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+// add an equipment to a project
+
+export const AddEquipmentToProject = async (token, projectId, payload) => {
+  const res = await service.post(
+    `/projects/${projectId}/add_equipment`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+// remove an equipment from a project
+
+export const removeEquipmentFromProject = async (token, projectId, payload) => {
+  const res = await service.post(
+    `/projects/${projectId}/remove_equipment`,
     payload,
     {
       headers: {

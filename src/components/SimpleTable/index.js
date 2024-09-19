@@ -1,8 +1,19 @@
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { Button } from "flowbite-react";
 import React from "react";
 
 const SimpleTable = (props) => {
-  const { tableData, tableHeader, columnsData, handleDetails } = props;
+  const { tableData, tableHeader, columnsData, handleItemRemove } = props;
+
+  // Define custom action renderers
+  const renderRemoveButton = (params) => (
+    <Button
+      className="mx-1 rounded px-1 hover:cursor-pointer hover:bg-gray-300"
+      onClick={() => handleItemRemove(params.row._id)}
+    >
+      Remove Item
+    </Button>
+  );
 
   const columns = React.useMemo(() => {
     return [
@@ -10,11 +21,10 @@ const SimpleTable = (props) => {
       {
         field: "actions",
         headerName: "ACTIONS",
-        width: 100,
+        width: 150,
         renderCell: (params) => (
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            {/* {renderEditButton(params)}
-            {renderDeleteButton(params)} */}
+            {renderRemoveButton(params)}
           </div>
         ),
       },

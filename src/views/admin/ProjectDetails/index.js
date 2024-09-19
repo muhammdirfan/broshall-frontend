@@ -7,9 +7,16 @@ import { FetchAllEmployees } from "services/employeesApis";
 import { FetchAllMachines } from "services/machinesApi";
 import { FetchAllEquipments } from "services/equipmentsApis";
 import { AddEmployeeToProject } from "services/projectAPIs";
+import Notify from "simple-notify";
+import { AddMachineToProject } from "services/projectAPIs";
+import { AddEquipmentToProject } from "services/projectAPIs";
+import { RemoveEmployeeFromProject } from "services/projectAPIs";
+import { removeMachineFromProject } from "services/projectAPIs";
+import { removeEquipmentFromProject } from "services/projectAPIs";
 
 const ProjectDetails = () => {
   const { id } = useParams();
+  const [tab, setTab] = useState("details");
   const [projectDetails, setProjectDetail] = useState(null);
   const [availableEmployees, setAvailableEmployees] = useState([]);
   const [availableMachinery, setAvailableMachinery] = useState([]);
@@ -93,32 +100,238 @@ const ProjectDetails = () => {
 
   const handleEmployeeKeyPress = (event) => {
     if (event.key === "Enter") {
-      const employeesIds = selctedValues?.employees?.map((item) => item.value);
+      // const employeesIds = selctedValues?.employees?.map((item) => item.value);
+      const employeesIds = selctedValues?.employees[0]?.value;
       handleAddEmployeeToProject(employeesIds);
-      console.log("Selected employees:", employeesIds, selctedValues.employees);
     }
   };
 
   const handleMachineryKeyPress = (event) => {
     if (event.key === "Enter") {
-      console.log("Selected machinery:", selctedValues.machinery);
+      const machineIds = selctedValues.machinery[0]?.value;
+      handleAddMachineToProject(machineIds);
     }
   };
 
   const handleEquipmentKeyPress = (event) => {
     if (event.key === "Enter") {
-      console.log("Selected equipments:", selctedValues.equipments);
+      const equipmentIds = selctedValues.equipments[0]?.value;
+      handleAddEquipmentToProject(equipmentIds);
     }
   };
 
   const handleAddEmployeeToProject = async (employeesIds) => {
     const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-    // const employeeAddd = await AddEmployeeToProject(accessToken, projectDetails?._id)
     const data = {
       projectId: projectDetails?._id,
       employeeId: employeesIds,
     };
-    console.log("projectDeftails", projectDetails?._id, data);
+    const employeeAdded = await AddEmployeeToProject(
+      accessToken,
+      projectDetails?._id,
+      data
+    );
+    if (employeeAdded) {
+      fetchProjectDetails();
+      setTab("employees");
+      setSelectedValues({ ...selctedValues, employees: "" });
+      new Notify({
+        status: "success",
+        title: "Success",
+        text:
+          employeeAdded?.message || "Employee has been added to the project!",
+        effect: "fade",
+        speed: 300,
+        customClass: null,
+        customIcon: null,
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right bottom",
+      });
+    }
+  };
+
+  const handleAddMachineToProject = async (machineIds) => {
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+    const data = {
+      projectId: projectDetails?._id,
+      machineId: machineIds,
+    };
+    const machineAdded = await AddMachineToProject(
+      accessToken,
+      projectDetails?._id,
+      data
+    );
+    if (machineAdded) {
+      fetchProjectDetails();
+      setTab("Machinery");
+      setSelectedValues({ ...selctedValues, machinery: "" });
+      new Notify({
+        status: "success",
+        title: "Success",
+        text: machineAdded?.message || "Machine has been added to the project!",
+        effect: "fade",
+        speed: 300,
+        customClass: null,
+        customIcon: null,
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right bottom",
+      });
+    }
+  };
+
+  const handleAddEquipmentToProject = async (equipmentIds) => {
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+    const data = {
+      projectId: projectDetails?._id,
+      equipmentId: equipmentIds,
+    };
+    const equipmentAdded = await AddEquipmentToProject(
+      accessToken,
+      projectDetails?._id,
+      data
+    );
+    if (equipmentAdded) {
+      fetchProjectDetails();
+      setTab("equipments");
+      setSelectedValues({ ...selctedValues, equipments: "" });
+      new Notify({
+        status: "success",
+        title: "Success",
+        text:
+          equipmentAdded?.message || "Equipment has been added to the project!",
+        effect: "fade",
+        speed: 300,
+        customClass: null,
+        customIcon: null,
+        showIcon: true,
+        showCloseButton: true,
+        autoclose: true,
+        autotimeout: 3000,
+        gap: 20,
+        distance: 20,
+        type: 1,
+        position: "right bottom",
+      });
+    }
+  };
+
+  const handleItemRemove = async (id) => {
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+    const employee = await FetchAllEmployees(accessToken);
+    const machine = await FetchAllMachines(accessToken);
+
+    if (employee?.find((item) => item._id === id)) {
+      const data = {
+        projectId: projectDetails?._id,
+        employeeId: id,
+      };
+
+      const equipmentAdded = await RemoveEmployeeFromProject(
+        accessToken,
+        projectDetails?._id,
+        data
+      );
+      if (equipmentAdded) {
+        fetchProjectDetails();
+        new Notify({
+          status: "success",
+          title: "Success",
+          text:
+            equipmentAdded?.message ||
+            "Employee has been Removed from the project!",
+          effect: "fade",
+          speed: 300,
+          customClass: null,
+          customIcon: null,
+          showIcon: true,
+          showCloseButton: true,
+          autoclose: true,
+          autotimeout: 3000,
+          gap: 20,
+          distance: 20,
+          type: 1,
+          position: "right bottom",
+        });
+      }
+    } else if (machine?.find((item) => item._id === id)) {
+      const data = {
+        projectId: projectDetails?._id,
+        machineId: id,
+      };
+
+      const machineRemoved = await removeMachineFromProject(
+        accessToken,
+        projectDetails?._id,
+        data
+      );
+      if (machineRemoved) {
+        fetchProjectDetails();
+        new Notify({
+          status: "success",
+          title: "Success",
+          text:
+            machineRemoved?.message ||
+            "Machine has been removed from the project!",
+          effect: "fade",
+          speed: 300,
+          customClass: null,
+          customIcon: null,
+          showIcon: true,
+          showCloseButton: true,
+          autoclose: true,
+          autotimeout: 3000,
+          gap: 20,
+          distance: 20,
+          type: 1,
+          position: "right bottom",
+        });
+      }
+    } else {
+      const data = {
+        projectId: projectDetails?._id,
+        equipmentId: id,
+      };
+
+      const equipmentRemoved = await removeEquipmentFromProject(
+        accessToken,
+        projectDetails?._id,
+        data
+      );
+      if (equipmentRemoved) {
+        fetchProjectDetails();
+        new Notify({
+          status: "success",
+          title: "Success",
+          text:
+            equipmentRemoved?.message ||
+            "Equipment has been Removed from the project!",
+          effect: "fade",
+          speed: 300,
+          customClass: null,
+          customIcon: null,
+          showIcon: true,
+          showCloseButton: true,
+          autoclose: true,
+          autotimeout: 3000,
+          gap: 20,
+          distance: 20,
+          type: 1,
+          position: "right bottom",
+        });
+      }
+    }
   };
 
   return (
@@ -126,7 +339,7 @@ const ProjectDetails = () => {
       <h2 className="mb-5 text-lg">Project Details</h2>
       <div className="grid grid-cols-12 gap-5">
         <div className="col-span-12 md:col-span-4">
-          <p>All Employees</p>
+          <p>Available Employees</p>
           <Select
             isMulti
             name="colors"
@@ -139,7 +352,7 @@ const ProjectDetails = () => {
           />
         </div>
         <div className="col-span-12 md:col-span-4">
-          <p>All Machines</p>
+          <p>Available Machines</p>
           <Select
             isMulti
             name="colors"
@@ -152,7 +365,7 @@ const ProjectDetails = () => {
           />
         </div>
         <div className="col-span-12 md:col-span-4">
-          <p>All Equipments</p>
+          <p>Available Equipments</p>
           <Select
             isMulti
             name="colors"
@@ -174,6 +387,9 @@ const ProjectDetails = () => {
         employees={employees}
         machines={machines}
         equipments={equipments}
+        tab={tab}
+        setTab={setTab}
+        handleItemRemove={handleItemRemove}
       />
     </div>
   );
