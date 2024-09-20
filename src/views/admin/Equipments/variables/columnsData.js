@@ -1,3 +1,4 @@
+import ProjectName from "components/ProjectName";
 import { formatDate } from "utils";
 
 export const columnsDataComplex = [
@@ -43,11 +44,16 @@ export const columnsDataComplex = [
   },
   {
     field: "",
-    headerName: "Machine Status",
-    width: 150,
+    headerName: "Equipment Status",
+    width: 300,
     renderCell: (params) => (
-      console.log("params", params),
-      (<div>{!params.row.projects?.length ? "Available" : "In use"}</div>)
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {!params.row.projects?.length ? (
+          "Available"
+        ) : (
+          <ProjectName projectId={params.row.projects[0]} />
+        )}
+      </div>
     ),
   },
   {

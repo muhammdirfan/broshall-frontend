@@ -100,22 +100,21 @@ const ProjectDetails = () => {
 
   const handleEmployeeKeyPress = (event) => {
     if (event.key === "Enter") {
-      // const employeesIds = selctedValues?.employees?.map((item) => item.value);
-      const employeesIds = selctedValues?.employees[0]?.value;
+      const employeesIds = selctedValues?.employees?.map((item) => item.value);
       handleAddEmployeeToProject(employeesIds);
     }
   };
 
   const handleMachineryKeyPress = (event) => {
     if (event.key === "Enter") {
-      const machineIds = selctedValues.machinery[0]?.value;
+      const machineIds = selctedValues.machinery?.map((item) => item.value);
       handleAddMachineToProject(machineIds);
     }
   };
 
   const handleEquipmentKeyPress = (event) => {
     if (event.key === "Enter") {
-      const equipmentIds = selctedValues.equipments[0]?.value;
+      const equipmentIds = selctedValues.equipments?.map((item) => item.value);
       handleAddEquipmentToProject(equipmentIds);
     }
   };
@@ -124,7 +123,7 @@ const ProjectDetails = () => {
     const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     const data = {
       projectId: projectDetails?._id,
-      employeeId: employeesIds,
+      employeeIds: employeesIds,
     };
     const employeeAdded = await AddEmployeeToProject(
       accessToken,
@@ -160,7 +159,7 @@ const ProjectDetails = () => {
     const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     const data = {
       projectId: projectDetails?._id,
-      machineId: machineIds,
+      machineIds: machineIds,
     };
     const machineAdded = await AddMachineToProject(
       accessToken,
@@ -195,7 +194,7 @@ const ProjectDetails = () => {
     const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     const data = {
       projectId: projectDetails?._id,
-      equipmentId: equipmentIds,
+      equipmentIds: equipmentIds,
     };
     const equipmentAdded = await AddEquipmentToProject(
       accessToken,
@@ -235,7 +234,7 @@ const ProjectDetails = () => {
     if (employee?.find((item) => item._id === id)) {
       const data = {
         projectId: projectDetails?._id,
-        employeeId: id,
+        employeeIds: [id],
       };
 
       const equipmentAdded = await RemoveEmployeeFromProject(
@@ -268,7 +267,7 @@ const ProjectDetails = () => {
     } else if (machine?.find((item) => item._id === id)) {
       const data = {
         projectId: projectDetails?._id,
-        machineId: id,
+        machineIds: [id],
       };
 
       const machineRemoved = await removeMachineFromProject(
@@ -301,7 +300,7 @@ const ProjectDetails = () => {
     } else {
       const data = {
         projectId: projectDetails?._id,
-        equipmentId: id,
+        equipmentIds: [id],
       };
 
       const equipmentRemoved = await removeEquipmentFromProject(

@@ -1,3 +1,4 @@
+import ProjectName from "components/ProjectName";
 import { formatDate } from "utils";
 
 export const columnsDataComplex = [
@@ -60,6 +61,20 @@ export const columnsDataComplex = [
   },
   { field: "duration", headerName: "Duration", width: 150 },
   {
+    field: "",
+    headerName: "Employee Status",
+    width: 300,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {!params.row.projects?.length ? (
+          "Available"
+        ) : (
+          <ProjectName projectId={params.row.projects[0]} />
+        )}
+      </div>
+    ),
+  },
+  {
     field: "end_date",
     headerName: "End Date",
     width: 150,
@@ -77,6 +92,7 @@ export const VISIBLE_FIELDS = [
   "designation",
   "joining_date",
   "duration",
+  "",
   "end_date",
 ];
 

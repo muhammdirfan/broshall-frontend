@@ -1,10 +1,11 @@
+import ProjectName from "components/ProjectName";
 import { formatDate } from "utils";
 
 export const columnsDataComplex = [
   {
     field: "name",
     headerName: "Name",
-    width: 180,
+    width: 160,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
         {params.value}
@@ -14,7 +15,7 @@ export const columnsDataComplex = [
   {
     field: "type",
     headerName: "Type",
-    width: 150,
+    width: 120,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
         {params.value}
@@ -24,7 +25,7 @@ export const columnsDataComplex = [
   {
     field: "model",
     headerName: "Model",
-    width: 120,
+    width: 100,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
         {params.value}
@@ -52,14 +53,19 @@ export const columnsDataComplex = [
     ),
   },
   { field: "partner", headerName: "Partner (if any)", width: 150 },
-  { field: "machine_value", headerName: "Machine Value", width: 150 },
+  { field: "machine_value", headerName: "Machine Value", width: 120 },
   {
     field: "",
     headerName: "Machine Status",
-    width: 150,
+    width: 250,
     renderCell: (params) => (
-      console.log("params", params),
-      (<div>{!params.row.projects?.length ? "Available" : "In use"}</div>)
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {!params.row.projects?.length ? (
+          "Available"
+        ) : (
+          <ProjectName projectId={params.row.projects[0]} />
+        )}
+      </div>
     ),
   },
   {

@@ -47,11 +47,11 @@ export const DeleteProject = async (token, id) => {
   return res.data;
 };
 
-// add an employee to a project
+// add an employees to a project
 
 export const AddEmployeeToProject = async (token, projectId, payload) => {
   const res = await service.post(
-    `/projects/${projectId}/add_employee`,
+    `/projects/${projectId}/add_employees`,
     payload,
     {
       headers: {
@@ -66,7 +66,7 @@ export const AddEmployeeToProject = async (token, projectId, payload) => {
 
 export const RemoveEmployeeFromProject = async (token, projectId, payload) => {
   const res = await service.post(
-    `/projects/${projectId}/remove_employee`,
+    `/projects/${projectId}/remove_employees`,
     payload,
     {
       headers: {
@@ -81,7 +81,7 @@ export const RemoveEmployeeFromProject = async (token, projectId, payload) => {
 
 export const AddMachineToProject = async (token, projectId, payload) => {
   const res = await service.post(
-    `/projects/${projectId}/add_machine`,
+    `/projects/${projectId}/add_machines`,
     payload,
     {
       headers: {
@@ -96,7 +96,7 @@ export const AddMachineToProject = async (token, projectId, payload) => {
 
 export const removeMachineFromProject = async (token, projectId, payload) => {
   const res = await service.post(
-    `/projects/${projectId}/remove_machine`,
+    `/projects/${projectId}/remove_machines`,
     payload,
     {
       headers: {
@@ -111,7 +111,7 @@ export const removeMachineFromProject = async (token, projectId, payload) => {
 
 export const AddEquipmentToProject = async (token, projectId, payload) => {
   const res = await service.post(
-    `/projects/${projectId}/add_equipment`,
+    `/projects/${projectId}/add_equipments`,
     payload,
     {
       headers: {
@@ -126,7 +126,7 @@ export const AddEquipmentToProject = async (token, projectId, payload) => {
 
 export const removeEquipmentFromProject = async (token, projectId, payload) => {
   const res = await service.post(
-    `/projects/${projectId}/remove_equipment`,
+    `/projects/${projectId}/remove_equipments`,
     payload,
     {
       headers: {

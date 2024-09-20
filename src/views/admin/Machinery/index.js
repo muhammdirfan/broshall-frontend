@@ -10,6 +10,7 @@ import { columnsDataComplex, VISIBLE_FIELDS } from "./variables/columnsData";
 import EditModal from "./components/editModal";
 import { DeleteMachine } from "services/machinesApi";
 import Notify from "simple-notify";
+import { FetchAllProjects } from "services/projectAPIs";
 
 const Machinery = () => {
   const [openModal, setOpenModal] = useState(false);
