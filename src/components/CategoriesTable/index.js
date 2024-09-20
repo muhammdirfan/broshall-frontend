@@ -3,6 +3,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Button } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Modal } from "flowbite-react";
+import { IoMdEye } from "react-icons/io";
 
 export default function CategoriesTable(props) {
   const { tableData, tableHeader, columnsData, VISIBLE_FIELDS, handleDetails } =
@@ -28,6 +29,13 @@ export default function CategoriesTable(props) {
     />
   );
 
+  const renderViewButton = (params) => (
+    <IoMdEye
+      className="mx-1 h-6 w-6 rounded p-1 hover:cursor-pointer hover:bg-gray-300"
+      onClick={() => handleDetails(params.row._id)}
+    />
+  );
+
   const handleModal = (type, id) => {
     setOpenModal(!openModal);
     props.setModalData({
@@ -49,6 +57,7 @@ export default function CategoriesTable(props) {
         width: 100,
         renderCell: (params) => (
           <div style={{ display: "flex", justifyContent: "space-between" }}>
+            {renderViewButton(params)}
             {renderEditButton(params)}
             {renderDeleteButton(params)}
           </div>
@@ -90,7 +99,6 @@ export default function CategoriesTable(props) {
             paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
             rowHeight={90}
-            onRowClick={handleDetails}
           />
         ) : (
           <div className="mt-5 flex items-center justify-center">

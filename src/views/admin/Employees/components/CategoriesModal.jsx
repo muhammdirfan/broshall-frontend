@@ -21,7 +21,7 @@ const CategoriesModal = ({ setOpenModal, fetchEmployees }) => {
   const handleSave = async () => {
     const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
-      if (!employeeData?.name || !employeeData.email || !employeeData.address) {
+      if (!employeeData?.name || !employeeData.address) {
         new Notify({
           status: "error",
           title: "Error",

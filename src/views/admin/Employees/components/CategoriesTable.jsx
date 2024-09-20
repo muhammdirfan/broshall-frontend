@@ -4,6 +4,7 @@ import { Button } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Modal } from "flowbite-react";
 import EditModal from "./editModal";
+import { IoMdEye } from "react-icons/io";
 
 export default function CategoriesTable(props) {
   const {
@@ -12,6 +13,7 @@ export default function CategoriesTable(props) {
     columnsData,
     VISIBLE_FIELDS,
     fetchEmployees,
+    handleDetails,
   } = props;
   const [openModal, setOpenModal] = React.useState(false);
   const [paginationModel, setPaginationModel] = React.useState({
@@ -31,6 +33,13 @@ export default function CategoriesTable(props) {
     <MdDelete
       className="mx-1 h-6 w-6 rounded p-1 hover:cursor-pointer hover:bg-gray-300"
       onClick={() => handleModal("Delete", params.row._id)}
+    />
+  );
+
+  const renderViewButton = (params) => (
+    <IoMdEye
+      className="mx-1 h-6 w-6 rounded p-1 hover:cursor-pointer hover:bg-gray-300"
+      onClick={() => handleDetails(params.row._id)}
     />
   );
 
@@ -55,9 +64,7 @@ export default function CategoriesTable(props) {
         width: 100,
         renderCell: (params) => (
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            {/* <a href={`project-details/${params.row._id}`}>
-              <IoMdEye className="mx-1 h-6 w-6 rounded p-1 hover:cursor-pointer hover:bg-gray-300" />
-            </a> */}
+            {renderViewButton(params)}
             {renderEditButton(params)}
             {renderDeleteButton(params)}
           </div>
@@ -99,6 +106,7 @@ export default function CategoriesTable(props) {
             paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
             rowHeight={90}
+            onRowClick={handleDetails}
           />
         ) : (
           <div className="mt-5 flex items-center justify-center">
