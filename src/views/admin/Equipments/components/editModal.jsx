@@ -1,21 +1,18 @@
-import CustomDatePicker from "components/CustomDatePicker";
 import InputField from "components/fields/InputField";
 import React, { useEffect } from "react";
-import { UpdateEmployee } from "services/employeesApis";
 import Notify from "simple-notify";
+import TextField from "components/fields/TextField";
+import { UpdateEquipment } from "services/equipmentsApis";
 
-const editModal = ({ setOpenModal, fetchEmployees, data, selected }) => {
+const editModal = ({ fetchEquipements, data, selected, setModalData }) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [employeeData, setEmployeeData] = React.useState({
+  const [equipment, setEquipment] = React.useState({
     name: "",
-    email: "",
-    address: "",
-    contact_no: "",
-    employee_type: "",
-    designation: "",
-    joining_date: "",
-    duration: "",
-    end_date: "",
+    type: "",
+    no_of_equipments: "",
+    ownerShip: "",
+    equipment_value: "",
+    descripton: "",
   });
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [isLoading, setIsLoading] = React.useState(false);
@@ -24,16 +21,15 @@ const editModal = ({ setOpenModal, fetchEmployees, data, selected }) => {
   useEffect(() => {
     const selectedProject = data?.filter((item) => item._id === selected);
     selectedProject?.map((item) => {
-      setEmployeeData({
+      setEquipment({
         name: item.name,
-        email: item.email,
-        address: item.address,
-        contact_no: item.contact_no,
-        employee_type: item.employee_type,
-        designation: item.designation,
-        joining_date: item.joining_date,
-        duration: item.duration,
-        end_date: item.end_date,
+        type: item.type,
+        no_of_equipments: item.no_of_equipments,
+        ownerShip: item.ownerShip,
+        equipment_value: item.equipment_value,
+        partner: item.partner,
+        machine_value: item.machine_value,
+        descripton: item.descripton,
       });
     });
   }, [selected, data]);
@@ -41,7 +37,12 @@ const editModal = ({ setOpenModal, fetchEmployees, data, selected }) => {
   const handleUpdate = async (id) => {
     const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
-      if (!employeeData?.name || !employeeData.email || !employeeData.address) {
+      if (
+        !equipment?.name ||
+        !equipment.type ||
+        !equipment.no_of_equipments ||
+        !equipment.ownerShip
+      ) {
         new Notify({
           status: "error",
           title: "Error",
@@ -61,14 +62,14 @@ const editModal = ({ setOpenModal, fetchEmployees, data, selected }) => {
         });
       } else {
         setIsLoading(true);
-        const employee = await UpdateEmployee(accessToken, id, employeeData);
-        if (employee) {
-          setOpenModal(false);
+        const machine = await UpdateEquipment(accessToken, id, equipment);
+        if (machine) {
+          setModalData({ type: "", id: "" });
           setIsLoading(false);
           new Notify({
             status: "success",
             title: "Success",
-            text: "Employee Updated Successfully!",
+            text: "Machine Updated Successfully!",
             effect: "fade",
             speed: 300,
             customClass: null,
@@ -82,18 +83,15 @@ const editModal = ({ setOpenModal, fetchEmployees, data, selected }) => {
             type: 1,
             position: "right bottom",
           });
-          setEmployeeData({
+          setEquipment({
             name: "",
-            email: "",
-            address: "",
-            contact_no: "",
-            employee_type: "",
-            designation: "",
-            joining_date: "",
-            duration: "",
-            end_date: "",
+            type: "",
+            no_of_equipments: "",
+            ownerShip: "",
+            equipment_value: "",
+            descripton: "",
           });
-          fetchEmployees();
+          fetchEquipements();
         }
       }
     } catch (e) {
@@ -108,13 +106,13 @@ const editModal = ({ setOpenModal, fetchEmployees, data, selected }) => {
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Employee Name"
-            placeholder="Shahid Ali"
+            label="Equipment Name"
+            placeholder="Trali"
             id="name"
             type="text"
-            value={employeeData.name}
+            value={equipment.name}
             onChange={(e) =>
-              setEmployeeData({ ...employeeData, name: e.target.value })
+              setEquipment({ ...equipment, name: e.target.value })
             }
           />
         </div>
@@ -122,13 +120,13 @@ const editModal = ({ setOpenModal, fetchEmployees, data, selected }) => {
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Email (if any)"
-            placeholder="shahid@gmail.com"
+            label="Equipment type"
+            placeholder="vechile"
             id="name"
             type="text"
-            value={employeeData.email}
+            value={equipment.type}
             onChange={(e) =>
-              setEmployeeData({ ...employeeData, email: e.target.value })
+              setEquipment({ ...equipment, type: e.target.value })
             }
           />
         </div>
@@ -136,13 +134,13 @@ const editModal = ({ setOpenModal, fetchEmployees, data, selected }) => {
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Address"
-            placeholder="Hoper Nagar"
+            label="no_of_equipments"
+            placeholder="20"
             id="name"
             type="text"
-            value={employeeData.address}
+            value={equipment.no_of_equipments}
             onChange={(e) =>
-              setEmployeeData({ ...employeeData, address: e.target.value })
+              setEquipment({ ...equipment, no_of_equipments: e.target.value })
             }
           />
         </div>
@@ -150,29 +148,15 @@ const editModal = ({ setOpenModal, fetchEmployees, data, selected }) => {
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Contact Number"
-            placeholder="031208756342"
+            label="equipment Value"
+            placeholder="10 lac"
             id="name"
             type="text"
-            value={employeeData.contact_no}
+            value={equipment.equipment_value}
             onChange={(e) =>
-              setEmployeeData({ ...employeeData, contact_no: e.target.value })
-            }
-          />
-        </div>
-        <div className="col-span-12 md:col-span-6">
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="employee_type"
-            placeholder="Labor, Manager"
-            id="name"
-            type="text"
-            value={employeeData.employee_type}
-            onChange={(e) =>
-              setEmployeeData({
-                ...employeeData,
-                employee_type: e.target.value,
+              setEquipment({
+                ...equipment,
+                equipment_value: e.target.value,
               })
             }
           />
@@ -181,49 +165,36 @@ const editModal = ({ setOpenModal, fetchEmployees, data, selected }) => {
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Designation"
-            placeholder="Full-time"
+            label="Ownership"
+            placeholder="XYZ"
             id="name"
             type="text"
-            value={employeeData.designation}
+            value={equipment.ownerShip}
             onChange={(e) =>
-              setEmployeeData({ ...employeeData, designation: e.target.value })
+              setEquipment({
+                ...equipment,
+                ownerShip: e.target.value,
+              })
             }
           />
         </div>
         <div className="col-span-12 md:col-span-6">
-          <CustomDatePicker
-            label={"Joining Date"}
-            value={employeeData.joining_date}
-            handleChange={(date) =>
-              setEmployeeData({ ...employeeData, joining_date: date })
-            }
-          />
-        </div>
-        <div className="col-span-12 md:col-span-6">
-          <CustomDatePicker
-            label={"End Date"}
-            value={employeeData.end_date}
-            handleChange={(date) =>
-              setEmployeeData({ ...employeeData, end_date: date })
-            }
-          />
-        </div>
-        <div className="col-span-12 md:col-span-6">
-          <InputField
+          <TextField
             variant="auth"
             extra="mb-3"
-            label="Duration"
-            placeholder="Employement Duration"
-            id="name"
+            label="Descripton"
+            placeholder="Some words about the project"
+            id="descripton"
             type="text"
-            value={employeeData.duration}
+            value={equipment.descripton}
             onChange={(e) =>
-              setEmployeeData({ ...employeeData, duration: e.target.value })
+              setEquipment({ ...equipment, descripton: e.target.value })
             }
           />
         </div>
-
+        {/* <div className="col-span-12 md:col-span-6">
+          <MultiFileInput allImages={images} setAllImages={setImages} />
+        </div> */}
         <div className="col-span-12 flex justify-center md:col-span-6">
           <button
             onClick={() => handleUpdate(selected)}

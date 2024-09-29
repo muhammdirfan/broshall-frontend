@@ -5,7 +5,7 @@ export const columnsDataComplex = [
   {
     field: "name",
     headerName: "Name",
-    width: 200,
+    width: 160,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
         {params.value}
@@ -13,9 +13,9 @@ export const columnsDataComplex = [
     ),
   },
   {
-    field: "email",
-    headerName: "Email (if any)",
-    width: 250,
+    field: "type",
+    headerName: "Type",
+    width: 120,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
         {params.value}
@@ -23,9 +23,9 @@ export const columnsDataComplex = [
     ),
   },
   {
-    field: "address",
-    headerName: "Address",
-    width: 250,
+    field: "model",
+    headerName: "Model",
+    width: 100,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
         {params.value}
@@ -33,8 +33,8 @@ export const columnsDataComplex = [
     ),
   },
   {
-    field: "contact_no",
-    headerName: "Contact Number",
+    field: "machine_no",
+    headerName: "Machine Number",
     width: 150,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
@@ -43,8 +43,8 @@ export const columnsDataComplex = [
     ),
   },
   {
-    field: "employee_type",
-    headerName: "Employee Type",
+    field: "owner",
+    headerName: "Owner",
     width: 150,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
@@ -52,18 +52,12 @@ export const columnsDataComplex = [
       </div>
     ),
   },
-  { field: "designation", headerName: "Designation", width: 150 },
-  {
-    field: "joining_date",
-    headerName: "Joining Date",
-    width: 150,
-    renderCell: (params) => formatDate(params.value),
-  },
-  { field: "duration", headerName: "Duration", width: 150 },
+  { field: "partner", headerName: "Partner (if any)", width: 150 },
+  { field: "machine_value", headerName: "Machine Value", width: 120 },
   {
     field: "",
-    headerName: "Employee Status",
-    width: 300,
+    headerName: "Machine Status",
+    width: 250,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
         {!params.row.projects?.length ? (
@@ -75,8 +69,8 @@ export const columnsDataComplex = [
     ),
   },
   {
-    field: "end_date",
-    headerName: "End Date",
+    field: "createdAt",
+    headerName: "Added At",
     width: 150,
     renderCell: (params) => formatDate(params.value),
   },
@@ -84,21 +78,14 @@ export const columnsDataComplex = [
 
 export const VISIBLE_FIELDS = [
   "name",
-  "email",
-  "address",
+  "type",
+  "model",
   "contract_role",
-  "contact_no",
-  "employee_type",
-  "designation",
+  "machine_no",
+  "owner",
+  "partner",
   "joining_date",
-  "duration",
+  "machine_value",
   "",
-  "end_date",
-];
-
-export const columnsDataSpeciality = [
-  { field: "name", headerName: "SPECIALITY", width: 350 },
-  { field: "type", headerName: "RELATED PROFESSION", width: 250 },
-  { field: "status", headerName: "STATUS", width: 150 },
-  { field: "total", headerName: "TOTAL", width: 200 },
+  "createdAt",
 ];

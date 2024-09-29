@@ -1,26 +1,22 @@
-import CustomDatePicker from "components/CustomDatePicker";
 import InputField from "components/fields/InputField";
-import TextField from "components/fields/TextField";
-import MultiFileInput from "components/MultiFileInput";
 import React, { useEffect } from "react";
-import { UpdateProject } from "services/projectAPIs";
+import { UpdateMachine } from "services/machinesApi";
 import Notify from "simple-notify";
-import { formatDate } from "utils";
+import TextField from "components/fields/TextField";
 
-const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
+const editModal = ({ fetchMachinery, data, selected, setModalData }) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [projectData, setProjectData] = React.useState({
+  const [machineryData, setMachineryData] = React.useState({
     name: "",
-    contract_value: "",
-    contract_role: "",
-    client: "",
-    location: "",
+    type: "",
+    model: "",
+    machine_no: "",
+    owner: "",
+    partner: "",
+    machine_value: "",
     descripton: "",
-    started_date: "",
-    completed_date: "",
+    images: [],
   });
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [productImages, setProductImages] = React.useState([]);
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -28,40 +24,28 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
   useEffect(() => {
     const selectedProject = data?.filter((item) => item._id === selected);
     selectedProject?.map((item) => {
-      setProjectData({
+      setMachineryData({
         name: item.name,
-        contract_value: item.contract_value,
-        contract_role: item.contract_role,
-        client: item.client,
-        location: item.location,
+        type: item.type,
+        model: item.model,
+        machine_no: item.machine_no,
+        owner: item.owner,
+        partner: item.partner,
+        machine_value: item.machine_value,
         descripton: item.descripton,
-        started_date: item.started_date,
-        completed_date: item.completed_date,
       });
     });
-
-    if (selectedProject?.length) {
-      setProductImages(selectedProject[0]?.images);
-    }
   }, [selected, data]);
 
   const handleUpdate = async (id) => {
-    const formData = new FormData();
-
-    for (const key in projectData) {
-      formData.append(key, projectData[key]);
-    }
-
-    productImages.forEach((image, index) => {
-      formData.append("images", image);
-    });
-
     const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
       if (
-        !projectData?.name ||
-        !projectData.contract_value ||
-        !projectData.contract_role
+        !machineryData?.name ||
+        !machineryData.type ||
+        !machineryData.model ||
+        !machineryData.machine_no ||
+        !machineryData.owner
       ) {
         new Notify({
           status: "error",
@@ -82,14 +66,14 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
         });
       } else {
         setIsLoading(true);
-        const project = await UpdateProject(accessToken, id, formData);
-        if (project) {
-          setOpenModal(false);
+        const machine = await UpdateMachine(accessToken, id, machineryData);
+        if (machine) {
+          setModalData({ type: "", id: "" });
           setIsLoading(false);
           new Notify({
             status: "success",
             title: "Success",
-            text: "Project added Successfully!",
+            text: "Machine Updated Successfully!",
             effect: "fade",
             speed: 300,
             customClass: null,
@@ -103,17 +87,17 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
             type: 1,
             position: "right bottom",
           });
-          setProjectData({
+          setMachineryData({
             name: "",
-            contract_value: "",
-            contract_role: "",
-            client: "",
-            location: "",
+            type: "",
+            model: "",
+            machine_no: "",
+            owner: "",
+            partner: "",
+            machine_value: "",
             descripton: "",
-            started_date: "",
-            completed_date: "",
           });
-          fetchProjects();
+          fetchMachinery();
         }
       }
     } catch (e) {
@@ -125,16 +109,16 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
     <div className="space-y-6">
       <div className="mt-3 grid grid-cols-12 items-center gap-5">
         <div className="col-span-12 md:col-span-6">
-          <TextField
+          <InputField
             variant="auth"
             extra="mb-3"
-            label="Project Name"
-            placeholder="Construction of 0.2 MW HPP Hispar, Nagar"
+            label="machinery Name"
+            placeholder="Shahid Ali"
             id="name"
             type="text"
-            value={projectData.name}
+            value={machineryData.name}
             onChange={(e) =>
-              setProjectData({ ...projectData, name: e.target.value })
+              setMachineryData({ ...machineryData, name: e.target.value })
             }
           />
         </div>
@@ -142,13 +126,13 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Contract Value"
-            placeholder="2,64,28,025.00"
+            label="Machine type"
+            placeholder="vechile"
             id="name"
             type="text"
-            value={projectData.contract_value}
+            value={machineryData.type}
             onChange={(e) =>
-              setProjectData({ ...projectData, contract_value: e.target.value })
+              setMachineryData({ ...machineryData, type: e.target.value })
             }
           />
         </div>
@@ -156,13 +140,13 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Contract Role"
-            placeholder="Full Contractor"
+            label="Model"
+            placeholder="2018"
             id="name"
             type="text"
-            value={projectData.contract_role}
+            value={machineryData.model}
             onChange={(e) =>
-              setProjectData({ ...projectData, contract_role: e.target.value })
+              setMachineryData({ ...machineryData, model: e.target.value })
             }
           />
         </div>
@@ -170,13 +154,13 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Client"
-            placeholder="PWD"
+            label="Machine Number"
+            placeholder="NGR 1231"
             id="name"
             type="text"
-            value={projectData.client}
+            value={machineryData.machine_no}
             onChange={(e) =>
-              setProjectData({ ...projectData, client: e.target.value })
+              setMachineryData({ ...machineryData, machine_no: e.target.value })
             }
           />
         </div>
@@ -184,13 +168,47 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Location"
-            placeholder="Hisper, Nagar"
+            label="Owner"
+            placeholder="XYZ"
             id="name"
             type="text"
-            value={projectData.location}
+            value={machineryData.owner}
             onChange={(e) =>
-              setProjectData({ ...projectData, location: e.target.value })
+              setMachineryData({
+                ...machineryData,
+                owner: e.target.value,
+              })
+            }
+          />
+        </div>
+        <div className="col-span-12 md:col-span-6">
+          <InputField
+            variant="auth"
+            extra="mb-3"
+            label="Partner (if any)"
+            placeholder="ABC"
+            id="name"
+            type="text"
+            value={machineryData.partner}
+            onChange={(e) =>
+              setMachineryData({ ...machineryData, partner: e.target.value })
+            }
+          />
+        </div>
+        <div className="col-span-12 md:col-span-6">
+          <InputField
+            variant="auth"
+            extra="mb-3"
+            label="Machine Value"
+            placeholder="10 lac"
+            id="name"
+            type="text"
+            value={machineryData.machine_value}
+            onChange={(e) =>
+              setMachineryData({
+                ...machineryData,
+                machine_value: e.target.value,
+              })
             }
           />
         </div>
@@ -200,43 +218,18 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
             extra="mb-3"
             label="Descripton"
             placeholder="Some words about the project"
-            id="name"
+            id="descripton"
             type="text"
-            value={projectData.descripton}
+            value={machineryData.descripton}
             onChange={(e) =>
-              setProjectData({ ...projectData, descripton: e.target.value })
+              setMachineryData({ ...machineryData, descripton: e.target.value })
             }
-          />
-        </div>
-        <div className="col-span-12 md:col-span-6">
-          <CustomDatePicker
-            label={"Started Date"}
-            value={projectData.started_date}
-            handleChange={(date) =>
-              setProjectData({ ...projectData, started_date: date })
-            }
-          />
-        </div>
-        <div className="col-span-12 md:col-span-6">
-          <CustomDatePicker
-            label={"Started Date"}
-            value={projectData.completed_date}
-            handleChange={(date) =>
-              setProjectData({ ...projectData, completed_date: date })
-            }
-          />
-        </div>
-        {console.log("productImages", productImages)}
-        <div className="col-span-12 md:col-span-6">
-          <MultiFileInput
-            allImages={productImages}
-            setAllImages={setProductImages}
           />
         </div>
         <div className="col-span-12 flex justify-center md:col-span-6">
           <button
             onClick={() => handleUpdate(selected)}
-            className="w-8/12 rounded-xl bg-brand-500 py-3 text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
+            className="mt-4 w-8/12 rounded-xl bg-brand-500 py-3 text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
           >
             {isLoading ? "loading..." : "Update"}
           </button>

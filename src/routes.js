@@ -8,12 +8,17 @@ import SignIn from "views/auth/SignIn";
 
 // Icon Imports
 import { MdHome, MdRequestPage, MdOutlineBusiness } from "react-icons/md";
-import { IoMdPaper, IoMdUnlock } from "react-icons/io";
+import { IoMdUnlock } from "react-icons/io";
 import Projects from "views/admin/Projects";
 import AllContacts from "views/admin/AllContacts";
 import ProjectDetails from "views/admin/ProjectDetails";
-import { FaUsers } from "react-icons/fa";
+import { FaCar, FaUsers } from "react-icons/fa";
+import { FaGears } from "react-icons/fa6";
 import Employees from "views/admin/Employees";
+import Machinery from "views/admin/Machinery";
+import { GrUserWorker } from "react-icons/gr";
+import Equipments from "views/admin/Equipments";
+import Jobs from "views/admin/Jobs";
 
 const routes = [
   {
@@ -51,6 +56,27 @@ const routes = [
     path: "employees",
     icon: <FaUsers className="h-6 w-6" />,
     component: <Employees />,
+  },
+  {
+    name: "Machinery",
+    layout: "/admin",
+    path: "machinery",
+    icon: <FaCar className="h-6 w-6" />,
+    component: <Machinery />,
+  },
+  {
+    name: "Equipments",
+    layout: "/admin",
+    path: "equipments",
+    icon: <FaGears className="h-6 w-6" />,
+    component: <Equipments />,
+  },
+  {
+    name: "Jobs",
+    layout: "/admin",
+    path: "jobs",
+    icon: <GrUserWorker className="h-6 w-6" />,
+    component: <Jobs />,
   },
   {
     name: "Sign out",

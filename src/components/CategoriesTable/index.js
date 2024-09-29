@@ -3,18 +3,11 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Button } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Modal } from "flowbite-react";
-import EditModal from "./editModal";
 import { IoMdEye } from "react-icons/io";
 
 export default function CategoriesTable(props) {
-  const {
-    tableData,
-    tableHeader,
-    columnsData,
-    VISIBLE_FIELDS,
-    fetchEmployees,
-    handleDetails,
-  } = props;
+  const { tableData, tableHeader, columnsData, VISIBLE_FIELDS, handleDetails } =
+    props;
   const [openModal, setOpenModal] = React.useState(false);
   const [paginationModel, setPaginationModel] = React.useState({
     pageSize: 25,
@@ -106,7 +99,6 @@ export default function CategoriesTable(props) {
             paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
             rowHeight={90}
-            onRowClick={handleDetails}
           />
         ) : (
           <div className="mt-5 flex items-center justify-center">
@@ -116,15 +108,15 @@ export default function CategoriesTable(props) {
       </div>
       <Modal
         dismissible
-        show={openModal}
+        show={props.modalData?.type === "Delete" && openModal}
         onClose={() => setOpenModal(false)}
         size={props.modalData?.type === "Edit" ? "4xl" : "xl"}
       >
-        <Modal.Header>{`${props.modalData?.type} ${props.tableFor}`}</Modal.Header>
+        <Modal.Header>{`Delete ${props.tableFor}`}</Modal.Header>
         <Modal.Body>
           {props.modalData?.type === "Delete" ? (
             <div>
-              <h2>{`Are you sure you want to ${props.modalData?.type} this Link`}</h2>
+              <h2>{`Are you sure you want to Delete this Link`}</h2>
               <div className="mt-4 flex justify-center">
                 <Button
                   className="mx-2 bg-red-600 hover:bg-red-600"
@@ -139,14 +131,7 @@ export default function CategoriesTable(props) {
                 </Button>
               </div>
             </div>
-          ) : (
-            <EditModal
-              setOpenModal={setOpenModal}
-              fetchEmployees={fetchEmployees}
-              data={tableData}
-              selected={props.modalData?.id}
-            />
-          )}
+          ) : null}
         </Modal.Body>
       </Modal>
     </>

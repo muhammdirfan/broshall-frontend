@@ -22,6 +22,7 @@ export const UpdateProject = async (token, id, payload) => {
   const res = await service.put(`/projects/${id}`, payload, {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
     },
   });
   return res.data;
@@ -43,5 +44,95 @@ export const DeleteProject = async (token, id) => {
       Authorization: `Bearer ${token}`,
     },
   });
+  return res.data;
+};
+
+// add an employees to a project
+
+export const AddEmployeeToProject = async (token, projectId, payload) => {
+  const res = await service.post(
+    `/projects/${projectId}/add_employees`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+// remove an employee from a project
+
+export const RemoveEmployeeFromProject = async (token, projectId, payload) => {
+  const res = await service.post(
+    `/projects/${projectId}/remove_employees`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+// add a machine to a project
+
+export const AddMachineToProject = async (token, projectId, payload) => {
+  const res = await service.post(
+    `/projects/${projectId}/add_machines`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+// remove a machine from a project
+
+export const removeMachineFromProject = async (token, projectId, payload) => {
+  const res = await service.post(
+    `/projects/${projectId}/remove_machines`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+// add an equipment to a project
+
+export const AddEquipmentToProject = async (token, projectId, payload) => {
+  const res = await service.post(
+    `/projects/${projectId}/add_equipments`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+// remove an equipment from a project
+
+export const removeEquipmentFromProject = async (token, projectId, payload) => {
+  const res = await service.post(
+    `/projects/${projectId}/remove_equipments`,
+    payload,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return res.data;
 };

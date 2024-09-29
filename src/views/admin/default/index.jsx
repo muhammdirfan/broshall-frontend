@@ -2,8 +2,7 @@ import MiniCalendar from "components/calendar/MiniCalendar";
 import WeeklyRevenue from "views/admin/default/components/WeeklyRevenue";
 import TotalSpent from "views/admin/default/components/TotalSpent";
 import PieChartCard from "views/admin/default/components/PieChartCard";
-import { IoMdHome } from "react-icons/io";
-import { MdBarChart, MdDashboard } from "react-icons/md";
+import { MdOutlineBusiness } from "react-icons/md";
 
 import { columnsDataComplex } from "./variables/columnsData";
 
@@ -12,48 +11,71 @@ import CategoriesTable from "views/admin/default/components/CategoriesTable";
 import DailyTraffic from "views/admin/default/components/DailyTraffic";
 import TaskCard from "views/admin/default/components/TaskCard";
 import tableDataComplex from "./variables/tableDataComplex.json";
-// import { useState } from "react";
+import { FetchAllProjects } from "services/projectAPIs";
+import { FetchAllEmployees } from "services/employeesApis";
+import { FetchAllMachines } from "services/machinesApi";
+import { FetchAllEquipments } from "services/equipmentsApis";
+import { useEffect, useState } from "react";
+import { FaCar, FaUsers } from "react-icons/fa";
+import { FaGears } from "react-icons/fa6";
+import { FetchAllJobs } from "services/jobsAPis";
+import { IoWalkSharp } from "react-icons/io5";
 
 const Dashboard = () => {
-  // const [dashData, setdashData] = useState({
-  //   professionals: "0",
-  //   Establishments: "0",
-  //   students: "0",
-  // });
+  const [projects, setProjects] = useState([]);
+  const [employees, setEmployees] = useState([]);
+  const [machines, setMachines] = useState([]);
+  const [equipments, setEquipments] = useState([]);
+  const [Jobs, setJobs] = useState([]);
 
-  // const [currentUser, setCurrentUser] = useState({});
+  const fetchAllDetails = async () => {
+    try {
+      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+      const projects = await FetchAllProjects(accessToken);
+      setProjects(projects);
+      const employee = await FetchAllEmployees(accessToken);
+      setEmployees(employee);
+      const machine = await FetchAllMachines(accessToken);
+      setMachines(machine);
+      const equipments = await FetchAllEquipments(accessToken);
+      setEquipments(equipments);
+      const jobs = await FetchAllJobs(accessToken);
+      setJobs(jobs);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-  // const fetchCurrentUser = async () => {
-  //   const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-  //   try {
-  //     const currentUser = await CurrentUser(accessToken);
-  //     setCurrentUser(currentUser, "currentUser");
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchCurrentUser();
-  // }, []);
-
+  useEffect(() => {
+    fetchAllDetails();
+  }, []);
   return (
     <div>
       <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         <Widget
-          icon={<MdDashboard className="h-6 w-6" />}
+          icon={<MdOutlineBusiness className="h-6 w-6" />}
           title={"Total Projects"}
-          subtitle={"0"}
+          subtitle={projects?.length}
         />
         <Widget
-          icon={<MdBarChart className="h-7 w-7" />}
+          icon={<FaUsers className="h-7 w-7" />}
           title={"Total Employees"}
-          subtitle={"0"}
+          subtitle={employees?.length}
         />
         <Widget
-          icon={<IoMdHome className="h-6 w-6" />}
-          title={"--------"}
-          subtitle={"0"}
+          icon={<FaCar className="h-6 w-6" />}
+          title={"Total Machinery"}
+          subtitle={machines?.length}
+        />
+        <Widget
+          icon={<FaGears className="h-6 w-6" />}
+          title={"Total Equipments"}
+          subtitle={equipments?.length}
+        />
+        <Widget
+          icon={<IoWalkSharp className="h-6 w-6" />}
+          title={"Total Jobs"}
+          subtitle={Jobs?.length}
         />
       </div>
 
