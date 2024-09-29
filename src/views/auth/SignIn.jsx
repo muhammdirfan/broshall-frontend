@@ -11,6 +11,7 @@ export default function SignIn() {
   const [authData, setAuthData] = React.useState({
     email: "",
     password: "",
+    keep_login: false,
   });
 
   const navigate = useNavigate();
@@ -83,6 +84,14 @@ export default function SignIn() {
       }
     }
   };
+
+  const handleCheckChange = () => {
+    setAuthData({
+      ...authData,
+      keep_login: !authData.keep_login,
+    });
+  };
+
   return (
     <div className="mt-16 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
       {/* Sign in section */}
@@ -129,7 +138,11 @@ export default function SignIn() {
         {/* Checkbox */}
         <div className="mb-4 flex items-center justify-between px-2">
           <div className="flex items-center">
-            <Checkbox />
+            {console.log("authData", authData)}
+            <Checkbox
+              checked={authData.password}
+              onChange={handleCheckChange}
+            />
             <p className="ml-2 text-sm font-medium text-navy-700 dark:text-white">
               Keep me logged In
             </p>
