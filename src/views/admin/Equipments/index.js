@@ -200,7 +200,7 @@ const Equipments = () => {
             />
             <Widget
               icon={<IoDocuments className="h-6 w-6" />}
-              title={"Total Equipments"}
+              title={"Available Equipments"}
               subtitle={freeEquipments?.length}
             />
             <div className="rounded-[20px] bg-white px-3 py-2">

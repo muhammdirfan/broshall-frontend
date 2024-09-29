@@ -1,61 +1,65 @@
 import CategoriesTable from "components/CategoriesTable";
 import Widget from "components/widget/Widget";
-import { Button, Carousel, Modal } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { IoDocuments } from "react-icons/io5";
 import {
   MdBarChart,
   MdDateRange,
   MdFormatListNumbered,
-  MdModelTraining,
+  MdLocationOn,
 } from "react-icons/md";
-import { FetchAllMachines } from "services/machinesApi";
-import AddMachineModal from "./components/AddMachineModal";
 import { columnsDataComplex, VISIBLE_FIELDS } from "./variables/columnsData";
-import EditModal from "./components/editModal";
-import { DeleteMachine } from "services/machinesApi";
 import Notify from "simple-notify";
-import { FaArrowLeft, FaUserTie } from "react-icons/fa";
-import { GiMoneyStack, GiTyre } from "react-icons/gi";
-import { FetchMachine } from "services/machinesApi";
+import { FetchAllJobs } from "services/jobsAPis";
+import { DeleteJob } from "services/jobsAPis";
+import { FetchJob } from "services/jobsAPis";
+import {
+  FaArrowLeft,
+  FaBookOpen,
+  FaMoneyBillAlt,
+  FaUserTie,
+} from "react-icons/fa";
+import { GiSkills } from "react-icons/gi";
+import JobModal from "./components/JobModal";
 
-const Machinery = () => {
+const Jobs = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [Machinery, setMachinery] = useState();
+  const [Jobs, setJobs] = useState();
   const [isLoading, setIsloading] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
-  const [freeMachinery, setFreeMachinery] = useState([]);
-  const [machineryDetails, setMachineryDetails] = useState({});
+  const [freeJobs, setFreeJobs] = useState([]);
+  const [JobsDetails, setJobsDetails] = useState({});
 
   const [modalData, setModalData] = useState({
     type: "",
     id: "",
   });
 
-  const fetchMachinery = async () => {
+  const fetchJobs = async () => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const allMachinery = await FetchAllMachines(accessToken);
-      setMachinery(allMachinery.reverse());
+      const allJobs = await FetchAllJobs(accessToken);
+      setJobs(allJobs.reverse());
     } catch (e) {
       console.log(e);
     }
   };
 
   useEffect(() => {
-    fetchMachinery();
+    fetchJobs();
   }, []);
 
   useEffect(() => {
-    const filtermachines = Machinery?.filter((item) => !item?.projects?.length);
-    setFreeMachinery(filtermachines);
-  }, [Machinery]);
+    const filtermachines = Jobs?.filter((item) => item?.job_status === "Open");
+    setFreeJobs(filtermachines);
+  }, [Jobs]);
 
   const handleMachineDelete = async (id) => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken"));
       setIsloading(true);
-      const deleted = await DeleteMachine(accessToken, id);
+      const deleted = await DeleteJob(accessToken, id);
       if (deleted) {
         new Notify({
           status: "success",
@@ -76,7 +80,7 @@ const Machinery = () => {
         });
         setIsloading(false);
         setSelectedItem({ selectedOption: null });
-        fetchMachinery();
+        fetchJobs();
       }
     } catch (error) {
       console.log(error);
@@ -101,99 +105,107 @@ const Machinery = () => {
     }
   };
 
-  const handleMachineDetails = (data) => {
-    FetchMachineDetails(data);
+  const handleJobDetails = (data) => {
+    FetchJobDetails(data);
   };
 
-  const FetchMachineDetails = async (id) => {
+  const FetchJobDetails = async (id) => {
     try {
       const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const machineDetails = await FetchMachine(id, accessToken);
-      setMachineryDetails(machineDetails);
+      const JobDetails = await FetchJob(id, accessToken);
+      setJobsDetails(JobDetails);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const backendUrl = "http://localhost:5000"; // Adjust this to match your backend URL
-
   return (
     <>
-      {machineryDetails?._id ? (
+      {JobsDetails?._id ? (
         <div className="space-y-6">
           <Button
             className="flex items-center"
-            onClick={() => setMachineryDetails({})}
+            onClick={() => setJobsDetails({})}
           >
             <FaArrowLeft />
             <p className="ml-2">Back</p>
           </Button>
           <h2 className="mt-5 text-3xl font-bold text-gray-800">
-            {machineryDetails.name}
+            {JobsDetails.title}
           </h2>
-          <div className="rounded-md border p-4 shadow-md">
+          <div className="rounded-lg bg-white p-4  shadow-md">
             <div className="grid grid-cols-1 gap-6 text-gray-700 md:grid-cols-2">
               <p className="flex items-center space-x-3">
-                <GiTyre className="text-purple-500" />
-                <span>Machine Type: {machineryDetails.type}</span>
-              </p>
-              <p className="flex items-center space-x-3">
-                <MdFormatListNumbered className="text-green-500" />
-                <span>Machine Number: {machineryDetails.machine_no}</span>
-              </p>
-              <p className="flex items-center space-x-3">
-                <GiMoneyStack className="text-blue-500" />
-                <span>Machine Value: {machineryDetails.machine_value}</span>
-              </p>
-              <p className="flex items-center space-x-3">
-                <MdModelTraining className="text-red-500" />
-                <span>Model: {machineryDetails.model}</span>
-              </p>
-              <p className="flex items-center space-x-3">
                 <FaUserTie className="text-purple-500" />
-                <span>Owner: {machineryDetails.owner}</span>
+                <span>Job Type: {JobsDetails.type}</span>
               </p>
               <p className="flex items-center space-x-3">
-                <FaUserTie className="text-purple-500" />
-                <span>Partner: {machineryDetails.partner || "None"}</span>
+                <MdLocationOn className="text-green-500" />
+                <span>Location: {JobsDetails.location}</span>
+              </p>
+              <p className="space-x-3">
+                <div className="flex items-center">
+                  <FaBookOpen className="text-blue-500" />
+                  <span className="ml-2 font-bold">Qualifications: </span>
+                </div>
+                <ul className="list-disc">
+                  {JobsDetails.qualifications?.map((item, index) => (
+                    <li key={index} className="mx-7">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </p>
+              <p className="space-x-3">
+                <div className="flex items-center">
+                  <MdFormatListNumbered className="text-blue-500" />
+                  <span className="ml-2 font-bold">Responsibilities: </span>
+                </div>
+                <ul className="list-disc">
+                  {JobsDetails.responsibilities?.map((item, index) => (
+                    <li key={index} className="mx-7">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </p>
+              <p className="space-x-3">
+                <div className="flex items-center">
+                  <GiSkills className="text-blue-500" />
+                  <span className="ml-2 font-bold">Skills: </span>
+                </div>
+                <ul className="list-disc">
+                  {JobsDetails.skills?.map((item, index) => (
+                    <li key={index} className="mx-7">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </p>
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-purple-500" />
+                <span>Salary: {JobsDetails.salary || "Not Mentioned"}</span>
               </p>
               <p className="flex items-center space-x-3">
                 <MdDateRange className="text-yellow-500" />
                 <span>
                   Added Date:
-                  {new Date(machineryDetails.createdAt).toLocaleDateString()}
+                  {new Date(JobsDetails.createdAt).toLocaleDateString()}
                 </span>
               </p>
-              {machineryDetails.updatedAt && (
+              {JobsDetails.updatedAt && (
                 <p className="flex items-center space-x-3">
                   <MdDateRange className="text-yellow-500" />
                   <span>
                     Updated Date:{" "}
-                    {new Date(machineryDetails.updatedAt).toLocaleDateString()}
+                    {new Date(JobsDetails.updatedAt).toLocaleDateString()}
                   </span>
                 </p>
               )}
             </div>
             <p className="mt-4 text-lg text-gray-600">
-              Description: {machineryDetails.descripton}
+              Description: {JobsDetails.descripton}
             </p>
-          </div>
-          <div className="flex justify-center">
-            <Carousel
-              className="rounded-0 my-0 mx-auto h-[35rem] w-[50rem]"
-              style={{ borderRadius: "0px" }}
-              slide={true}
-            >
-              {machineryDetails.images?.map((image, index) => (
-                <div className="rounded-0 relative h-full w-full">
-                  <img
-                    src={`${backendUrl}${image}`}
-                    className="h-full w-full"
-                    alt={`Project Image ${index + 1}`}
-                  />
-                </div>
-              ))}
-            </Carousel>
           </div>
         </div>
       ) : (
@@ -201,39 +213,39 @@ const Machinery = () => {
           <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             <Widget
               icon={<MdBarChart className="h-7 w-7" />}
-              title={"Total Machinery"}
-              subtitle={Machinery?.length}
+              title={"Total Jobs"}
+              subtitle={Jobs?.length}
             />
             <Widget
               icon={<IoDocuments className="h-6 w-6" />}
-              title={"Available Machinery"}
-              subtitle={freeMachinery?.length}
+              title={"Total Jobs"}
+              subtitle={freeJobs?.length}
             />
             <div className="rounded-[20px] bg-white px-3 py-2">
               <button
                 onClick={() => setOpenModal(true)}
                 className="linear mt-5 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
               >
-                Add Machinery
+                Add Jobs
               </button>
             </div>
           </div>
           <div className="mt-3 grid h-full grid-cols-1 gap-5 xl:grid-cols-2 2xl:grid-cols-3">
             <div className="col-span-12 h-fit w-full xl:col-span-12 2xl:col-span-12">
               <CategoriesTable
-                tableData={Machinery}
-                tableHeader="Machinery Table"
-                tableFor="Machinery"
+                tableData={Jobs}
+                tableHeader="Jobs Table"
+                tableFor="Jobs"
                 columnsData={columnsDataComplex}
                 VISIBLE_FIELDS={VISIBLE_FIELDS}
                 handleDelete={handleMachineDelete}
                 isLoading={isLoading}
                 setIsloading={setIsloading}
                 selectedProfession={selectedItem}
-                fetchMachinery={fetchMachinery}
+                fetchJobs={fetchJobs}
                 modalData={modalData}
                 setModalData={setModalData}
-                handleDetails={handleMachineDetails}
+                handleDetails={handleJobDetails}
               />
             </div>
           </div>
@@ -246,12 +258,9 @@ const Machinery = () => {
         size={"4xl"}
         className="w-10/12 md:w-full"
       >
-        <Modal.Header>{"Add New Machine"}</Modal.Header>
+        <Modal.Header>Add New Job</Modal.Header>
         <Modal.Body>
-          <AddMachineModal
-            fetchMachinery={fetchMachinery}
-            setOpenModal={setOpenModal}
-          />
+          <JobModal fetchJobs={fetchJobs} setOpenModal={setOpenModal} />
         </Modal.Body>
       </Modal>
       <Modal
@@ -260,12 +269,12 @@ const Machinery = () => {
         onClose={() => setModalData({ type: "", id: "" })}
         size={modalData?.type === "Edit" ? "4xl" : "xl"}
       >
-        <Modal.Header>Edit Machinery</Modal.Header>
+        <Modal.Header>Edit Jobs</Modal.Header>
         <Modal.Body>
-          <EditModal
+          <JobModal
             setOpenModal={setOpenModal}
-            fetchMachinery={fetchMachinery}
-            data={Machinery}
+            fetchJobs={fetchJobs}
+            data={Jobs}
             selected={modalData?.id}
             setModalData={() => setModalData({ type: "", id: "" })}
           />
@@ -275,4 +284,4 @@ const Machinery = () => {
   );
 };
 
-export default Machinery;
+export default Jobs;

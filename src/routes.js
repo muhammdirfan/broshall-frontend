@@ -16,7 +16,9 @@ import { FaCar, FaUsers } from "react-icons/fa";
 import { FaGears } from "react-icons/fa6";
 import Employees from "views/admin/Employees";
 import Machinery from "views/admin/Machinery";
+import { GrUserWorker } from "react-icons/gr";
 import Equipments from "views/admin/Equipments";
+import Jobs from "views/admin/Jobs";
 
 const routes = [
   {
@@ -68,6 +70,13 @@ const routes = [
     path: "equipments",
     icon: <FaGears className="h-6 w-6" />,
     component: <Equipments />,
+  },
+  {
+    name: "Jobs",
+    layout: "/admin",
+    path: "jobs",
+    icon: <GrUserWorker className="h-6 w-6" />,
+    component: <Jobs />,
   },
   {
     name: "Sign out",
