@@ -138,7 +138,6 @@ export default function SignIn() {
         {/* Checkbox */}
         <div className="mb-4 flex items-center justify-between px-2">
           <div className="flex items-center">
-            {console.log("authData", authData)}
             <Checkbox
               checked={authData.password}
               onChange={handleCheckChange}
