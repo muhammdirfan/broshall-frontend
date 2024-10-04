@@ -9,6 +9,7 @@ import { resetPassword } from "services/AuthApis";
 export default function ResetPassword() {
   const [isLoading, seIsloading] = React.useState(false);
   const [NewPassword, setNewPassword] = React.useState("");
+  const [NewCPassword, setNewCPassword] = React.useState("");
 
   const navigate = useNavigate();
   const { token } = useParams();
@@ -35,7 +36,7 @@ export default function ResetPassword() {
     } else {
       seIsloading(true);
       try {
-        const data = { password: NewPassword };
+        const data = { password: NewPassword, cpassword: NewCPassword };
         const resetLink = await resetPassword(data, token);
         if (resetLink) {
           new Notify({
@@ -62,10 +63,10 @@ export default function ResetPassword() {
         console.error("error", e?.response.data);
         new Notify({
           status: "error",
-          title: e?.response?.data.title,
-          text: e?.response?.data?.message,
+          title: e?.response?.data?.message,
+          text: e?.response?.data?.error,
           effect: "fade",
-          speed: 300,
+          speed: 400,
           customClass: null,
           customIcon: null,
           showIcon: true,
@@ -116,8 +117,8 @@ export default function ResetPassword() {
           placeholder="Min. 8 characters"
           id="password"
           type="password"
-          value={NewPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
+          value={NewCPassword}
+          onChange={(e) => setNewCPassword(e.target.value)}
         />
         <button
           onClick={!isLoading ? handleResetPassword : null}

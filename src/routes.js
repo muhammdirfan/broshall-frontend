@@ -19,6 +19,7 @@ import Machinery from "views/admin/Machinery";
 import { GrUserWorker } from "react-icons/gr";
 import Equipments from "views/admin/Equipments";
 import Jobs from "views/admin/Jobs";
+import JobDetails from "views/admin/JobDetails";
 
 const routes = [
   {
@@ -77,6 +78,11 @@ const routes = [
     path: "jobs",
     icon: <GrUserWorker className="h-6 w-6" />,
     component: <Jobs />,
+  },
+  {
+    layout: "/admin",
+    path: "job-details/:id",
+    component: <JobDetails />,
   },
   {
     name: "Sign out",

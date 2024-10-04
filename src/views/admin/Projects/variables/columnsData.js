@@ -4,9 +4,11 @@ export const columnsDataComplex = [
     headerName: "Project Name",
     width: 260,
     renderCell: (params) => (
-      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
-        {params.value}
-      </div>
+      <a href={`project-details/${params.row._id}`}>
+        <div className="overflow-hidden text-ellipsis whitespace-normal break-words text-[#3b82f6] underline">
+          {params.value}
+        </div>
+      </a>
     ),
   },
   { field: "contract_value", headerName: "Contract Value", width: 150 },

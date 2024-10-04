@@ -37,10 +37,12 @@ export default function CategoriesTable(props) {
   );
 
   const renderViewButton = (params) => (
-    <IoMdEye
-      className="mx-1 h-6 w-6 rounded p-1 hover:cursor-pointer hover:bg-gray-300"
+    <div
+      className="cursor-pointer overflow-hidden text-ellipsis whitespace-normal break-words text-[#3b82f6] underline"
       onClick={() => handleDetails(params.row._id)}
-    />
+    >
+      {params.value}
+    </div>
   );
 
   const handleModal = (type, id) => {
@@ -57,6 +59,16 @@ export default function CategoriesTable(props) {
 
   const columns = React.useMemo(() => {
     return [
+      {
+        field: "name",
+        headerName: "Name",
+        width: 200,
+        renderCell: (params) => (
+          <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+            {renderViewButton(params)}
+          </div>
+        ),
+      },
       ...columnsData.filter((column) => VISIBLE_FIELDS.includes(column.field)),
       {
         field: "actions",
@@ -64,7 +76,6 @@ export default function CategoriesTable(props) {
         width: 100,
         renderCell: (params) => (
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            {renderViewButton(params)}
             {renderEditButton(params)}
             {renderDeleteButton(params)}
           </div>

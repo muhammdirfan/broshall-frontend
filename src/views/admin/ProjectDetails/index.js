@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { FetchProject } from "services/projectAPIs";
 import CustomTabs from "components/CustomTabs";
 import Select from "react-select";
@@ -13,6 +13,7 @@ import { AddEquipmentToProject } from "services/projectAPIs";
 import { RemoveEmployeeFromProject } from "services/projectAPIs";
 import { removeMachineFromProject } from "services/projectAPIs";
 import { removeEquipmentFromProject } from "services/projectAPIs";
+import { FaArrowLeft } from "react-icons/fa";
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -334,63 +335,69 @@ const ProjectDetails = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <h2 className="mb-5 text-lg">Project Details</h2>
-      <div className="grid grid-cols-12 gap-5">
-        <div className="col-span-12 md:col-span-4">
-          <p>Available Employees</p>
-          <Select
-            isMulti
-            name="colors"
-            options={employeesOptions}
-            className="basic-multi-select w-full"
-            classNamePrefix="select"
-            onChange={handleEmployeeChange}
-            value={selctedValues.employees}
-            onKeyDown={handleEmployeeKeyPress}
-          />
+    <>
+      <Link className="flex items-center px-6" to="/admin/all-projects">
+        <FaArrowLeft />
+        <p className="ml-2">Back</p>
+      </Link>
+      <div className="container mx-auto p-6">
+        <h2 className="mb-5 text-lg">Project Details</h2>
+        <div className="grid grid-cols-12 gap-5">
+          <div className="col-span-12 md:col-span-4">
+            <p>Available Employees</p>
+            <Select
+              isMulti
+              name="colors"
+              options={employeesOptions}
+              className="basic-multi-select w-full"
+              classNamePrefix="select"
+              onChange={handleEmployeeChange}
+              value={selctedValues.employees}
+              onKeyDown={handleEmployeeKeyPress}
+            />
+          </div>
+          <div className="col-span-12 md:col-span-4">
+            <p>Available Machines</p>
+            <Select
+              isMulti
+              name="colors"
+              options={machinesOptions}
+              className="basic-multi-select w-full"
+              classNamePrefix="select"
+              onChange={handleMachineChange}
+              value={selctedValues.machinery}
+              onKeyDown={handleMachineryKeyPress}
+            />
+          </div>
+          <div className="col-span-12 md:col-span-4">
+            <p>Available Equipments</p>
+            <Select
+              isMulti
+              name="colors"
+              options={equipmentsOptions}
+              className="basic-multi-select w-full"
+              classNamePrefix="select"
+              onChange={handleEquipmentChange}
+              value={selctedValues.equipments}
+              onKeyDown={handleEquipmentKeyPress}
+            />
+          </div>
         </div>
-        <div className="col-span-12 md:col-span-4">
-          <p>Available Machines</p>
-          <Select
-            isMulti
-            name="colors"
-            options={machinesOptions}
-            className="basic-multi-select w-full"
-            classNamePrefix="select"
-            onChange={handleMachineChange}
-            value={selctedValues.machinery}
-            onKeyDown={handleMachineryKeyPress}
-          />
-        </div>
-        <div className="col-span-12 md:col-span-4">
-          <p>Available Equipments</p>
-          <Select
-            isMulti
-            name="colors"
-            options={equipmentsOptions}
-            className="basic-multi-select w-full"
-            classNamePrefix="select"
-            onChange={handleEquipmentChange}
-            value={selctedValues.equipments}
-            onKeyDown={handleEquipmentKeyPress}
-          />
-        </div>
+        <CustomTabs
+          projectDetails={projectDetails}
+          backendUrl={backendUrl}
+          availableEmployees={availableEmployees}
+          availableMachinery={availableMachinery}
+          availableEquipments={availableEquipments}
+          employees={employees}
+          machines={machines}
+          equipments={equipments}
+          tab={tab}
+          setTab={setTab}
+          handleItemRemove={handleItemRemove}
+        />
       </div>
-      <CustomTabs
-        projectDetails={projectDetails}
-        backendUrl={backendUrl}
-        availableEmployees={availableEmployees}
-        availableMachinery={availableMachinery}
-        availableEquipments={availableEquipments}
-        employees={employees}
-        machines={machines}
-        equipments={equipments}
-        tab={tab}
-        setTab={setTab}
-        handleItemRemove={handleItemRemove}
-      />
-    </div>
+    </>
   );
 };
 

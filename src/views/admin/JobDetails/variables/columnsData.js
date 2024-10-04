@@ -1,50 +1,9 @@
-import ProjectName from "components/ProjectName";
 import { formatDate } from "utils";
 
 export const columnsDataComplex = [
-  // {
-  //   field: "title",
-  //   headerName: "Job Title",
-  //   width: 200,
-  //   renderCell: (params) => (
-  //     <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
-  //       {params.value}
-  //     </div>
-  //   ),
-  // },
   {
-    field: "type",
-    headerName: "Type",
-    width: 120,
-    renderCell: (params) => (
-      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
-        {params.value}
-      </div>
-    ),
-  },
-  {
-    field: "location",
-    headerName: "Location",
-    width: 150,
-    renderCell: (params) => (
-      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
-        {params.value}
-      </div>
-    ),
-  },
-  {
-    field: "descripton",
-    headerName: "Descripton",
-    width: 350,
-    renderCell: (params) => (
-      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
-        {params.value}
-      </div>
-    ),
-  },
-  {
-    field: "salary",
-    headerName: "Salary (if any)",
+    field: "name",
+    headerName: "Name",
     width: 200,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
@@ -53,9 +12,49 @@ export const columnsDataComplex = [
     ),
   },
   {
-    field: "job_status",
-    headerName: "Job Status",
+    field: "email",
+    headerName: "Email (if any)",
+    width: 180,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "number",
+    headerName: "Phone Number",
     width: 150,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "experience",
+    headerName: "Experience",
+    width: 150,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "expected_salary",
+    headerName: "Expected Salary",
+    width: 200,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "age",
+    headerName: "Age",
+    width: 100,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
         {params.value || "Undefined"}
@@ -65,19 +64,19 @@ export const columnsDataComplex = [
   {
     field: "createdAt",
     headerName: "Added At",
-    width: 150,
+    width: 120,
     renderCell: (params) => formatDate(params.value),
   },
 ];
 
 export const VISIBLE_FIELDS = [
-  "title",
-  "type",
-  "location",
+  "name",
+  "email",
+  "number",
   "contract_role",
-  "descripton",
-  "salary",
+  "experience",
+  "expected_salary",
   "joining_date",
-  "job_status",
+  "age",
   "createdAt",
 ];
