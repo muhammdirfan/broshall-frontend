@@ -6,8 +6,7 @@ const ProjectName = ({ projectId }) => {
 
   useEffect(() => {
     const fetchProjectName = async () => {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const allProjects = await FetchAllProjects(accessToken);
+      const allProjects = await FetchAllProjects();
       const associatedProject = allProjects?.find(
         (item) => item._id === projectId
       );

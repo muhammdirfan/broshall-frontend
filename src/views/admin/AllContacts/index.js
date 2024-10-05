@@ -139,9 +139,8 @@ export default function AllContacts() {
 
   const getAllContacts = async () => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
       setIsloading(true);
-      const allContacts = await FetchAllContacts(accessToken);
+      const allContacts = await FetchAllContacts();
       setAllContacts(allContacts?.reverse());
       if (allContacts) {
         setIsloading(false);
@@ -203,8 +202,7 @@ export default function AllContacts() {
 
   const handleDelete = async (id) => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const deleteContact = await DeleteContact(accessToken, id);
+      const deleteContact = await DeleteContact(id);
       if (deleteContact) {
         new Notify({
           status: "success",

@@ -30,8 +30,7 @@ const Equipments = () => {
 
   const fetchEquipments = async () => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const allEquipments = await FetchAllEquipments(accessToken);
+      const allEquipments = await FetchAllEquipments();
       setEquipments(allEquipments.reverse());
     } catch (e) {
       console.log(e);
@@ -51,9 +50,8 @@ const Equipments = () => {
 
   const handleEquipmentDelete = async (id) => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
       setIsloading(true);
-      const deleted = await DeleteEquipment(accessToken, id);
+      const deleted = await DeleteEquipment(id);
       if (deleted) {
         new Notify({
           status: "success",
@@ -105,8 +103,7 @@ const Equipments = () => {
 
   const FetchEquipmentDetails = async (id) => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const equipmentDetails = await FetchEquipment(id, accessToken);
+      const equipmentDetails = await FetchEquipment(id);
       setEquipmentsDetails(equipmentDetails);
     } catch (error) {
       console.log(error);

@@ -21,8 +21,7 @@ import { FaGears } from "react-icons/fa6";
 import { FetchAllJobs } from "services/jobsAPis";
 import { IoWalkSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { decrement } from "features/counter/counterSlice";
-import { increment } from "features/counter/counterSlice";
+import { fetchProjects } from "../../../features/projects/projectsSlice";
 
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);
@@ -31,21 +30,20 @@ const Dashboard = () => {
   const [equipments, setEquipments] = useState([]);
   const [Jobs, setJobs] = useState([]);
 
-  const count = useSelector((state) => state.counter.value);
   const dispatch = useDispatch();
 
   const fetchAllDetails = async () => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const projects = await FetchAllProjects(accessToken);
+      dispatch(fetchProjects());
+      const projects = await FetchAllProjects();
       setProjects(projects);
-      const employee = await FetchAllEmployees(accessToken);
+      const employee = await FetchAllEmployees();
       setEmployees(employee);
-      const machine = await FetchAllMachines(accessToken);
+      const machine = await FetchAllMachines();
       setMachines(machine);
-      const equipments = await FetchAllEquipments(accessToken);
+      const equipments = await FetchAllEquipments();
       setEquipments(equipments);
-      const jobs = await FetchAllJobs(accessToken);
+      const jobs = await FetchAllJobs();
       setJobs(jobs);
     } catch (e) {
       console.log(e);
@@ -83,12 +81,6 @@ const Dashboard = () => {
           title={"Total Jobs"}
           subtitle={Jobs?.length}
         />
-      </div>
-
-      <div>
-        <button onClick={() => dispatch(decrement())}>-</button>
-        <span>{count}</span>
-        <button onClick={() => dispatch(increment())}>+</button>
       </div>
 
       {/* Charts */}

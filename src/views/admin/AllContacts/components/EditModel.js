@@ -26,7 +26,6 @@ const EditModel = ({
   }, [id, allContacts]);
 
   const handleUpdate = async (id) => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
       if (!contactData?.name || !contactData.email || !contactData.phone) {
         new Notify({
@@ -48,7 +47,7 @@ const EditModel = ({
         });
       } else {
         setIsloading(true);
-        const contact = await UpdateContact(accessToken, id, contactData);
+        const contact = await UpdateContact(id, contactData);
         if (contact) {
           setOpenContactModal({ open: false, type: "", id: null });
           setIsloading(false);

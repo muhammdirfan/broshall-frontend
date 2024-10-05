@@ -1,18 +1,18 @@
-import service from "./index";
+import service, { accessToken } from "./index";
 
-export const FetchAllEquipments = async (data) => {
+export const FetchAllEquipments = async () => {
   const res = await service.get("/equipments", {
     headers: {
-      Authorization: `Bearer ${data}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return res.data;
 };
 
-export const CreateEquipment = async (token, payload) => {
+export const CreateEquipment = async (payload) => {
   const res = await service.post("/equipments", payload, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
       "Content-Type": "multipart/form-data",
     },
   });
@@ -28,19 +28,19 @@ export const FetchEquipment = async (id, data) => {
   return res.data;
 };
 
-export const UpdateEquipment = async (token, id, payload) => {
+export const UpdateEquipment = async (id, payload) => {
   const res = await service.put(`/equipments/${id}`, payload, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return res.data;
 };
 
-export const DeleteEquipment = async (token, id) => {
+export const DeleteEquipment = async (id) => {
   const res = await service.delete(`/equipments/${id}`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return res.data;

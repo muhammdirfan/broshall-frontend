@@ -27,8 +27,7 @@ const Jobs = () => {
 
   const fetchJobs = async () => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const allJobs = await FetchAllJobs(accessToken);
+      const allJobs = await FetchAllJobs();
       setJobs(allJobs.reverse());
     } catch (e) {
       console.log(e);
@@ -46,9 +45,8 @@ const Jobs = () => {
 
   const handleMachineDelete = async (id) => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
       setIsloading(true);
-      const deleted = await DeleteJob(accessToken, id);
+      const deleted = await DeleteJob(id);
       if (deleted) {
         new Notify({
           status: "success",
@@ -91,6 +89,19 @@ const Jobs = () => {
         position: "right bottom",
       });
       setIsloading(false);
+    }
+  };
+
+  const handleJobDetails = (data) => {
+    FetchJobDetails(data);
+  };
+
+  const FetchJobDetails = async (id) => {
+    try {
+      const JobDetails = await FetchJob(id);
+      setJobsDetails(JobDetails);
+    } catch (error) {
+      console.log(error);
     }
   };
 

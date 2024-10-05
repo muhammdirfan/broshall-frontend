@@ -1,16 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  FetchAllProjects,
-  CreateProject,
-  DeleteProject,
-  UpdateProject,
-} from "../../services/projectAPIs";
+import { CreateProject, FetchAllProjects } from "../../services/projectAPIs";
 
 export const fetchProjects = createAsyncThunk(
   "projects/fetchAll",
-  async (token, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await FetchAllProjects(token);
+      const response = await FetchAllProjects();
       return response;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -18,15 +13,16 @@ export const fetchProjects = createAsyncThunk(
   }
 );
 
-// You can create additional thunks for other operations similarly
 export const createProject = createAsyncThunk(
   "projects/create",
-  async ({ token, data }, { rejectWithValue }) => {
+  async (data, { rejectWithValue }) => {
     try {
-      const response = await CreateProject(token, data);
+      const response = await CreateProject(data);
       return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      const errorMessage =
+        error.response?.data || "An unexpected error occurred";
+      return rejectWithValue(errorMessage);
     }
   }
 );

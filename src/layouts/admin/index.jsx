@@ -66,7 +66,6 @@ export default function Admin(props) {
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      console.log(accessToken, "accessToken");
       if (accessToken && prop.layout === "/admin") {
         return (
           <>

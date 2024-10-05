@@ -28,7 +28,6 @@ const AddEquipmentModal = ({ setOpenModal, fetchEquipements }) => {
       formData.append("images", image);
     });
 
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
       if (
         !equipment?.name ||
@@ -55,7 +54,7 @@ const AddEquipmentModal = ({ setOpenModal, fetchEquipements }) => {
         });
       } else {
         setIsLoading(true);
-        const machine = await CreateEquipment(accessToken, formData);
+        const machine = await CreateEquipment(formData);
         if (machine) {
           setOpenModal(false);
           setIsLoading(false);

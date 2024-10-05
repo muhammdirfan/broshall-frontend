@@ -71,7 +71,6 @@ const AddJobModal = ({
 
   const handleSave = async () => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
       const data = {
         ...JobData,
         qualifications: JobData.qualifications.map((item) => item.value),
@@ -109,7 +108,7 @@ const AddJobModal = ({
         });
       } else {
         setIsLoading(true);
-        const job = await CreateJob(accessToken, data);
+        const job = await CreateJob(data);
         if (job) {
           setOpenModal(false);
           setIsLoading(false);
@@ -157,7 +156,6 @@ const AddJobModal = ({
 
   const handleUpdate = async (id) => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
       const data = {
         ...JobData,
         qualifications: JobData.qualifications.map((item) => item.value),
@@ -195,7 +193,7 @@ const AddJobModal = ({
         });
       } else {
         setIsLoading(true);
-        const job = await UpdateJob(accessToken, id, data);
+        const job = await UpdateJob(id, data);
         if (job) {
           setOpenModal(false);
           setIsLoading(false);

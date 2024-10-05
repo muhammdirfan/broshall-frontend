@@ -30,7 +30,6 @@ const AddMachineModal = ({ setOpenModal, fetchMachinery }) => {
       formData.append("images", image);
     });
 
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
       if (
         !machineryData?.name ||
@@ -58,7 +57,7 @@ const AddMachineModal = ({ setOpenModal, fetchMachinery }) => {
         });
       } else {
         setIsLoading(true);
-        const machine = await CreateMachine(accessToken, formData);
+        const machine = await CreateMachine(formData);
         if (machine) {
           setOpenModal(false);
           setIsLoading(false);

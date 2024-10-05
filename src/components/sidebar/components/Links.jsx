@@ -25,9 +25,8 @@ export function SidebarLinks(props) {
   }, []);
 
   const logoutCurrentUser = async () => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
-      const response = await logoutUser(accessToken);
+      const response = await logoutUser();
       if (response.message) {
         new Notify({
           status: "success",

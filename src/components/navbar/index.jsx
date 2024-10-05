@@ -13,9 +13,8 @@ const Navbar = (props) => {
   const [currentUser, setCurrentUser] = useState({});
 
   const fetchCurrentUser = async () => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
-      const currentUser = await CurrentUser(accessToken);
+      const currentUser = await CurrentUser();
       setCurrentUser(currentUser, "currentUser");
     } catch (e) {
       console.log(e);

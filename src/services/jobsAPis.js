@@ -1,18 +1,18 @@
-import service from "./index";
+import service, { accessToken } from "./index";
 
-export const FetchAllJobs = async (data) => {
+export const FetchAllJobs = async () => {
   const res = await service.get("/jobs", {
     headers: {
-      Authorization: `Bearer ${data}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return res.data;
 };
 
-export const CreateJob = async (token, payload) => {
+export const CreateJob = async (payload) => {
   const res = await service.post("/jobs", payload, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return res.data;
@@ -27,19 +27,19 @@ export const FetchJob = async (id, data) => {
   return res.data;
 };
 
-export const UpdateJob = async (token, id, payload) => {
+export const UpdateJob = async (id, payload) => {
   const res = await service.put(`/jobs/${id}`, payload, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return res.data;
 };
 
-export const DeleteJob = async (token, id) => {
+export const DeleteJob = async (id) => {
   const res = await service.delete(`/jobs/${id}`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return res.data;

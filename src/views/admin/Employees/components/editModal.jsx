@@ -39,7 +39,6 @@ const editModal = ({ setOpenModal, fetchEmployees, data, selected }) => {
   }, [selected, data]);
 
   const handleUpdate = async (id) => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
       if (!employeeData?.name || !employeeData.email || !employeeData.address) {
         new Notify({
@@ -61,7 +60,7 @@ const editModal = ({ setOpenModal, fetchEmployees, data, selected }) => {
         });
       } else {
         setIsLoading(true);
-        const employee = await UpdateEmployee(accessToken, id, employeeData);
+        const employee = await UpdateEmployee(id, employeeData);
         if (employee) {
           setOpenModal(false);
           setIsLoading(false);

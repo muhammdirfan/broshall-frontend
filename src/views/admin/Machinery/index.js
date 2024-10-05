@@ -34,8 +34,7 @@ const Machinery = () => {
 
   const fetchMachinery = async () => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const allMachinery = await FetchAllMachines(accessToken);
+      const allMachinery = await FetchAllMachines();
       setMachinery(allMachinery.reverse());
     } catch (e) {
       console.log(e);
@@ -53,9 +52,8 @@ const Machinery = () => {
 
   const handleMachineDelete = async (id) => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
       setIsloading(true);
-      const deleted = await DeleteMachine(accessToken, id);
+      const deleted = await DeleteMachine(id);
       if (deleted) {
         new Notify({
           status: "success",
@@ -107,8 +105,7 @@ const Machinery = () => {
 
   const FetchMachineDetails = async (id) => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const machineDetails = await FetchMachine(id, accessToken);
+      const machineDetails = await FetchMachine(id);
       setMachineryDetails(machineDetails);
     } catch (error) {
       console.log(error);

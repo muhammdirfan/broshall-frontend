@@ -2,8 +2,6 @@ import InputField from "components/fields/InputField";
 import { Label } from "flowbite-react";
 import React, { useState } from "react";
 import Select from "react-select";
-import { fetchProffesionalCategory } from "services/professionalApis";
-import { addspecialities } from "services/professionalApis";
 import Notify from "simple-notify";
 import spaceUtilities from "tailwindcss-rtl/src/spaceUtilities";
 
@@ -15,24 +13,6 @@ const SpecialityModal = ({ setOpenSpecialityModal, fetchProfessionals }) => {
   });
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchHcps = async () => {
-    try {
-      const Hcps = await fetchProffesionalCategory();
-      setprofessions(
-        Hcps?.map((item) => ({
-          value: item?.name,
-          label: item?.name,
-        }))
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  React.useEffect(() => {
-    fetchHcps();
-  }, []);
-
   const handleProfessionChange = (selectedOption) => {
     setSelectedProfession({ selectedOption });
   };
@@ -41,62 +21,7 @@ const SpecialityModal = ({ setOpenSpecialityModal, fetchProfessionals }) => {
     setSpeciality(value);
   };
 
-  const handleSave = async () => {
-    const data = {
-      name: speciality,
-      type: selectedProfession?.selectedOption?.label,
-    };
-    try {
-      if (selectedProfession?.selectedOption?.label && speciality) {
-        setIsLoading(true);
-        const specialities = await addspecialities(data);
-        if (spaceUtilities) {
-          setOpenSpecialityModal(false);
-          setIsLoading(false);
-          new Notify({
-            status: "success",
-            title: "Success",
-            text: "Speciality added Successfully!",
-            effect: "fade",
-            speed: 300,
-            customClass: null,
-            customIcon: null,
-            showIcon: true,
-            showCloseButton: true,
-            autoclose: true,
-            autotimeout: 3000,
-            gap: 20,
-            distance: 20,
-            type: 1,
-            position: "right bottom",
-          });
-          setSpeciality("");
-          setSelectedProfession({ selectedOption: null });
-          fetchProfessionals();
-        }
-      } else {
-        new Notify({
-          status: "error",
-          title: "Error",
-          text: "Please fill all the fields",
-          effect: "fade",
-          speed: 300,
-          customClass: null,
-          customIcon: null,
-          showIcon: true,
-          showCloseButton: true,
-          autoclose: true,
-          autotimeout: 3000,
-          gap: 20,
-          distance: 20,
-          type: 1,
-          position: "right bottom",
-        });
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const handleSave = async () => {};
 
   return (
     <div className="h-96 space-y-6">

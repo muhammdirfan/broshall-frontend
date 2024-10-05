@@ -28,8 +28,7 @@ const Employees = () => {
 
   const fetchEmployees = async () => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const allEmployees = await FetchAllEmployees(accessToken);
+      const allEmployees = await FetchAllEmployees();
       setEmployees(allEmployees.reverse());
     } catch (e) {
       console.log(e);
@@ -49,9 +48,8 @@ const Employees = () => {
 
   const handleEmployeeDelete = async (id) => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
       setIsloading(true);
-      const deleted = await DeleteEmployee(accessToken, id);
+      const deleted = await DeleteEmployee(id);
       if (deleted) {
         new Notify({
           status: "success",
@@ -103,8 +101,7 @@ const Employees = () => {
 
   const FetchEmployeeDetails = async (id) => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const employeetDetails = await FetchEmployee(id, accessToken);
+      const employeetDetails = await FetchEmployee(id);
       setEmployeeDetails(employeetDetails);
     } catch (error) {
       console.log(error);

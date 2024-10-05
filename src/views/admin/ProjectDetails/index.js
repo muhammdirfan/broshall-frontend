@@ -33,18 +33,17 @@ const ProjectDetails = () => {
 
   const fetchProjectDetails = async () => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const project = await FetchProject(id, accessToken);
+      const project = await FetchProject(id);
       setProjectDetail(project);
-      const employee = await FetchAllEmployees(accessToken);
+      const employee = await FetchAllEmployees();
       setEmployees(employee);
       setAvailableEmployees(
         employee?.filter((item) => !item?.projects?.length)
       );
-      const machine = await FetchAllMachines(accessToken);
+      const machine = await FetchAllMachines();
       setMachines(machine);
       setAvailableMachinery(machine?.filter((item) => !item?.projects?.length));
-      const equipments = await FetchAllEquipments(accessToken);
+      const equipments = await FetchAllEquipments();
       setEquipments(equipments);
       setAvailableEquipments(
         equipments?.filter((item) => !item?.projects?.length)
@@ -121,16 +120,11 @@ const ProjectDetails = () => {
   };
 
   const handleAddEmployeeToProject = async (employeesIds) => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     const data = {
       projectId: projectDetails?._id,
       employeeIds: employeesIds,
     };
-    const employeeAdded = await AddEmployeeToProject(
-      accessToken,
-      projectDetails?._id,
-      data
-    );
+    const employeeAdded = await AddEmployeeToProject(projectDetails?._id, data);
     if (employeeAdded) {
       fetchProjectDetails();
       setTab("employees");
@@ -157,16 +151,11 @@ const ProjectDetails = () => {
   };
 
   const handleAddMachineToProject = async (machineIds) => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     const data = {
       projectId: projectDetails?._id,
       machineIds: machineIds,
     };
-    const machineAdded = await AddMachineToProject(
-      accessToken,
-      projectDetails?._id,
-      data
-    );
+    const machineAdded = await AddMachineToProject(projectDetails?._id, data);
     if (machineAdded) {
       fetchProjectDetails();
       setTab("Machinery");
@@ -192,13 +181,11 @@ const ProjectDetails = () => {
   };
 
   const handleAddEquipmentToProject = async (equipmentIds) => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     const data = {
       projectId: projectDetails?._id,
       equipmentIds: equipmentIds,
     };
     const equipmentAdded = await AddEquipmentToProject(
-      accessToken,
       projectDetails?._id,
       data
     );
@@ -228,9 +215,8 @@ const ProjectDetails = () => {
   };
 
   const handleItemRemove = async (id) => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-    const employee = await FetchAllEmployees(accessToken);
-    const machine = await FetchAllMachines(accessToken);
+    const employee = await FetchAllEmployees();
+    const machine = await FetchAllMachines();
 
     if (employee?.find((item) => item._id === id)) {
       const data = {
@@ -239,7 +225,6 @@ const ProjectDetails = () => {
       };
 
       const equipmentAdded = await RemoveEmployeeFromProject(
-        accessToken,
         projectDetails?._id,
         data
       );
@@ -272,7 +257,6 @@ const ProjectDetails = () => {
       };
 
       const machineRemoved = await removeMachineFromProject(
-        accessToken,
         projectDetails?._id,
         data
       );
@@ -305,7 +289,6 @@ const ProjectDetails = () => {
       };
 
       const equipmentRemoved = await removeEquipmentFromProject(
-        accessToken,
         projectDetails?._id,
         data
       );
