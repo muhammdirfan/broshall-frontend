@@ -194,3 +194,72 @@ export const equipementColumns = [
     renderCell: (params) => formatDate(params.value),
   },
 ];
+
+export const billColumns = [
+  {
+    field: "bill_name",
+    headerName: "Bill Name",
+    width: 180,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "bill_id",
+    headerName: "Bill Id",
+    width: 150,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "bill_type",
+    headerName: "Bill Type",
+    width: 180,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "bill_amount",
+    headerName: "Bill Amount",
+    width: 180,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "bill_account",
+    headerName: "Bill Account",
+    width: 180,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "bill_status",
+    headerName: "Bill Status",
+    width: 100,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "bill_date",
+    headerName: "Bill Date",
+    width: 200,
+    renderCell: (params) => formatDate(params.value),
+  },
+];
