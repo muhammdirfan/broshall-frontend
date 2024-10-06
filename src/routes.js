@@ -21,6 +21,7 @@ import Equipments from "views/admin/Equipments";
 import Jobs from "views/admin/Jobs";
 import Bills from "views/admin/Bills";
 import JobDetails from "views/admin/JobDetails";
+import Payments from "views/admin/Payments";
 
 const routes = [
   {
@@ -81,6 +82,11 @@ const routes = [
     component: <Jobs />,
   },
   {
+    layout: "/admin",
+    path: "job-details/:id",
+    component: <JobDetails />,
+  },
+  {
     name: "Bills",
     layout: "/admin",
     path: "bills",
@@ -88,9 +94,11 @@ const routes = [
     component: <Bills />,
   },
   {
+    name: "Payments",
     layout: "/admin",
-    path: "job-details/:id",
-    component: <JobDetails />,
+    path: "payments",
+    icon: <FaMoneyBill className="h-6 w-6" />,
+    component: <Payments />,
   },
   {
     name: "Sign out",

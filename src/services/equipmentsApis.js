@@ -19,10 +19,10 @@ export const CreateEquipment = async (payload) => {
   return res.data;
 };
 
-export const FetchEquipment = async (id, data) => {
+export const FetchEquipment = async (id) => {
   const res = await service.get(`/equipments/${id}`, {
     headers: {
-      Authorization: `Bearer ${data}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return res.data;

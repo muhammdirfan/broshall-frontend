@@ -3,67 +3,64 @@ import Widget from "components/widget/Widget";
 import { Button, Modal } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { IoDocuments } from "react-icons/io5";
-import {
-  MdBarChart,
-  MdDateRange,
-  MdFormatListNumbered,
-  MdLocationOn,
-} from "react-icons/md";
+import { MdBarChart, MdDateRange } from "react-icons/md";
 import { columnsDataComplex, VISIBLE_FIELDS } from "./variables/columnsData";
 import Notify from "simple-notify";
-import { FetchAllJobs } from "services/jobsAPis";
-import { DeleteJob } from "services/jobsAPis";
-import { FetchJob } from "services/jobsAPis";
-
-import JobModal from "./components/JobModal";
+import {
+  FetchAllPayments,
+  DeletePayment,
+  FetchPayment,
+} from "services/paymentsApis";
 import {
   FaArrowLeft,
   FaBookOpen,
   FaMoneyBillAlt,
   FaUserTie,
 } from "react-icons/fa";
-import { GiSkills } from "react-icons/gi";
+import PaymentModal from "./components/PaymentModal";
 
-const Jobs = () => {
+const Payments = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [Jobs, setJobs] = useState();
+  const [Payments, setPayments] = useState();
   const [isLoading, setIsloading] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
-  const [freeJobs, setFreeJobs] = useState([]);
-  const [JobsDetails, setJobsDetails] = useState({});
+  const [freePayments, setFreePayments] = useState([]);
+  const [PaymentsDetails, setPaymentsDetails] = useState({});
 
   const [modalData, setModalData] = useState({
     type: "",
     id: "",
   });
 
-  const fetchJobs = async () => {
+  const fetchPayments = async () => {
     try {
-      const allJobs = await FetchAllJobs();
-      setJobs(allJobs.reverse());
+      const allPayments = await FetchAllPayments();
+      setPayments(allPayments.reverse());
     } catch (e) {
       console.log(e);
     }
   };
 
   useEffect(() => {
-    fetchJobs();
+    fetchPayments();
   }, []);
 
   useEffect(() => {
-    const filtermachines = Jobs?.filter((item) => item?.job_status === "Open");
-    setFreeJobs(filtermachines);
-  }, [Jobs]);
+    const filtermachines = Payments?.filter(
+      (item) => item?.payment_status === "Open"
+    );
+    setFreePayments(filtermachines);
+  }, [Payments]);
 
   const handleMachineDelete = async (id) => {
     try {
       setIsloading(true);
-      const deleted = await DeleteJob(id);
+      const deleted = await DeletePayment(id);
       if (deleted) {
         new Notify({
           status: "success",
           title: "Success",
-          text: "Machine deleted successfully!",
+          text: "Payment deleted successfully!",
           effect: "fade",
           speed: 300,
           customClass: null,
@@ -79,7 +76,7 @@ const Jobs = () => {
         });
         setIsloading(false);
         setSelectedItem({ selectedOption: null });
-        fetchJobs();
+        fetchPayments();
       }
     } catch (error) {
       console.log(error);
@@ -104,14 +101,14 @@ const Jobs = () => {
     }
   };
 
-  const handleJobDetails = (data) => {
-    FetchJobDetails(data);
+  const handlePaymentDetails = (data) => {
+    FetchPaymentDetails(data);
   };
 
-  const FetchJobDetails = async (id) => {
+  const FetchPaymentDetails = async (id) => {
     try {
-      const JobDetails = await FetchJob(id);
-      setJobsDetails(JobDetails);
+      const PaymentDetails = await FetchPayment(id);
+      setPaymentsDetails(PaymentDetails);
     } catch (error) {
       console.log(error);
     }
@@ -119,90 +116,57 @@ const Jobs = () => {
 
   return (
     <>
-      {JobsDetails?._id ? (
+      {console.log("PaymentsDetails", PaymentsDetails)}
+      {PaymentsDetails?._id ? (
         <div className="space-y-6">
           <Button
             className="flex items-center"
-            onClick={() => setJobsDetails({})}
+            onClick={() => setPaymentsDetails({})}
           >
             <FaArrowLeft />
             <p className="ml-2">Back</p>
           </Button>
           <h2 className="mt-5 text-3xl font-bold text-gray-800">
-            {JobsDetails.title}
+            {PaymentsDetails.payment_name}
           </h2>
           <div className="rounded-lg bg-white p-4  shadow-md">
             <div className="grid grid-cols-1 gap-6 text-gray-700 md:grid-cols-2">
               <p className="flex items-center space-x-3">
-                <FaUserTie className="text-purple-500" />
-                <span>Job Type: {JobsDetails.type}</span>
+                <FaMoneyBillAlt className="text-green-500" />
+                <span>Payment Id: {PaymentsDetails.payment_id}</span>
               </p>
               <p className="flex items-center space-x-3">
-                <MdLocationOn className="text-green-500" />
-                <span>Location: {JobsDetails.location}</span>
+                <FaUserTie className="text-purple-500" />
+                <span>Payment Type: {PaymentsDetails.payment_type}</span>
               </p>
-              <p className="space-x-3">
-                <div className="flex items-center">
-                  <FaBookOpen className="text-blue-500" />
-                  <span className="ml-2 font-bold">Qualifications: </span>
-                </div>
-                <ul className="list-disc">
-                  {JobsDetails.qualifications?.map((item, index) => (
-                    <li key={index} className="mx-7">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </p>
-              <p className="space-x-3">
-                <div className="flex items-center">
-                  <MdFormatListNumbered className="text-blue-500" />
-                  <span className="ml-2 font-bold">Responsibilities: </span>
-                </div>
-                <ul className="list-disc">
-                  {JobsDetails.responsibilities?.map((item, index) => (
-                    <li key={index} className="mx-7">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </p>
-              <p className="space-x-3">
-                <div className="flex items-center">
-                  <GiSkills className="text-blue-500" />
-                  <span className="ml-2 font-bold">Skills: </span>
-                </div>
-                <ul className="list-disc">
-                  {JobsDetails.skills?.map((item, index) => (
-                    <li key={index} className="mx-7">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-green-500" />
+                <span>Payment Amount: {PaymentsDetails.payment_amount}</span>
               </p>
               <p className="flex items-center space-x-3">
                 <FaMoneyBillAlt className="text-purple-500" />
-                <span>Salary: {JobsDetails.salary || "Not Mentioned"}</span>
+                <span>
+                  Payment Account:{" "}
+                  {PaymentsDetails.payment_account || "Not Mentioned"}
+                </span>
               </p>
               <p className="flex items-center space-x-3">
                 <MdDateRange className="text-yellow-500" />
                 <span>
-                  Added Date:
-                  {new Date(JobsDetails.createdAt).toLocaleDateString()}
+                  Payment Date:
+                  {new Date(PaymentsDetails.payment_date).toLocaleDateString()}
                 </span>
               </p>
-              {JobsDetails.updatedAt && (
-                <p className="flex items-center space-x-3">
-                  <MdDateRange className="text-yellow-500" />
-                  <span>
-                    Updated Date:{" "}
-                    {new Date(JobsDetails.updatedAt).toLocaleDateString()}
-                  </span>
-                </p>
-              )}
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-purple-500" />
+                <span>
+                  Payment Status:{" "}
+                  {PaymentsDetails.payment_status || "Not Mentioned"}
+                </span>
+              </p>
             </div>
             <p className="mt-4 text-lg text-gray-600">
-              Description: {JobsDetails.descripton}
+              Payment Project: {PaymentsDetails.payment_project}
             </p>
           </div>
         </div>
@@ -211,40 +175,40 @@ const Jobs = () => {
           <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             <Widget
               icon={<MdBarChart className="h-7 w-7" />}
-              title={"Total Jobs"}
-              subtitle={Jobs?.length}
+              title={"Total Payments"}
+              subtitle={Payments?.length}
             />
             <Widget
               icon={<IoDocuments className="h-6 w-6" />}
-              title={"Open Jobs"}
-              subtitle={freeJobs?.length}
+              title={"Total Payments"}
+              subtitle={freePayments?.length}
             />
             <div className="rounded-[20px] bg-white px-3 py-2">
               <button
                 onClick={() => setOpenModal(true)}
                 className="linear mt-5 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
               >
-                Add Jobs
+                Add Payments
               </button>
             </div>
           </div>
           <div className="mt-3 grid h-full grid-cols-1 gap-5 xl:grid-cols-2 2xl:grid-cols-3">
             <div className="col-span-12 h-fit w-full xl:col-span-12 2xl:col-span-12">
               <CategoriesTable
-                tableData={Jobs}
-                tableHeader="Jobs Table"
-                tableFor="Jobs"
+                tableData={Payments}
+                tableHeader="Payments Table"
+                tableFor="Payments"
                 columnsData={columnsDataComplex}
                 VISIBLE_FIELDS={VISIBLE_FIELDS}
                 handleDelete={handleMachineDelete}
                 isLoading={isLoading}
                 setIsloading={setIsloading}
                 selectedProfession={selectedItem}
-                fetchJobs={fetchJobs}
+                fetchPayments={fetchPayments}
                 modalData={modalData}
                 setModalData={setModalData}
-                handleDetails={handleJobDetails}
-                firstField="title"
+                handleDetails={handlePaymentDetails}
+                firstField="payment_name"
               />
             </div>
           </div>
@@ -257,9 +221,12 @@ const Jobs = () => {
         size={"4xl"}
         className="w-10/12 md:w-full"
       >
-        <Modal.Header>Add New Job</Modal.Header>
+        <Modal.Header>Add New Payment</Modal.Header>
         <Modal.Body>
-          <JobModal fetchJobs={fetchJobs} setOpenModal={setOpenModal} />
+          <PaymentModal
+            fetchPayments={fetchPayments}
+            setOpenModal={setOpenModal}
+          />
         </Modal.Body>
       </Modal>
       <Modal
@@ -268,12 +235,12 @@ const Jobs = () => {
         onClose={() => setModalData({ type: "", id: "" })}
         size={modalData?.type === "Edit" ? "4xl" : "xl"}
       >
-        <Modal.Header>Edit Jobs</Modal.Header>
+        <Modal.Header>Edit Payments</Modal.Header>
         <Modal.Body>
-          <JobModal
+          <PaymentModal
             setOpenModal={setOpenModal}
-            fetchJobs={fetchJobs}
-            data={Jobs}
+            fetchPayments={fetchPayments}
+            data={Payments}
             selected={modalData?.id}
             setModalData={() => setModalData({ type: "", id: "" })}
           />
@@ -283,4 +250,4 @@ const Jobs = () => {
   );
 };
 
-export default Jobs;
+export default Payments;

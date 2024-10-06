@@ -14,6 +14,7 @@ import { RemoveEmployeeFromProject } from "services/projectAPIs";
 import { removeMachineFromProject } from "services/projectAPIs";
 import { removeEquipmentFromProject } from "services/projectAPIs";
 import { FetchAllBills } from "services/billsApis";
+import { FetchAllPayments } from "services/paymentsApis";
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -26,6 +27,7 @@ const ProjectDetails = () => {
   const [machines, setMachines] = useState([]);
   const [equipments, setEquipments] = useState([]);
   const [bills, setBills] = useState([]);
+  const [payments, setPayments] = useState([]);
   const [selctedValues, setSelectedValues] = useState({
     employees: [],
     machinery: [],
@@ -51,6 +53,9 @@ const ProjectDetails = () => {
       );
       const allBills = await FetchAllBills();
       setBills(allBills);
+
+      const allPayments = await FetchAllPayments();
+      setPayments(allPayments);
     } catch (e) {
       console.log(e);
     }
@@ -374,6 +379,7 @@ const ProjectDetails = () => {
         machines={machines}
         equipments={equipments}
         bills={bills}
+        payments={payments}
         tab={tab}
         setTab={setTab}
         handleItemRemove={handleItemRemove}

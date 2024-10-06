@@ -3,12 +3,7 @@ import Widget from "components/widget/Widget";
 import { Button, Modal } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { IoDocuments } from "react-icons/io5";
-import {
-  MdBarChart,
-  MdDateRange,
-  MdFormatListNumbered,
-  MdLocationOn,
-} from "react-icons/md";
+import { MdBarChart, MdDateRange } from "react-icons/md";
 import { columnsDataComplex, VISIBLE_FIELDS } from "./variables/columnsData";
 import Notify from "simple-notify";
 import { FetchAllBills, DeleteBill, FetchBill } from "services/billsApis";
@@ -18,7 +13,6 @@ import {
   FaMoneyBillAlt,
   FaUserTie,
 } from "react-icons/fa";
-import { GiSkills } from "react-icons/gi";
 import BillModal from "./components/BillModal";
 
 const Bills = () => {
@@ -128,80 +122,44 @@ const Bills = () => {
             <p className="ml-2">Back</p>
           </Button>
           <h2 className="mt-5 text-3xl font-bold text-gray-800">
-            {BillsDetails.title}
+            {BillsDetails.bill_name}
           </h2>
           <div className="rounded-lg bg-white p-4  shadow-md">
             <div className="grid grid-cols-1 gap-6 text-gray-700 md:grid-cols-2">
               <p className="flex items-center space-x-3">
-                <FaUserTie className="text-purple-500" />
-                <span>Bill Type: {BillsDetails.type}</span>
+                <FaMoneyBillAlt className="text-green-500" />
+                <span>Bill Id: {BillsDetails.bill_id}</span>
               </p>
               <p className="flex items-center space-x-3">
-                <MdLocationOn className="text-green-500" />
-                <span>Location: {BillsDetails.location}</span>
+                <FaUserTie className="text-purple-500" />
+                <span>Bill Type: {BillsDetails.bill_type}</span>
               </p>
-              <p className="space-x-3">
-                <div className="flex items-center">
-                  <FaBookOpen className="text-blue-500" />
-                  <span className="ml-2 font-bold">Qualifications: </span>
-                </div>
-                <ul className="list-disc">
-                  {BillsDetails.qualifications?.map((item, index) => (
-                    <li key={index} className="mx-7">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </p>
-              <p className="space-x-3">
-                <div className="flex items-center">
-                  <MdFormatListNumbered className="text-blue-500" />
-                  <span className="ml-2 font-bold">Responsibilities: </span>
-                </div>
-                <ul className="list-disc">
-                  {BillsDetails.responsibilities?.map((item, index) => (
-                    <li key={index} className="mx-7">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </p>
-              <p className="space-x-3">
-                <div className="flex items-center">
-                  <GiSkills className="text-blue-500" />
-                  <span className="ml-2 font-bold">Skills: </span>
-                </div>
-                <ul className="list-disc">
-                  {BillsDetails.skills?.map((item, index) => (
-                    <li key={index} className="mx-7">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-green-500" />
+                <span>Bill Amount: {BillsDetails.bill_amount}</span>
               </p>
               <p className="flex items-center space-x-3">
                 <FaMoneyBillAlt className="text-purple-500" />
-                <span>Salary: {BillsDetails.salary || "Not Mentioned"}</span>
+                <span>
+                  Bill Account: {BillsDetails.bill_account || "Not Mentioned"}
+                </span>
               </p>
               <p className="flex items-center space-x-3">
                 <MdDateRange className="text-yellow-500" />
                 <span>
-                  Added Date:
-                  {new Date(BillsDetails.createdAt).toLocaleDateString()}
+                  Bill Date:
+                  {new Date(BillsDetails.bill_date).toLocaleDateString()}
                 </span>
               </p>
-              {BillsDetails.updatedAt && (
-                <p className="flex items-center space-x-3">
-                  <MdDateRange className="text-yellow-500" />
-                  <span>
-                    Updated Date:{" "}
-                    {new Date(BillsDetails.updatedAt).toLocaleDateString()}
-                  </span>
-                </p>
-              )}
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-purple-500" />
+                <span>
+                  Bill Status: {BillsDetails.bill_status || "Not Mentioned"}
+                </span>
+              </p>
             </div>
             <p className="mt-4 text-lg text-gray-600">
-              Description: {BillsDetails.descripton}
+              Bill Project: {BillsDetails.bill_project}
             </p>
           </div>
         </div>
@@ -243,6 +201,7 @@ const Bills = () => {
                 modalData={modalData}
                 setModalData={setModalData}
                 handleDetails={handleBillDetails}
+                firstField="bill_name"
               />
             </div>
           </div>

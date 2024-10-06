@@ -18,10 +18,10 @@ export const CreateJob = async (payload) => {
   return res.data;
 };
 
-export const FetchJob = async (id, data) => {
+export const FetchJob = async (id) => {
   const res = await service.get(`/jobs/${id}`, {
     headers: {
-      Authorization: `Bearer ${data}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return res.data;
@@ -45,10 +45,10 @@ export const DeleteJob = async (id) => {
   return res.data;
 };
 
-export const FetchAllJobsApplies = async (data) => {
+export const FetchAllJobsApplies = async () => {
   const res = await service.get("/jobsApply", {
     headers: {
-      Authorization: `Bearer ${data}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return res.data;

@@ -1,7 +1,7 @@
 import service, { accessToken } from "./index";
 
-const FetchAllBills = async () => {
-  const res = await service.get("/bills", {
+const FetchAllPayments = async () => {
+  const res = await service.get("/payments", {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -9,8 +9,8 @@ const FetchAllBills = async () => {
   return res.data;
 };
 
-const CreateBill = async (payload) => {
-  const res = await service.post("/bills", payload, {
+const CreatePayment = async (payload) => {
+  const res = await service.post("/payments", payload, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
       "Content-Type": "multipart/form-data",
@@ -19,8 +19,8 @@ const CreateBill = async (payload) => {
   return res.data;
 };
 
-const FetchBill = async (id) => {
-  const res = await service.get(`/bills/${id}`, {
+const FetchPayment = async (id) => {
+  const res = await service.get(`/payments/${id}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -28,8 +28,8 @@ const FetchBill = async (id) => {
   return res.data;
 };
 
-const UpdateBill = async (id, payload) => {
-  const res = await service.put(`/bills/${id}`, payload, {
+const UpdatePayment = async (id, payload) => {
+  const res = await service.put(`/payments/${id}`, payload, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -37,8 +37,8 @@ const UpdateBill = async (id, payload) => {
   return res.data;
 };
 
-const DeleteBill = async (id) => {
-  const res = await service.delete(`/bills/${id}`, {
+const DeletePayment = async (id) => {
+  const res = await service.delete(`/payments/${id}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -46,4 +46,10 @@ const DeleteBill = async (id) => {
   return res.data;
 };
 
-export { FetchAllBills, CreateBill, FetchBill, UpdateBill, DeleteBill };
+export {
+  FetchAllPayments,
+  CreatePayment,
+  FetchPayment,
+  UpdatePayment,
+  DeletePayment,
+};

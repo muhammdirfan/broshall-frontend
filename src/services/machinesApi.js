@@ -19,10 +19,10 @@ export const CreateMachine = async (payload) => {
   return res.data;
 };
 
-export const FetchMachine = async (id, data) => {
+export const FetchMachine = async (id) => {
   const res = await service.get(`/machines/${id}`, {
     headers: {
-      Authorization: `Bearer ${data}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
   return res.data;

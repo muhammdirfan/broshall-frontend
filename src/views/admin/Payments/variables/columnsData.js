@@ -2,19 +2,9 @@ import ProjectName from "components/ProjectName";
 import { formatDate } from "utils";
 
 export const columnsDataComplex = [
-  // {
-  //   field: "bill_name",
-  //   headerName: "Bill Name",
-  //   width: 200,
-  //   renderCell: (params) => (
-  //     <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
-  //       {params.value}
-  //     </div>
-  //   ),
-  // },
   {
-    field: "bill_id",
-    headerName: "Bill Id",
+    field: "payment_id",
+    headerName: "Payment Id",
     width: 180,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
@@ -23,8 +13,8 @@ export const columnsDataComplex = [
     ),
   },
   {
-    field: "bill_type",
-    headerName: "Bill Type",
+    field: "payment_type",
+    headerName: "Payment Type",
     width: 130,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
@@ -33,8 +23,8 @@ export const columnsDataComplex = [
     ),
   },
   {
-    field: "bill_amount",
-    headerName: "Bill Amount",
+    field: "payment_amount",
+    headerName: "Payment Amount",
     width: 150,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
@@ -43,8 +33,8 @@ export const columnsDataComplex = [
     ),
   },
   {
-    field: "bill_account",
-    headerName: "Bill Account",
+    field: "payment_account",
+    headerName: "Payment Account",
     width: 160,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
@@ -53,14 +43,14 @@ export const columnsDataComplex = [
     ),
   },
   {
-    field: "bill_date",
-    headerName: "Bill Date",
+    field: "payment_date",
+    headerName: "Payment Date",
     width: 130,
     renderCell: (params) => formatDate(params.value),
   },
   {
-    field: "bill_project",
-    headerName: "Bill Project",
+    field: "payment_project",
+    headerName: "Payment Project",
     width: 250,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
@@ -69,8 +59,8 @@ export const columnsDataComplex = [
     ),
   },
   {
-    field: "bill_status",
-    headerName: "Bill Status",
+    field: "payment_status",
+    headerName: "Payment Status",
     width: 100,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
@@ -81,15 +71,15 @@ export const columnsDataComplex = [
 ];
 
 export const VISIBLE_FIELDS = [
-  "bill_name",
-  "bill_id",
-  "bill_type",
+  "payment_name",
+  "payment_id",
+  "payment_type",
   "contract_role",
-  "bill_amount",
-  "bill_account",
+  "payment_amount",
+  "payment_account",
   "joining_date",
   "job_status",
-  "bill_date",
-  "bill_project",
-  "bill_status",
+  "payment_date",
+  "payment_project",
+  "payment_status",
 ];

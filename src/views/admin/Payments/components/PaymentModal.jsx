@@ -1,28 +1,28 @@
 import InputField from "components/fields/InputField";
 import React, { useEffect, useState } from "react";
 import Notify from "simple-notify";
-import { CreateBill, UpdateBill } from "services/billsApis";
+import { CreatePayment, UpdatePayment } from "services/paymentsApis";
 import CustomDatePicker from "components/CustomDatePicker";
 import MultiFileInput from "components/MultiFileInput";
 import Select from "react-select";
 import { FetchAllProjects } from "services/projectAPIs";
 
-const AddBillModal = ({
+const AddPaymentModal = ({
   setOpenModal,
-  fetchBills,
+  fetchPayments,
   data,
   selected,
   setModalData,
 }) => {
-  const [BillData, setBillData] = React.useState({
-    bill_name: "",
-    bill_id: "",
-    bill_type: "",
-    bill_amount: "",
-    bill_account: "",
-    bill_date: "",
-    bill_project: "",
-    bill_status: "",
+  const [PaymentData, setPaymentData] = React.useState({
+    payment_name: "",
+    payment_id: "",
+    payment_type: "",
+    payment_amount: "",
+    payment_account: "",
+    payment_date: "",
+    payment_project: "",
+    payment_status: "",
   });
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -30,28 +30,27 @@ const AddBillModal = ({
 
   useEffect(() => {
     if (selected) {
-      const selectedbill = data?.filter((item) => item._id === selected);
+      const selectedPayment = data?.filter((item) => item._id === selected);
 
-      console.log("selectedbill", selectedbill);
-      selectedbill?.map((item) => {
-        setBillData({
-          bill_name: item.bill_name,
-          bill_id: item.bill_id,
-          bill_type: item.bill_type,
-          bill_amount: item.bill_amount,
-          bill_account: item.bill_account,
-          bill_date: item.bill_date,
-          bill_project: projects.map(
+      selectedPayment?.map((item) => {
+        setPaymentData({
+          payment_name: item.payment_name,
+          payment_id: item.payment_id,
+          payment_type: item.payment_type,
+          payment_amount: item.payment_amount,
+          payment_account: item.payment_account,
+          payment_date: item.payment_date,
+          payment_project: projects.map(
             (project) =>
-              item.bill_project === project._id && {
+              item.payment_project === project._id && {
                 value: project._id,
                 label: project.name,
               }
           ),
-          bill_status: [
+          payment_status: [
             {
-              value: item.bill_status,
-              label: item.bill_status,
+              value: item.payment_status,
+              label: item.payment_status,
             },
           ],
         });
@@ -76,9 +75,9 @@ const AddBillModal = ({
     const formData = new FormData();
 
     const data = {
-      ...BillData,
-      bill_project: BillData.bill_project?.value,
-      bill_status: BillData.bill_status?.value,
+      ...PaymentData,
+      payment_project: PaymentData.payment_project?.value,
+      payment_status: PaymentData.payment_status?.value,
     };
 
     for (const key in data) {
@@ -91,12 +90,12 @@ const AddBillModal = ({
 
     try {
       if (
-        !BillData.bill_name ||
-        !BillData.bill_id ||
-        !BillData.bill_type ||
-        !BillData.bill_amount ||
-        !BillData.bill_account ||
-        !BillData.bill_date
+        !PaymentData.payment_name ||
+        !PaymentData.payment_id ||
+        !PaymentData.payment_type ||
+        !PaymentData.payment_amount ||
+        !PaymentData.payment_account ||
+        !PaymentData.payment_date
       ) {
         new Notify({
           status: "error",
@@ -117,14 +116,14 @@ const AddBillModal = ({
         });
       } else {
         setIsLoading(true);
-        const bill = await CreateBill(formData);
-        if (bill) {
+        const payment = await CreatePayment(formData);
+        if (payment) {
           setOpenModal(false);
           setIsLoading(false);
           new Notify({
             status: "success",
             title: "Success",
-            text: "bill added Successfully!",
+            text: "Payment added Successfully!",
             effect: "fade",
             speed: 300,
             customClass: null,
@@ -138,17 +137,17 @@ const AddBillModal = ({
             type: 1,
             position: "right bottom",
           });
-          setBillData({
-            bill_name: "",
-            bill_id: "",
-            bill_type: "",
-            bill_amount: "",
-            bill_account: "",
-            bill_date: "",
-            bill_project: "",
-            bill_status: "",
+          setPaymentData({
+            payment_name: "",
+            payment_id: "",
+            payment_type: "",
+            payment_amount: "",
+            payment_account: "",
+            payment_date: "",
+            payment_project: "",
+            payment_status: "",
           });
-          fetchBills();
+          fetchPayments();
           setImages([]);
         }
       }
@@ -178,18 +177,18 @@ const AddBillModal = ({
   const handleUpdate = async (id) => {
     try {
       const data = {
-        ...BillData,
-        bill_project: BillData.bill_project?.value,
-        bill_status: BillData.bill_status?.value,
+        ...PaymentData,
+        payment_project: PaymentData.payment_project?.value,
+        payment_status: PaymentData.payment_status?.value,
       };
 
       if (
-        !data.bill_name ||
-        !data.bill_id ||
-        !data.bill_type ||
-        !data.bill_amount ||
-        !data.bill_account ||
-        !data.bill_date
+        !data.payment_name ||
+        !data.payment_id ||
+        !data.payment_type ||
+        !data.payment_amount ||
+        !data.payment_account ||
+        !data.payment_date
       ) {
         new Notify({
           status: "error",
@@ -210,15 +209,15 @@ const AddBillModal = ({
         });
       } else {
         setIsLoading(true);
-        const bill = await UpdateBill(id, data);
-        if (bill) {
+        const payment = await UpdatePayment(id, data);
+        if (payment) {
           setOpenModal(false);
           setIsLoading(false);
           setModalData({ type: [], id: "" });
           new Notify({
             status: "success",
             title: "Success",
-            text: "Bill Updated Successfully!",
+            text: "Payment Updated Successfully!",
             effect: "fade",
             speed: 300,
             customClass: null,
@@ -232,17 +231,17 @@ const AddBillModal = ({
             type: 1,
             position: "right bottom",
           });
-          setBillData({
-            bill_name: "",
-            bill_id: "",
-            bill_type: "",
-            bill_amount: "",
-            bill_account: "",
-            bill_date: "",
-            bill_project: "",
-            bill_status: "",
+          setPaymentData({
+            payment_name: "",
+            payment_id: "",
+            payment_type: "",
+            payment_amount: "",
+            payment_account: "",
+            payment_date: "",
+            payment_project: "",
+            payment_status: "",
           });
-          fetchBills();
+          fetchPayments();
         }
       }
     } catch (e) {
@@ -275,16 +274,16 @@ const AddBillModal = ({
   }));
 
   const handleProjectChange = (selected) => {
-    setBillData({
-      ...BillData,
-      bill_project: selected,
+    setPaymentData({
+      ...PaymentData,
+      payment_project: selected,
     });
   };
 
   const handleStatusChange = (selected) => {
-    setBillData({
-      ...BillData,
-      bill_status: selected,
+    setPaymentData({
+      ...PaymentData,
+      payment_status: selected,
     });
   };
 
@@ -295,13 +294,13 @@ const AddBillModal = ({
           <InputField
             variant="auth"
             extra="mb-3"
-            label="bill Bill Name"
-            placeholder="Bill3467"
+            label="Payment Name"
+            placeholder="Payment3467"
             id="name"
             type="text"
-            value={BillData.bill_name}
+            value={PaymentData.payment_name}
             onChange={(e) =>
-              setBillData({ ...BillData, bill_name: e.target.value })
+              setPaymentData({ ...PaymentData, payment_name: e.target.value })
             }
           />
         </div>
@@ -309,13 +308,13 @@ const AddBillModal = ({
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Bill Id"
+            label="Payment Id"
             placeholder="2365723465734"
             id="name"
             type="text"
-            value={BillData.bill_id}
+            value={PaymentData.payment_id}
             onChange={(e) =>
-              setBillData({ ...BillData, bill_id: e.target.value })
+              setPaymentData({ ...PaymentData, payment_id: e.target.value })
             }
           />
         </div>
@@ -323,13 +322,13 @@ const AddBillModal = ({
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Bill Type"
-            placeholder="First Bill"
+            label="Payment Type"
+            placeholder="First Payment"
             id="name"
             type="text"
-            value={BillData.bill_type}
+            value={PaymentData.payment_type}
             onChange={(e) =>
-              setBillData({ ...BillData, bill_type: e.target.value })
+              setPaymentData({ ...PaymentData, payment_type: e.target.value })
             }
           />
         </div>
@@ -337,13 +336,13 @@ const AddBillModal = ({
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Bill Amount"
+            label="Payment Amount"
             placeholder="Rs. 23,00,000"
             id="name"
             type="text"
-            value={BillData.bill_amount}
+            value={PaymentData.payment_amount}
             onChange={(e) =>
-              setBillData({ ...BillData, bill_amount: e.target.value })
+              setPaymentData({ ...PaymentData, payment_amount: e.target.value })
             }
           />
         </div>
@@ -351,29 +350,32 @@ const AddBillModal = ({
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Bill Account"
+            label="Payment Account"
             placeholder="NBP3462374523"
             id="name"
             type="text"
-            value={BillData.bill_account}
+            value={PaymentData.payment_account}
             onChange={(e) =>
-              setBillData({ ...BillData, bill_account: e.target.value })
+              setPaymentData({
+                ...PaymentData,
+                payment_account: e.target.value,
+              })
             }
           />
         </div>
         <div className="col-span-12 md:col-span-6">
-          <p>Bill Project</p>
+          <p>Payment Project</p>
           <Select
             name="colors"
             options={projectsOptions}
             className="basic-multi-select w-full"
             classNamePrefix="select"
-            value={BillData.bill_project}
+            value={PaymentData.payment_project}
             onChange={handleProjectChange}
           />
         </div>
         <div className="col-span-12 md:col-span-6">
-          <p>Bill Status</p>
+          <p>Payment Status</p>
           <Select
             name="colors"
             options={[
@@ -392,16 +394,16 @@ const AddBillModal = ({
             ]}
             className="basic-multi-select w-full"
             classNamePrefix="select"
-            value={BillData.bill_status}
+            value={PaymentData.payment_status}
             onChange={handleStatusChange}
           />
         </div>
         <div className="col-span-12 md:col-span-6">
           <CustomDatePicker
-            label={"Bill Date"}
-            value={BillData.bill_date}
+            label={"Payment Date"}
+            value={PaymentData.payment_date}
             handleChange={(date) =>
-              setBillData({ ...BillData, bill_date: date })
+              setPaymentData({ ...PaymentData, payment_date: date })
             }
           />
         </div>
@@ -432,4 +434,4 @@ const AddBillModal = ({
   );
 };
 
-export default AddBillModal;
+export default AddPaymentModal;

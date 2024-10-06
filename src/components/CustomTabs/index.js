@@ -5,6 +5,7 @@ import {
   employeesColumns,
   equipementColumns,
   machineryColumns,
+  paymentColumns,
 } from "./variables/columnsData";
 import ProjectDetails from "components/ProjectDetails";
 
@@ -15,6 +16,7 @@ const CustomTabs = ({
   machines,
   equipments,
   bills,
+  payments,
   tab,
   setTab,
   handleItemRemove,
@@ -23,6 +25,7 @@ const CustomTabs = ({
   const [associatedMechinery, setAssociatedMechinery] = useState([]);
   const [associatedEquipments, setAssociatedEquipments] = useState([]);
   const [associatedBill, setAssociatedBill] = useState([]);
+  const [associatedPayment, setAssociatedPayment] = useState([]);
 
   useEffect(() => {
     const filteredEmployees = employees.filter((emp) =>
@@ -43,7 +46,12 @@ const CustomTabs = ({
       projectDetails.bills.includes(bill._id)
     );
     setAssociatedBill(filteredBills);
-  }, [projectDetails, employees, machines, equipments, bills]);
+
+    const filteredPayments = payments?.filter((bill) =>
+      projectDetails.payments.includes(bill._id)
+    );
+    setAssociatedPayment(filteredPayments);
+  }, [projectDetails, employees, machines, equipments, bills, payments]);
 
   return (
     <div className="my-5 space-y-6 overflow-hidden rounded-xl bg-white shadow-xl">
@@ -98,6 +106,16 @@ const CustomTabs = ({
         >
           Bills
         </button>
+        <button
+          onClick={() => setTab("payments")}
+          className={`${
+            tab === "payments"
+              ? "border-b-2 border-blue-500 text-blue-500"
+              : "text-dark"
+          } py-2`}
+        >
+          Payments
+        </button>
       </div>
       <div className="py-3">
         <div className={`${tab === "details" ? "block" : "hidden"}`}>
@@ -142,6 +160,14 @@ const CustomTabs = ({
             tableData={associatedBill}
             tableHeader="Project Bills"
             columnsData={billColumns}
+            // handleItemRemove={handleItemRemove}
+          />
+        </div>
+        <div className={`${tab === "payments" ? "block" : "hidden"}`}>
+          <SimpleTable
+            tableData={associatedPayment}
+            tableHeader="Project Payments"
+            columnsData={paymentColumns}
             // handleItemRemove={handleItemRemove}
           />
         </div>
