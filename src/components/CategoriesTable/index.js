@@ -129,6 +129,7 @@ export default function CategoriesTable(props) {
             paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
             rowHeight={90}
+            checkboxSelection
           />
         ) : (
           <div className="mt-5 flex items-center justify-center">
