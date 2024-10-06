@@ -20,6 +20,9 @@ import { FaCar, FaUsers } from "react-icons/fa";
 import { FaGears } from "react-icons/fa6";
 import { FetchAllJobs } from "services/jobsAPis";
 import { IoWalkSharp } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { decrement } from "features/counter/counterSlice";
+import { increment } from "features/counter/counterSlice";
 
 const Dashboard = () => {
   const [projects, setProjects] = useState([]);
@@ -27,6 +30,9 @@ const Dashboard = () => {
   const [machines, setMachines] = useState([]);
   const [equipments, setEquipments] = useState([]);
   const [Jobs, setJobs] = useState([]);
+
+  const count = useSelector((state) => state.counter.value);
+  const dispatch = useDispatch();
 
   const fetchAllDetails = async () => {
     try {
@@ -77,6 +83,12 @@ const Dashboard = () => {
           title={"Total Jobs"}
           subtitle={Jobs?.length}
         />
+      </div>
+
+      <div>
+        <button onClick={() => dispatch(decrement())}>-</button>
+        <span>{count}</span>
+        <button onClick={() => dispatch(increment())}>+</button>
       </div>
 
       {/* Charts */}

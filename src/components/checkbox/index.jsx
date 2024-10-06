@@ -1,7 +1,9 @@
 const Checkbox = (props) => {
-  const { extra, color, ...rest } = props;
+  const { extra, color, checked, onChange, ...rest } = props;
   return (
     <input
+      value={checked}
+      onChange={onChange}
       type="checkbox"
       className={`defaultCheckbox relative flex h-[20px] min-h-[20px] w-[20px] min-w-[20px] appearance-none items-center 
       justify-center rounded-md border border-gray-300 text-white/0 outline-none transition duration-[0.2s]

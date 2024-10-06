@@ -3,11 +3,13 @@ import React from "react";
 import Notify from "simple-notify";
 import "simple-notify/dist/simple-notify.min.css";
 import { useNavigate, useParams } from "react-router-dom";
+import branchImg from "assets/img/favicon.png";
 import { resetPassword } from "services/AuthApis";
 
 export default function ResetPassword() {
   const [isLoading, seIsloading] = React.useState(false);
   const [NewPassword, setNewPassword] = React.useState("");
+  const [NewCPassword, setNewCPassword] = React.useState("");
 
   const navigate = useNavigate();
   const { token } = useParams();
@@ -17,7 +19,7 @@ export default function ResetPassword() {
       new Notify({
         status: "error",
         title: "Error",
-        text: "Please fill all the fields",
+        text: "Please add new password",
         effect: "fade",
         speed: 300,
         customClass: null,
@@ -34,7 +36,7 @@ export default function ResetPassword() {
     } else {
       seIsloading(true);
       try {
-        const data = { password: NewPassword };
+        const data = { password: NewPassword, cpassword: NewCPassword };
         const resetLink = await resetPassword(data, token);
         if (resetLink) {
           new Notify({
@@ -61,10 +63,10 @@ export default function ResetPassword() {
         console.error("error", e?.response.data);
         new Notify({
           status: "error",
-          title: e?.response?.data.title,
-          text: e?.response?.data?.message,
+          title: e?.response?.data?.message,
+          text: e?.response?.data?.error,
           effect: "fade",
-          speed: 300,
+          speed: 400,
           customClass: null,
           customIcon: null,
           showIcon: true,
@@ -82,12 +84,18 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="mt-16 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
+    <div className="mt-5 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
       <div className="mx-auto mt-[10vh] w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
-        <h4 className="mb-2.5 text-4xl font-bold text-navy-700 dark:text-white">
+        <img
+          src={branchImg}
+          alt="brand-img"
+          className="my-5 mx-auto"
+          width={200}
+        />
+        <h4 className="mb-2.5 text-center text-4xl font-bold text-navy-700 dark:text-white">
           Reset Password
         </h4>
-        <p className="mb-9 ml-1 text-base text-gray-600">
+        <p className="mb-9 ml-1 text-center text-base text-gray-600">
           Enter your New Password!
         </p>
         {/* New Password */}
@@ -100,6 +108,17 @@ export default function ResetPassword() {
           type="password"
           value={NewPassword}
           onChange={(e) => setNewPassword(e.target.value)}
+        />
+        {/* New Password */}
+        <InputField
+          variant="auth"
+          extra="mb-3"
+          label="Confirm Password*"
+          placeholder="Min. 8 characters"
+          id="password"
+          type="password"
+          value={NewCPassword}
+          onChange={(e) => setNewCPassword(e.target.value)}
         />
         <button
           onClick={!isLoading ? handleResetPassword : null}

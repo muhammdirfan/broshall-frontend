@@ -6,8 +6,14 @@ import { Modal } from "flowbite-react";
 import { IoMdEye } from "react-icons/io";
 
 export default function CategoriesTable(props) {
-  const { tableData, tableHeader, columnsData, VISIBLE_FIELDS, handleDetails } =
-    props;
+  const {
+    tableData,
+    tableHeader,
+    columnsData,
+    VISIBLE_FIELDS,
+    handleDetails,
+    firstField,
+  } = props;
   const [openModal, setOpenModal] = React.useState(false);
   const [paginationModel, setPaginationModel] = React.useState({
     pageSize: 25,
@@ -29,12 +35,28 @@ export default function CategoriesTable(props) {
     />
   );
 
-  const renderViewButton = (params) => (
-    <IoMdEye
-      className="mx-1 h-6 w-6 rounded p-1 hover:cursor-pointer hover:bg-gray-300"
-      onClick={() => handleDetails(params.row._id)}
-    />
-  );
+  // const renderViewButton = (params) => (
+  //   <IoMdEye
+  //     className="mx-1 h-6 w-6 rounded p-1 hover:cursor-pointer hover:bg-gray-300"
+  //     onClick={() => handleDetails(params.row._id)}
+  //   />
+  // );
+
+  const renderViewButton = (params, firstField) =>
+    firstField ? (
+      <a href={`job-details/${params.row._id}`}>
+        <div className="overflow-hidden text-ellipsis whitespace-normal break-words text-[#3b82f6] underline">
+          {params.value}
+        </div>
+      </a>
+    ) : (
+      <div
+        className="cursor-pointer overflow-hidden text-ellipsis whitespace-normal break-words text-[#3b82f6] underline"
+        onClick={() => handleDetails(params.row._id)}
+      >
+        {params.value}
+      </div>
+    );
 
   const handleModal = (type, id) => {
     setOpenModal(!openModal);
@@ -50,6 +72,16 @@ export default function CategoriesTable(props) {
 
   const columns = React.useMemo(() => {
     return [
+      {
+        field: `${firstField ? "title" : "name"}`,
+        headerName: `${firstField ? "Job Title" : "Name"}`,
+        width: 200,
+        renderCell: (params) => (
+          <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+            {renderViewButton(params, firstField)}
+          </div>
+        ),
+      },
       ...columnsData.filter((column) => VISIBLE_FIELDS.includes(column.field)),
       {
         field: "actions",
@@ -57,7 +89,6 @@ export default function CategoriesTable(props) {
         width: 100,
         renderCell: (params) => (
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            {renderViewButton(params)}
             {renderEditButton(params)}
             {renderDeleteButton(params)}
           </div>

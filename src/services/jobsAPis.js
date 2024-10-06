@@ -44,3 +44,12 @@ export const DeleteJob = async (token, id) => {
   });
   return res.data;
 };
+
+export const FetchAllJobsApplies = async (data) => {
+  const res = await service.get("/jobsApply", {
+    headers: {
+      Authorization: `Bearer ${data}`,
+    },
+  });
+  return res.data;
+};

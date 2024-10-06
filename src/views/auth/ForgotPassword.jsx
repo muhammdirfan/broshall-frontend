@@ -2,6 +2,7 @@ import InputField from "components/fields/InputField";
 import React from "react";
 import Notify from "simple-notify";
 import "simple-notify/dist/simple-notify.min.css";
+import branchImg from "assets/img/favicon.png";
 import { forgotPassword } from "services/AuthApis";
 import { useNavigate } from "react-router-dom";
 
@@ -85,13 +86,19 @@ export default function ForgotPasswords() {
   };
 
   return (
-    <div className="mt-16 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
+    <div className="mt-5 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
       {isEmailSent ? (
         <div className="mx-auto mt-[10vh] w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
-          <h4 className="mb-2.5 text-4xl font-bold text-navy-700 dark:text-white">
+          <img
+            src={branchImg}
+            alt="brand-img"
+            className="my-5 mx-auto"
+            width={220}
+          />
+          <h4 className="mb-2.5 text-center text-4xl font-bold text-navy-700 dark:text-white">
             Forgot Password
           </h4>
-          <p className="mb-9 ml-1 text-base text-gray-600">
+          <p className="mb-9 ml-1 text-center text-base text-gray-600">
             We sent you a reset password link to tour email, please check your
             email
           </p>
@@ -103,11 +110,17 @@ export default function ForgotPasswords() {
           </button>
         </div>
       ) : (
-        <div className="mx-auto mt-[10vh] w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
-          <h4 className="mb-2.5 text-4xl font-bold text-navy-700 dark:text-white">
+        <div className="mx-auto mt-5 w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
+          <img
+            src={branchImg}
+            alt="brand-img"
+            className="my-5 mx-auto"
+            width={200}
+          />
+          <h4 className="mb-2.5 text-center text-4xl font-bold text-navy-700 dark:text-white">
             Forgot Password
           </h4>
-          <p className="mb-9 ml-1 text-base text-gray-600">
+          <p className="mb-9 ml-1 text-center text-base text-gray-600">
             Enter your email, will send reset password link!
           </p>
           {/* Email */}

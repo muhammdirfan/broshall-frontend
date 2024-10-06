@@ -113,7 +113,6 @@ const Employees = () => {
 
   return (
     <>
-      {console.log("EmployeeDetails", EmployeeDetails)}
       {EmployeeDetails?._id ? (
         <div className="space-y-6">
           <Button
