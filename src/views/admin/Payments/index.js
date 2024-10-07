@@ -1,62 +1,66 @@
 import CategoriesTable from "components/CategoriesTable";
 import Widget from "components/widget/Widget";
-import { Modal, Button, Carousel } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { IoDocuments } from "react-icons/io5";
-import { MdBarChart } from "react-icons/md";
-import AddEquipmentModal from "./components/AddEquipmentModal";
+import { MdBarChart, MdDateRange } from "react-icons/md";
 import { columnsDataComplex, VISIBLE_FIELDS } from "./variables/columnsData";
-import EditModal from "./components/editModal";
 import Notify from "simple-notify";
-import { FetchAllEquipments } from "services/equipmentsApis";
-import { DeleteEquipment } from "services/equipmentsApis";
-import { FetchEquipment } from "services/equipmentsApis";
-import { MdDateRange, MdFormatListNumbered } from "react-icons/md";
-import { FaArrowLeft, FaUserTie } from "react-icons/fa";
-import { GiMoneyStack, GiTyre } from "react-icons/gi";
+import {
+  FetchAllPayments,
+  DeletePayment,
+  FetchPayment,
+} from "services/paymentsApis";
+import {
+  FaArrowLeft,
+  FaBookOpen,
+  FaMoneyBillAlt,
+  FaUserTie,
+} from "react-icons/fa";
+import PaymentModal from "./components/PaymentModal";
 
-const Equipments = () => {
+const Payments = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [Equipments, setEquipments] = useState();
+  const [Payments, setPayments] = useState();
   const [isLoading, setIsloading] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
-  const [freeEquipments, setFreeEquipments] = useState([]);
-  const [EquipmentsDetails, setEquipmentsDetails] = useState({});
+  const [freePayments, setFreePayments] = useState([]);
+  const [PaymentsDetails, setPaymentsDetails] = useState({});
 
   const [modalData, setModalData] = useState({
     type: "",
     id: "",
   });
 
-  const fetchEquipments = async () => {
+  const fetchPayments = async () => {
     try {
-      const allEquipments = await FetchAllEquipments();
-      setEquipments(allEquipments.reverse());
+      const allPayments = await FetchAllPayments();
+      setPayments(allPayments.reverse());
     } catch (e) {
       console.log(e);
     }
   };
 
   useEffect(() => {
-    fetchEquipments();
+    fetchPayments();
   }, []);
 
   useEffect(() => {
-    const filterEquipments = Equipments?.filter(
-      (item) => !item?.projects?.length
+    const filtermachines = Payments?.filter(
+      (item) => item?.payment_status === "Open"
     );
-    setFreeEquipments(filterEquipments);
-  }, [Equipments]);
+    setFreePayments(filtermachines);
+  }, [Payments]);
 
-  const handleEquipmentDelete = async (id) => {
+  const handleMachineDelete = async (id) => {
     try {
       setIsloading(true);
-      const deleted = await DeleteEquipment(id);
+      const deleted = await DeletePayment(id);
       if (deleted) {
         new Notify({
           status: "success",
           title: "Success",
-          text: "Equipments deleted successfully!",
+          text: "Payment deleted successfully!",
           effect: "fade",
           speed: 300,
           customClass: null,
@@ -72,7 +76,7 @@ const Equipments = () => {
         });
         setIsloading(false);
         setSelectedItem({ selectedOption: null });
-        fetchEquipments();
+        fetchPayments();
       }
     } catch (error) {
       console.log(error);
@@ -97,94 +101,73 @@ const Equipments = () => {
     }
   };
 
-  const handleEquipmentsDetails = (data) => {
-    FetchEquipmentDetails(data);
+  const handlePaymentDetails = (data) => {
+    FetchPaymentDetails(data);
   };
 
-  const FetchEquipmentDetails = async (id) => {
+  const FetchPaymentDetails = async (id) => {
     try {
-      const equipmentDetails = await FetchEquipment(id);
-      setEquipmentsDetails(equipmentDetails);
+      const PaymentDetails = await FetchPayment(id);
+      setPaymentsDetails(PaymentDetails);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const backendUrl = "http://localhost:5000"; // Adjust this to match your backend URL
-
   return (
     <>
-      {EquipmentsDetails?._id ? (
+      {console.log("PaymentsDetails", PaymentsDetails)}
+      {PaymentsDetails?._id ? (
         <div className="space-y-6">
           <Button
             className="flex items-center"
-            onClick={() => setEquipmentsDetails({})}
+            onClick={() => setPaymentsDetails({})}
           >
             <FaArrowLeft />
             <p className="ml-2">Back</p>
           </Button>
           <h2 className="mt-5 text-3xl font-bold text-gray-800">
-            {EquipmentsDetails.name}
+            {PaymentsDetails.payment_name}
           </h2>
-          <div className="rounded-md border p-4 shadow-md">
+          <div className="rounded-lg bg-white p-4  shadow-md">
             <div className="grid grid-cols-1 gap-6 text-gray-700 md:grid-cols-2">
               <p className="flex items-center space-x-3">
-                <GiTyre className="text-purple-500" />
-                <span>Equipment Type: {EquipmentsDetails.type}</span>
-              </p>
-              <p className="flex items-center space-x-3">
-                <MdFormatListNumbered className="text-green-500" />
-                <span>
-                  Number of Equipment: {EquipmentsDetails.no_of_equipments}
-                </span>
-              </p>
-              <p className="flex items-center space-x-3">
-                <GiMoneyStack className="text-blue-500" />
-                <span>
-                  Equipment Value: {EquipmentsDetails.equipment_value}
-                </span>
+                <FaMoneyBillAlt className="text-green-500" />
+                <span>Payment Id: {PaymentsDetails.payment_id}</span>
               </p>
               <p className="flex items-center space-x-3">
                 <FaUserTie className="text-purple-500" />
-                <span>Owner: {EquipmentsDetails.ownerShip}</span>
+                <span>Payment Type: {PaymentsDetails.payment_type}</span>
+              </p>
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-green-500" />
+                <span>Payment Amount: {PaymentsDetails.payment_amount}</span>
+              </p>
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-purple-500" />
+                <span>
+                  Payment Account:{" "}
+                  {PaymentsDetails.payment_account || "Not Mentioned"}
+                </span>
               </p>
               <p className="flex items-center space-x-3">
                 <MdDateRange className="text-yellow-500" />
                 <span>
-                  Added Date:
-                  {new Date(EquipmentsDetails.createdAt).toLocaleDateString()}
+                  Payment Date:
+                  {new Date(PaymentsDetails.payment_date).toLocaleDateString()}
                 </span>
               </p>
-              {EquipmentsDetails.updatedAt && (
-                <p className="flex items-center space-x-3">
-                  <MdDateRange className="text-yellow-500" />
-                  <span>
-                    Updated Date:{" "}
-                    {new Date(EquipmentsDetails.updatedAt).toLocaleDateString()}
-                  </span>
-                </p>
-              )}
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-purple-500" />
+                <span>
+                  Payment Status:{" "}
+                  {PaymentsDetails.payment_status || "Not Mentioned"}
+                </span>
+              </p>
             </div>
             <p className="mt-4 text-lg text-gray-600">
-              Description: {EquipmentsDetails.descripton}
+              Payment Project: {PaymentsDetails.payment_project}
             </p>
-          </div>
-          <div className="flex justify-center">
-            <Carousel
-              className="rounded-0 my-0 mx-auto h-[35rem] w-[50rem]"
-              style={{ borderRadius: "0px" }}
-              slide={true}
-            >
-              {EquipmentsDetails.images?.map((image, index) => (
-                <div className="rounded-0 relative h-full w-full">
-                  <img
-                    src={`${backendUrl}${image}`}
-                    className="h-full w-full"
-                    alt={`Project Image ${index + 1}`}
-                  />
-                </div>
-              ))}
-            </Carousel>
           </div>
         </div>
       ) : (
@@ -192,39 +175,40 @@ const Equipments = () => {
           <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             <Widget
               icon={<MdBarChart className="h-7 w-7" />}
-              title={"Total Equipments"}
-              subtitle={Equipments?.length}
+              title={"Total Payments"}
+              subtitle={Payments?.length}
             />
             <Widget
               icon={<IoDocuments className="h-6 w-6" />}
-              title={"Available Equipments"}
-              subtitle={freeEquipments?.length}
+              title={"Total Payments"}
+              subtitle={freePayments?.length}
             />
             <div className="rounded-[20px] bg-white px-3 py-2">
               <button
                 onClick={() => setOpenModal(true)}
                 className="linear mt-5 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
               >
-                Add Equipments
+                Add Payments
               </button>
             </div>
           </div>
           <div className="mt-3 grid h-full grid-cols-1 gap-5 xl:grid-cols-2 2xl:grid-cols-3">
             <div className="col-span-12 h-fit w-full xl:col-span-12 2xl:col-span-12">
               <CategoriesTable
-                tableData={Equipments}
-                tableHeader="Equipments Table"
-                tableFor="Equipments"
+                tableData={Payments}
+                tableHeader="Payments Table"
+                tableFor="Payments"
                 columnsData={columnsDataComplex}
                 VISIBLE_FIELDS={VISIBLE_FIELDS}
-                handleDelete={handleEquipmentDelete}
+                handleDelete={handleMachineDelete}
                 isLoading={isLoading}
                 setIsloading={setIsloading}
                 selectedProfession={selectedItem}
-                fetchEquipments={fetchEquipments}
+                fetchPayments={fetchPayments}
                 modalData={modalData}
                 setModalData={setModalData}
-                handleDetails={handleEquipmentsDetails}
+                handleDetails={handlePaymentDetails}
+                firstField="payment_name"
               />
             </div>
           </div>
@@ -237,10 +221,10 @@ const Equipments = () => {
         size={"4xl"}
         className="w-10/12 md:w-full"
       >
-        <Modal.Header>Add New Equipment</Modal.Header>
+        <Modal.Header>Add New Payment</Modal.Header>
         <Modal.Body>
-          <AddEquipmentModal
-            fetchEquipements={fetchEquipments}
+          <PaymentModal
+            fetchPayments={fetchPayments}
             setOpenModal={setOpenModal}
           />
         </Modal.Body>
@@ -251,12 +235,12 @@ const Equipments = () => {
         onClose={() => setModalData({ type: "", id: "" })}
         size={modalData?.type === "Edit" ? "4xl" : "xl"}
       >
-        <Modal.Header>{`Edit Equipments`}</Modal.Header>
+        <Modal.Header>Edit Payments</Modal.Header>
         <Modal.Body>
-          <EditModal
+          <PaymentModal
             setOpenModal={setOpenModal}
-            fetchEquipements={fetchEquipments}
-            data={Equipments}
+            fetchPayments={fetchPayments}
+            data={Payments}
             selected={modalData?.id}
             setModalData={() => setModalData({ type: "", id: "" })}
           />
@@ -266,4 +250,4 @@ const Equipments = () => {
   );
 };
 
-export default Equipments;
+export default Payments;

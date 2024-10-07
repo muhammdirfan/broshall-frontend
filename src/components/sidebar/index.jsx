@@ -35,9 +35,8 @@ const Sidebar = ({ open, onClose }) => {
       </ul>
 
       <p className="w-full px-3 text-center text-[15px]">
-        {" "}
-        ©2023 All rights reserved by Broshall Pvt. <br /> Ltd. Proudly managed
-        by techpri.me
+        ©2024 All rights reserved by Broshall Pvt. <br /> Ltd. Proudly managed
+        by technoMetrix
       </p>
       {/* Nav item end */}
     </div>

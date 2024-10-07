@@ -12,14 +12,16 @@ import { IoMdUnlock } from "react-icons/io";
 import Projects from "views/admin/Projects";
 import AllContacts from "views/admin/AllContacts";
 import ProjectDetails from "views/admin/ProjectDetails";
-import { FaCar, FaUsers } from "react-icons/fa";
+import { FaCar, FaMoneyBill, FaUsers } from "react-icons/fa";
 import { FaGears } from "react-icons/fa6";
 import Employees from "views/admin/Employees";
 import Machinery from "views/admin/Machinery";
 import { GrUserWorker } from "react-icons/gr";
 import Equipments from "views/admin/Equipments";
 import Jobs from "views/admin/Jobs";
+import Bills from "views/admin/Bills";
 import JobDetails from "views/admin/JobDetails";
+import Payments from "views/admin/Payments";
 
 const routes = [
   {
@@ -83,6 +85,20 @@ const routes = [
     layout: "/admin",
     path: "job-details/:id",
     component: <JobDetails />,
+  },
+  {
+    name: "Bills",
+    layout: "/admin",
+    path: "bills",
+    icon: <FaMoneyBill className="h-6 w-6" />,
+    component: <Bills />,
+  },
+  {
+    name: "Payments",
+    layout: "/admin",
+    path: "payments",
+    icon: <FaMoneyBill className="h-6 w-6" />,
+    component: <Payments />,
   },
   {
     name: "Sign out",

@@ -31,7 +31,6 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
       formData.append("images", image);
     });
 
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
       if (
         !projectData?.name ||
@@ -61,7 +60,7 @@ const CategoriesModal = ({ setOpenModal, fetchProjects }) => {
         });
       } else {
         setIsLoading(true);
-        const project = await CreateProject(accessToken, formData);
+        const project = await CreateProject(formData);
         if (project) {
           setOpenModal(false);
           setIsLoading(false);

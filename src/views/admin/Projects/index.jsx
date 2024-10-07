@@ -1,30 +1,19 @@
 import CategoriesTable from "./components/CategoriesTable";
-import {
-  VISIBLE_FIELDS,
-  columnsDataComplex,
-  columnsDataSpeciality,
-} from "./variables/columnsData";
+import { VISIBLE_FIELDS, columnsDataComplex } from "./variables/columnsData";
 import Widget from "components/widget/Widget";
 import { MdBarChart } from "react-icons/md";
 import { IoDocuments } from "react-icons/io5";
 import { Button, Modal } from "flowbite-react";
 import React, { useState, useEffect } from "react";
 import CategoriesModal from "./components/CategoriesModal";
-import SpecialityModal from "./components/SpecialityModal";
-import { fetchProffesionalCategory } from "services/professionalApis";
-import Toggle from "components/toggle";
-import { fetchallSpecialities } from "services/professionalApis";
 import Notify from "simple-notify";
-import {
-  deleteProfessionalSpeciality,
-  deleteProfessional,
-} from "services/professionalApis";
-import { FetchAllProjects } from "services/projectAPIs";
+
 import { DeleteProject } from "services/projectAPIs";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProjects } from "features/projects/projectsSlice";
 
 const Projects = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [openSpecialityModal, setOpenSpecialityModal] = useState(false);
   const [projects, setProjects] = useState();
   const [allSpecialities, setAllSpecialities] = useState();
   const [enableMessage, setEnableMessage] = useState(true);
@@ -38,71 +27,29 @@ const Projects = () => {
   const [selectedProfessionUpdate, setSelectedProfessionUpdate] = useState("");
   const [selectedAssociatesUpdate, setSelectedAssociatesUpdate] = useState("");
 
+  const { data, status, error } = useSelector((state) => state.projects);
+
+  const dispatch = useDispatch();
+
   const handleToggle = () => {
     setEnableMessage(!enableMessage);
   };
 
-  const fetchProjects = async () => {
+  const fetchAllProjects = async () => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const allProjects = await FetchAllProjects(accessToken);
-      setProjects(allProjects.reverse());
+      dispatch(fetchProjects());
     } catch (e) {
       console.log(e);
     }
   };
 
   useEffect(() => {
-    fetchProjects();
+    fetchAllProjects();
   }, []);
 
-  // const handleDelete = async (id) => {
-  //   try {
-  //     setIsloading(true);
-  //     const deleted = await DeleteProject(id);
-  //     if (deleted) {
-  //       new Notify({
-  //         status: "success",
-  //         title: "Success",
-  //         text: deleted?.message,
-  //         effect: "fade",
-  //         speed: 300,
-  //         customClass: null,
-  //         customIcon: null,
-  //         showIcon: true,
-  //         showCloseButton: true,
-  //         autoclose: true,
-  //         autotimeout: 3000,
-  //         gap: 20,
-  //         distance: 20,
-  //         type: 1,
-  //         position: "right bottom",
-  //       });
-  //       setIsloading(false);
-  //       fetchProjects();
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     new Notify({
-  //       status: "error",
-  //       title: "Error",
-  //       text: "Something went wrong, Please try again!",
-  //       effect: "fade",
-  //       speed: 300,
-  //       customClass: null,
-  //       customIcon: null,
-  //       showIcon: true,
-  //       showCloseButton: true,
-  //       autoclose: true,
-  //       autotimeout: 3000,
-  //       gap: 20,
-  //       distance: 20,
-  //       type: 1,
-  //       position: "right bottom",
-  //     });
-  //     setIsloading(false);
-  //   }
-  // };
+  useEffect(() => {
+    setProjects(data);
+  }, [data]);
 
   React.useEffect(() => {
     const slectedData = allSpecialities?.filter(
@@ -123,9 +70,8 @@ const Projects = () => {
 
   const handleProjectDelete = async (id) => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
       setIsloading(true);
-      const deleted = await DeleteProject(accessToken, id);
+      const deleted = await DeleteProject(id);
       if (deleted) {
         new Notify({
           status: "success",
@@ -146,7 +92,7 @@ const Projects = () => {
         });
         setIsloading(false);
         setSelectedProfession({ selectedOption: null });
-        fetchProjects();
+        fetchAllProjects();
       }
     } catch (error) {
       console.log(error);
@@ -210,7 +156,7 @@ const Projects = () => {
             isLoading={isLoading}
             setIsloading={setIsloading}
             selectedProfession={selectedProfession}
-            fetchProjects={fetchProjects}
+            fetchProjects={fetchAllProjects}
             modalData={modalData}
             setModalData={setModalData}
           />
@@ -226,7 +172,7 @@ const Projects = () => {
         <Modal.Header>Add New Project</Modal.Header>
         <Modal.Body>
           <CategoriesModal
-            fetchProjects={fetchProjects}
+            fetchProjects={fetchAllProjects}
             setOpenModal={setOpenModal}
           />
         </Modal.Body>

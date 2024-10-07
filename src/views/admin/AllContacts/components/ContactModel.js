@@ -12,7 +12,6 @@ const ContactModel = ({ setOpenContactModal, fetchFreshData }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSave = async () => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
       if (!contactData?.name || !contactData.email || !contactData.phone) {
         new Notify({
@@ -34,7 +33,7 @@ const ContactModel = ({ setOpenContactModal, fetchFreshData }) => {
         });
       } else {
         setIsLoading(true);
-        const contact = await CreateContact(accessToken, contactData);
+        const contact = await CreateContact(contactData);
         console.log("contact", contact);
         if (contact) {
           setOpenContactModal(false);

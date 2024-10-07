@@ -1,62 +1,62 @@
 import CategoriesTable from "components/CategoriesTable";
 import Widget from "components/widget/Widget";
-import { Modal, Button, Carousel } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { IoDocuments } from "react-icons/io5";
-import { MdBarChart } from "react-icons/md";
-import AddEquipmentModal from "./components/AddEquipmentModal";
+import { MdBarChart, MdDateRange } from "react-icons/md";
 import { columnsDataComplex, VISIBLE_FIELDS } from "./variables/columnsData";
-import EditModal from "./components/editModal";
 import Notify from "simple-notify";
-import { FetchAllEquipments } from "services/equipmentsApis";
-import { DeleteEquipment } from "services/equipmentsApis";
-import { FetchEquipment } from "services/equipmentsApis";
-import { MdDateRange, MdFormatListNumbered } from "react-icons/md";
-import { FaArrowLeft, FaUserTie } from "react-icons/fa";
-import { GiMoneyStack, GiTyre } from "react-icons/gi";
+import { FetchAllBills, DeleteBill, FetchBill } from "services/billsApis";
+import {
+  FaArrowLeft,
+  FaBookOpen,
+  FaMoneyBillAlt,
+  FaUserTie,
+} from "react-icons/fa";
+import BillModal from "./components/BillModal";
 
-const Equipments = () => {
+const Bills = () => {
   const [openModal, setOpenModal] = useState(false);
-  const [Equipments, setEquipments] = useState();
+  const [Bills, setBills] = useState();
   const [isLoading, setIsloading] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
-  const [freeEquipments, setFreeEquipments] = useState([]);
-  const [EquipmentsDetails, setEquipmentsDetails] = useState({});
+  const [freeBills, setFreeBills] = useState([]);
+  const [BillsDetails, setBillsDetails] = useState({});
 
   const [modalData, setModalData] = useState({
     type: "",
     id: "",
   });
 
-  const fetchEquipments = async () => {
+  const fetchBills = async () => {
     try {
-      const allEquipments = await FetchAllEquipments();
-      setEquipments(allEquipments.reverse());
+      const allBills = await FetchAllBills();
+      setBills(allBills.reverse());
     } catch (e) {
       console.log(e);
     }
   };
 
   useEffect(() => {
-    fetchEquipments();
+    fetchBills();
   }, []);
 
   useEffect(() => {
-    const filterEquipments = Equipments?.filter(
-      (item) => !item?.projects?.length
+    const filtermachines = Bills?.filter(
+      (item) => item?.Bill_status === "Open"
     );
-    setFreeEquipments(filterEquipments);
-  }, [Equipments]);
+    setFreeBills(filtermachines);
+  }, [Bills]);
 
-  const handleEquipmentDelete = async (id) => {
+  const handleMachineDelete = async (id) => {
     try {
       setIsloading(true);
-      const deleted = await DeleteEquipment(id);
+      const deleted = await DeleteBill(id);
       if (deleted) {
         new Notify({
           status: "success",
           title: "Success",
-          text: "Equipments deleted successfully!",
+          text: "Bill deleted successfully!",
           effect: "fade",
           speed: 300,
           customClass: null,
@@ -72,7 +72,7 @@ const Equipments = () => {
         });
         setIsloading(false);
         setSelectedItem({ selectedOption: null });
-        fetchEquipments();
+        fetchBills();
       }
     } catch (error) {
       console.log(error);
@@ -97,94 +97,70 @@ const Equipments = () => {
     }
   };
 
-  const handleEquipmentsDetails = (data) => {
-    FetchEquipmentDetails(data);
+  const handleBillDetails = (data) => {
+    FetchBillDetails(data);
   };
 
-  const FetchEquipmentDetails = async (id) => {
+  const FetchBillDetails = async (id) => {
     try {
-      const equipmentDetails = await FetchEquipment(id);
-      setEquipmentsDetails(equipmentDetails);
+      const BillDetails = await FetchBill(id);
+      setBillsDetails(BillDetails);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const backendUrl = "http://localhost:5000"; // Adjust this to match your backend URL
-
   return (
     <>
-      {EquipmentsDetails?._id ? (
+      {BillsDetails?._id ? (
         <div className="space-y-6">
           <Button
             className="flex items-center"
-            onClick={() => setEquipmentsDetails({})}
+            onClick={() => setBillsDetails({})}
           >
             <FaArrowLeft />
             <p className="ml-2">Back</p>
           </Button>
           <h2 className="mt-5 text-3xl font-bold text-gray-800">
-            {EquipmentsDetails.name}
+            {BillsDetails.bill_name}
           </h2>
-          <div className="rounded-md border p-4 shadow-md">
+          <div className="rounded-lg bg-white p-4  shadow-md">
             <div className="grid grid-cols-1 gap-6 text-gray-700 md:grid-cols-2">
               <p className="flex items-center space-x-3">
-                <GiTyre className="text-purple-500" />
-                <span>Equipment Type: {EquipmentsDetails.type}</span>
-              </p>
-              <p className="flex items-center space-x-3">
-                <MdFormatListNumbered className="text-green-500" />
-                <span>
-                  Number of Equipment: {EquipmentsDetails.no_of_equipments}
-                </span>
-              </p>
-              <p className="flex items-center space-x-3">
-                <GiMoneyStack className="text-blue-500" />
-                <span>
-                  Equipment Value: {EquipmentsDetails.equipment_value}
-                </span>
+                <FaMoneyBillAlt className="text-green-500" />
+                <span>Bill Id: {BillsDetails.bill_id}</span>
               </p>
               <p className="flex items-center space-x-3">
                 <FaUserTie className="text-purple-500" />
-                <span>Owner: {EquipmentsDetails.ownerShip}</span>
+                <span>Bill Type: {BillsDetails.bill_type}</span>
+              </p>
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-green-500" />
+                <span>Bill Amount: {BillsDetails.bill_amount}</span>
+              </p>
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-purple-500" />
+                <span>
+                  Bill Account: {BillsDetails.bill_account || "Not Mentioned"}
+                </span>
               </p>
               <p className="flex items-center space-x-3">
                 <MdDateRange className="text-yellow-500" />
                 <span>
-                  Added Date:
-                  {new Date(EquipmentsDetails.createdAt).toLocaleDateString()}
+                  Bill Date:
+                  {new Date(BillsDetails.bill_date).toLocaleDateString()}
                 </span>
               </p>
-              {EquipmentsDetails.updatedAt && (
-                <p className="flex items-center space-x-3">
-                  <MdDateRange className="text-yellow-500" />
-                  <span>
-                    Updated Date:{" "}
-                    {new Date(EquipmentsDetails.updatedAt).toLocaleDateString()}
-                  </span>
-                </p>
-              )}
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-purple-500" />
+                <span>
+                  Bill Status: {BillsDetails.bill_status || "Not Mentioned"}
+                </span>
+              </p>
             </div>
             <p className="mt-4 text-lg text-gray-600">
-              Description: {EquipmentsDetails.descripton}
+              Bill Project: {BillsDetails.bill_project}
             </p>
-          </div>
-          <div className="flex justify-center">
-            <Carousel
-              className="rounded-0 my-0 mx-auto h-[35rem] w-[50rem]"
-              style={{ borderRadius: "0px" }}
-              slide={true}
-            >
-              {EquipmentsDetails.images?.map((image, index) => (
-                <div className="rounded-0 relative h-full w-full">
-                  <img
-                    src={`${backendUrl}${image}`}
-                    className="h-full w-full"
-                    alt={`Project Image ${index + 1}`}
-                  />
-                </div>
-              ))}
-            </Carousel>
           </div>
         </div>
       ) : (
@@ -192,39 +168,40 @@ const Equipments = () => {
           <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
             <Widget
               icon={<MdBarChart className="h-7 w-7" />}
-              title={"Total Equipments"}
-              subtitle={Equipments?.length}
+              title={"Total Bills"}
+              subtitle={Bills?.length}
             />
             <Widget
               icon={<IoDocuments className="h-6 w-6" />}
-              title={"Available Equipments"}
-              subtitle={freeEquipments?.length}
+              title={"Total Bills"}
+              subtitle={freeBills?.length}
             />
             <div className="rounded-[20px] bg-white px-3 py-2">
               <button
                 onClick={() => setOpenModal(true)}
                 className="linear mt-5 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
               >
-                Add Equipments
+                Add Bills
               </button>
             </div>
           </div>
           <div className="mt-3 grid h-full grid-cols-1 gap-5 xl:grid-cols-2 2xl:grid-cols-3">
             <div className="col-span-12 h-fit w-full xl:col-span-12 2xl:col-span-12">
               <CategoriesTable
-                tableData={Equipments}
-                tableHeader="Equipments Table"
-                tableFor="Equipments"
+                tableData={Bills}
+                tableHeader="Bills Table"
+                tableFor="Bills"
                 columnsData={columnsDataComplex}
                 VISIBLE_FIELDS={VISIBLE_FIELDS}
-                handleDelete={handleEquipmentDelete}
+                handleDelete={handleMachineDelete}
                 isLoading={isLoading}
                 setIsloading={setIsloading}
                 selectedProfession={selectedItem}
-                fetchEquipments={fetchEquipments}
+                fetchBills={fetchBills}
                 modalData={modalData}
                 setModalData={setModalData}
-                handleDetails={handleEquipmentsDetails}
+                handleDetails={handleBillDetails}
+                firstField="bill_name"
               />
             </div>
           </div>
@@ -237,12 +214,9 @@ const Equipments = () => {
         size={"4xl"}
         className="w-10/12 md:w-full"
       >
-        <Modal.Header>Add New Equipment</Modal.Header>
+        <Modal.Header>Add New Bill</Modal.Header>
         <Modal.Body>
-          <AddEquipmentModal
-            fetchEquipements={fetchEquipments}
-            setOpenModal={setOpenModal}
-          />
+          <BillModal fetchBills={fetchBills} setOpenModal={setOpenModal} />
         </Modal.Body>
       </Modal>
       <Modal
@@ -251,12 +225,12 @@ const Equipments = () => {
         onClose={() => setModalData({ type: "", id: "" })}
         size={modalData?.type === "Edit" ? "4xl" : "xl"}
       >
-        <Modal.Header>{`Edit Equipments`}</Modal.Header>
+        <Modal.Header>Edit Bills</Modal.Header>
         <Modal.Body>
-          <EditModal
+          <BillModal
             setOpenModal={setOpenModal}
-            fetchEquipements={fetchEquipments}
-            data={Equipments}
+            fetchBills={fetchBills}
+            data={Bills}
             selected={modalData?.id}
             setModalData={() => setModalData({ type: "", id: "" })}
           />
@@ -266,4 +240,4 @@ const Equipments = () => {
   );
 };
 
-export default Equipments;
+export default Bills;

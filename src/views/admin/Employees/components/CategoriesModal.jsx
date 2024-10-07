@@ -19,7 +19,6 @@ const CategoriesModal = ({ setOpenModal, fetchEmployees }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSave = async () => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
       if (!employeeData?.name || !employeeData.address) {
         new Notify({
@@ -41,7 +40,7 @@ const CategoriesModal = ({ setOpenModal, fetchEmployees }) => {
         });
       } else {
         setIsLoading(true);
-        const project = await CreateEmployee(accessToken, employeeData);
+        const project = await CreateEmployee(employeeData);
         if (project) {
           setOpenModal(false);
           setIsLoading(false);

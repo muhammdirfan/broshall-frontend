@@ -13,7 +13,8 @@ import { AddEquipmentToProject } from "services/projectAPIs";
 import { RemoveEmployeeFromProject } from "services/projectAPIs";
 import { removeMachineFromProject } from "services/projectAPIs";
 import { removeEquipmentFromProject } from "services/projectAPIs";
-import { FaArrowLeft } from "react-icons/fa";
+import { FetchAllBills } from "services/billsApis";
+import { FetchAllPayments } from "services/paymentsApis";
 
 const ProjectDetails = () => {
   const { id } = useParams();
@@ -25,6 +26,8 @@ const ProjectDetails = () => {
   const [employees, setEmployees] = useState([]);
   const [machines, setMachines] = useState([]);
   const [equipments, setEquipments] = useState([]);
+  const [bills, setBills] = useState([]);
+  const [payments, setPayments] = useState([]);
   const [selctedValues, setSelectedValues] = useState({
     employees: [],
     machinery: [],
@@ -33,22 +36,26 @@ const ProjectDetails = () => {
 
   const fetchProjectDetails = async () => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const project = await FetchProject(id, accessToken);
+      const project = await FetchProject(id);
       setProjectDetail(project);
-      const employee = await FetchAllEmployees(accessToken);
+      const employee = await FetchAllEmployees();
       setEmployees(employee);
       setAvailableEmployees(
         employee?.filter((item) => !item?.projects?.length)
       );
-      const machine = await FetchAllMachines(accessToken);
+      const machine = await FetchAllMachines();
       setMachines(machine);
       setAvailableMachinery(machine?.filter((item) => !item?.projects?.length));
-      const equipments = await FetchAllEquipments(accessToken);
+      const equipments = await FetchAllEquipments();
       setEquipments(equipments);
       setAvailableEquipments(
         equipments?.filter((item) => !item?.projects?.length)
       );
+      const allBills = await FetchAllBills();
+      setBills(allBills);
+
+      const allPayments = await FetchAllPayments();
+      setPayments(allPayments);
     } catch (e) {
       console.log(e);
     }
@@ -121,16 +128,11 @@ const ProjectDetails = () => {
   };
 
   const handleAddEmployeeToProject = async (employeesIds) => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     const data = {
       projectId: projectDetails?._id,
       employeeIds: employeesIds,
     };
-    const employeeAdded = await AddEmployeeToProject(
-      accessToken,
-      projectDetails?._id,
-      data
-    );
+    const employeeAdded = await AddEmployeeToProject(projectDetails?._id, data);
     if (employeeAdded) {
       fetchProjectDetails();
       setTab("employees");
@@ -157,16 +159,11 @@ const ProjectDetails = () => {
   };
 
   const handleAddMachineToProject = async (machineIds) => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     const data = {
       projectId: projectDetails?._id,
       machineIds: machineIds,
     };
-    const machineAdded = await AddMachineToProject(
-      accessToken,
-      projectDetails?._id,
-      data
-    );
+    const machineAdded = await AddMachineToProject(projectDetails?._id, data);
     if (machineAdded) {
       fetchProjectDetails();
       setTab("Machinery");
@@ -192,13 +189,11 @@ const ProjectDetails = () => {
   };
 
   const handleAddEquipmentToProject = async (equipmentIds) => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     const data = {
       projectId: projectDetails?._id,
       equipmentIds: equipmentIds,
     };
     const equipmentAdded = await AddEquipmentToProject(
-      accessToken,
       projectDetails?._id,
       data
     );
@@ -228,9 +223,8 @@ const ProjectDetails = () => {
   };
 
   const handleItemRemove = async (id) => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-    const employee = await FetchAllEmployees(accessToken);
-    const machine = await FetchAllMachines(accessToken);
+    const employee = await FetchAllEmployees();
+    const machine = await FetchAllMachines();
 
     if (employee?.find((item) => item._id === id)) {
       const data = {
@@ -239,7 +233,6 @@ const ProjectDetails = () => {
       };
 
       const equipmentAdded = await RemoveEmployeeFromProject(
-        accessToken,
         projectDetails?._id,
         data
       );
@@ -272,7 +265,6 @@ const ProjectDetails = () => {
       };
 
       const machineRemoved = await removeMachineFromProject(
-        accessToken,
         projectDetails?._id,
         data
       );
@@ -305,7 +297,6 @@ const ProjectDetails = () => {
       };
 
       const equipmentRemoved = await removeEquipmentFromProject(
-        accessToken,
         projectDetails?._id,
         data
       );
@@ -335,69 +326,65 @@ const ProjectDetails = () => {
   };
 
   return (
-    <>
-      <Link className="flex items-center px-6" to="/admin/all-projects">
-        <FaArrowLeft />
-        <p className="ml-2">Back</p>
-      </Link>
-      <div className="container mx-auto p-6">
-        <h2 className="mb-5 text-lg">Project Details</h2>
-        <div className="grid grid-cols-12 gap-5">
-          <div className="col-span-12 md:col-span-4">
-            <p>Available Employees</p>
-            <Select
-              isMulti
-              name="colors"
-              options={employeesOptions}
-              className="basic-multi-select w-full"
-              classNamePrefix="select"
-              onChange={handleEmployeeChange}
-              value={selctedValues.employees}
-              onKeyDown={handleEmployeeKeyPress}
-            />
-          </div>
-          <div className="col-span-12 md:col-span-4">
-            <p>Available Machines</p>
-            <Select
-              isMulti
-              name="colors"
-              options={machinesOptions}
-              className="basic-multi-select w-full"
-              classNamePrefix="select"
-              onChange={handleMachineChange}
-              value={selctedValues.machinery}
-              onKeyDown={handleMachineryKeyPress}
-            />
-          </div>
-          <div className="col-span-12 md:col-span-4">
-            <p>Available Equipments</p>
-            <Select
-              isMulti
-              name="colors"
-              options={equipmentsOptions}
-              className="basic-multi-select w-full"
-              classNamePrefix="select"
-              onChange={handleEquipmentChange}
-              value={selctedValues.equipments}
-              onKeyDown={handleEquipmentKeyPress}
-            />
-          </div>
+    <div className="container mx-auto p-6">
+      <h2 className="mb-5 text-lg">Project Details</h2>
+      <div className="grid grid-cols-12 gap-5">
+        <div className="col-span-12 md:col-span-4">
+          <p>Available Employees</p>
+          <Select
+            isMulti
+            name="colors"
+            options={employeesOptions}
+            className="basic-multi-select w-full"
+            classNamePrefix="select"
+            onChange={handleEmployeeChange}
+            value={selctedValues.employees}
+            onKeyDown={handleEmployeeKeyPress}
+          />
         </div>
-        <CustomTabs
-          projectDetails={projectDetails}
-          backendUrl={backendUrl}
-          availableEmployees={availableEmployees}
-          availableMachinery={availableMachinery}
-          availableEquipments={availableEquipments}
-          employees={employees}
-          machines={machines}
-          equipments={equipments}
-          tab={tab}
-          setTab={setTab}
-          handleItemRemove={handleItemRemove}
-        />
+        <div className="col-span-12 md:col-span-4">
+          <p>Available Machines</p>
+          <Select
+            isMulti
+            name="colors"
+            options={machinesOptions}
+            className="basic-multi-select w-full"
+            classNamePrefix="select"
+            onChange={handleMachineChange}
+            value={selctedValues.machinery}
+            onKeyDown={handleMachineryKeyPress}
+          />
+        </div>
+        <div className="col-span-12 md:col-span-4">
+          <p>Available Equipments</p>
+          <Select
+            isMulti
+            name="colors"
+            options={equipmentsOptions}
+            className="basic-multi-select w-full"
+            classNamePrefix="select"
+            onChange={handleEquipmentChange}
+            value={selctedValues.equipments}
+            onKeyDown={handleEquipmentKeyPress}
+          />
+        </div>
       </div>
-    </>
+      <CustomTabs
+        projectDetails={projectDetails}
+        backendUrl={backendUrl}
+        availableEmployees={availableEmployees}
+        availableMachinery={availableMachinery}
+        availableEquipments={availableEquipments}
+        employees={employees}
+        machines={machines}
+        equipments={equipments}
+        bills={bills}
+        payments={payments}
+        tab={tab}
+        setTab={setTab}
+        handleItemRemove={handleItemRemove}
+      />
+    </div>
   );
 };
 

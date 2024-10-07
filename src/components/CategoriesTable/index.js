@@ -3,7 +3,6 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { Button } from "flowbite-react";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { Modal } from "flowbite-react";
-import { IoMdEye } from "react-icons/io";
 
 export default function CategoriesTable(props) {
   const {
@@ -43,7 +42,7 @@ export default function CategoriesTable(props) {
   // );
 
   const renderViewButton = (params, firstField) =>
-    firstField ? (
+    firstField === "title" ? (
       <a href={`job-details/${params.row._id}`}>
         <div className="overflow-hidden text-ellipsis whitespace-normal break-words text-[#3b82f6] underline">
           {params.value}
@@ -73,8 +72,8 @@ export default function CategoriesTable(props) {
   const columns = React.useMemo(() => {
     return [
       {
-        field: `${firstField ? "title" : "name"}`,
-        headerName: `${firstField ? "Job Title" : "Name"}`,
+        field: `${firstField ? firstField : "name"}`,
+        headerName: `${firstField ? firstField : "Name"}`,
         width: 200,
         renderCell: (params) => (
           <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
@@ -130,6 +129,7 @@ export default function CategoriesTable(props) {
             paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
             rowHeight={90}
+            checkboxSelection
           />
         ) : (
           <div className="mt-5 flex items-center justify-center">

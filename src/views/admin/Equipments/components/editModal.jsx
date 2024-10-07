@@ -35,7 +35,6 @@ const editModal = ({ fetchEquipements, data, selected, setModalData }) => {
   }, [selected, data]);
 
   const handleUpdate = async (id) => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
       if (
         !equipment?.name ||
@@ -62,7 +61,7 @@ const editModal = ({ fetchEquipements, data, selected, setModalData }) => {
         });
       } else {
         setIsLoading(true);
-        const machine = await UpdateEquipment(accessToken, id, equipment);
+        const machine = await UpdateEquipment(id, equipment);
         if (machine) {
           setModalData({ type: "", id: "" });
           setIsLoading(false);

@@ -5,8 +5,6 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { Modal } from "flowbite-react";
 import EditModal from "./editModal";
 import { formatDate } from "utils";
-import { IoMdEye } from "react-icons/io";
-import { Link } from "react-router-dom";
 
 export default function CategoriesTable(props) {
   const { tableData, tableHeader, columnsData, VISIBLE_FIELDS, fetchProjects } =
@@ -112,6 +110,7 @@ export default function CategoriesTable(props) {
             paginationModel={paginationModel}
             onPaginationModelChange={setPaginationModel}
             rowHeight={90}
+            checkboxSelection
           />
         ) : (
           <div className="mt-5 flex items-center justify-center">

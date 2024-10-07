@@ -25,10 +25,9 @@ const JobDetails = () => {
 
   const FetchJobDetails = async (id) => {
     try {
-      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-      const JobDetails = await FetchJob(id, accessToken);
+      const JobDetails = await FetchJob(id);
       setJobsDetails(JobDetails);
-      const JobApplies = await FetchAllJobsApplies(accessToken);
+      const JobApplies = await FetchAllJobsApplies();
       setJobApplies(JobApplies?.filter((item) => item.applied_job === id));
     } catch (error) {
       console.log(error);

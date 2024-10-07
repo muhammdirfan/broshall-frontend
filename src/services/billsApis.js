@@ -1,7 +1,7 @@
 import service, { accessToken } from "./index";
 
-export const FetchAllEquipments = async () => {
-  const res = await service.get("/equipments", {
+const FetchAllBills = async () => {
+  const res = await service.get("/bills", {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -9,8 +9,8 @@ export const FetchAllEquipments = async () => {
   return res.data;
 };
 
-export const CreateEquipment = async (payload) => {
-  const res = await service.post("/equipments", payload, {
+const CreateBill = async (payload) => {
+  const res = await service.post("/bills", payload, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
       "Content-Type": "multipart/form-data",
@@ -19,8 +19,8 @@ export const CreateEquipment = async (payload) => {
   return res.data;
 };
 
-export const FetchEquipment = async (id) => {
-  const res = await service.get(`/equipments/${id}`, {
+const FetchBill = async (id) => {
+  const res = await service.get(`/bills/${id}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -28,8 +28,8 @@ export const FetchEquipment = async (id) => {
   return res.data;
 };
 
-export const UpdateEquipment = async (id, payload) => {
-  const res = await service.put(`/equipments/${id}`, payload, {
+const UpdateBill = async (id, payload) => {
+  const res = await service.put(`/bills/${id}`, payload, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
@@ -37,11 +37,13 @@ export const UpdateEquipment = async (id, payload) => {
   return res.data;
 };
 
-export const DeleteEquipment = async (id) => {
-  const res = await service.delete(`/equipments/${id}`, {
+const DeleteBill = async (id) => {
+  const res = await service.delete(`/bills/${id}`, {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
   return res.data;
 };
+
+export { FetchAllBills, CreateBill, FetchBill, UpdateBill, DeleteBill };

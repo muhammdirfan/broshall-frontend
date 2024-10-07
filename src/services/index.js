@@ -14,3 +14,5 @@ export const post = async (endpoint, params) => {
 };
 
 export default instance;
+
+export const accessToken = JSON.parse(localStorage.getItem("accessToken"));

@@ -38,7 +38,6 @@ const editModal = ({ fetchMachinery, data, selected, setModalData }) => {
   }, [selected, data]);
 
   const handleUpdate = async (id) => {
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
       if (
         !machineryData?.name ||
@@ -66,7 +65,7 @@ const editModal = ({ fetchMachinery, data, selected, setModalData }) => {
         });
       } else {
         setIsLoading(true);
-        const machine = await UpdateMachine(accessToken, id, machineryData);
+        const machine = await UpdateMachine(id, machineryData);
         if (machine) {
           setModalData({ type: "", id: "" });
           setIsLoading(false);

@@ -56,7 +56,6 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
       formData.append("images", image);
     });
 
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
     try {
       if (
         !projectData?.name ||
@@ -82,7 +81,7 @@ const editModal = ({ setOpenModal, fetchProjects, data, selected }) => {
         });
       } else {
         setIsLoading(true);
-        const project = await UpdateProject(accessToken, id, formData);
+        const project = await UpdateProject(id, formData);
         if (project) {
           setOpenModal(false);
           setIsLoading(false);
