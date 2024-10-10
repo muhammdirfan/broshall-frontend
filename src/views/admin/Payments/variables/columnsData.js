@@ -1,3 +1,4 @@
+import EmployeeName from "components/EmployeeName";
 import ProjectName from "components/ProjectName";
 import { formatDate } from "utils";
 
@@ -5,7 +6,7 @@ export const columnsDataComplex = [
   {
     field: "payment_id",
     headerName: "Payment Id",
-    width: 180,
+    width: 100,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
         {params.value}
@@ -61,10 +62,34 @@ export const columnsDataComplex = [
   {
     field: "payment_status",
     headerName: "Payment Status",
-    width: 100,
+    width: 120,
     renderCell: (params) => (
       <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
         {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "to_account",
+    headerName: "Payment To Account",
+    width: 170,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "pay_to",
+    headerName: "Payment To Name",
+    width: 250,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {!params.value ? (
+          "Available"
+        ) : (
+          <EmployeeName employeeId={params.value} />
+        )}
       </div>
     ),
   },
@@ -82,4 +107,6 @@ export const VISIBLE_FIELDS = [
   "payment_date",
   "payment_project",
   "payment_status",
+  "to_account",
+  "pay_to",
 ];

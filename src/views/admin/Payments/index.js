@@ -18,6 +18,7 @@ import {
   FaUserTie,
 } from "react-icons/fa";
 import PaymentModal from "./components/PaymentModal";
+import EmployeeName from "components/EmployeeName";
 
 const Payments = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -146,9 +147,21 @@ const Payments = () => {
               <p className="flex items-center space-x-3">
                 <FaMoneyBillAlt className="text-purple-500" />
                 <span>
-                  Payment Account:{" "}
+                  Payment Account:
                   {PaymentsDetails.payment_account || "Not Mentioned"}
                 </span>
+              </p>
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-purple-500" />
+                <span>
+                  Payment To Account:
+                  {PaymentsDetails.to_account || "Not Mentioned"}
+                </span>
+              </p>
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-purple-500" />
+                <span>Payment to name:</span>
+                <EmployeeName employeeId={PaymentsDetails.pay_to} />
               </p>
               <p className="flex items-center space-x-3">
                 <MdDateRange className="text-yellow-500" />
