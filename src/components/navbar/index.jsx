@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import Dropdown from "components/dropdown";
 import { FiAlignJustify } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
 import avatar from "assets/img/avatars/avatar4.png";
 import { CurrentUser } from "services/AuthApis";
+import { logoutUser } from "services/AuthApis";
+import Notify from "simple-notify";
+import { IoMdNotificationsOutline, IoMdUnlock } from "react-icons/io";
+import { BsArrowBarUp } from "react-icons/bs";
 
 const Navbar = (props) => {
   const { onOpenSidenav, brandText } = props;
   const [darkmode, setDarkmode] = useState(false);
-
   const [currentUser, setCurrentUser] = useState({});
+
+  const navigate = useNavigate();
 
   const fetchCurrentUser = async () => {
     try {
@@ -21,9 +26,42 @@ const Navbar = (props) => {
     }
   };
 
+  const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+
   useEffect(() => {
-    fetchCurrentUser();
-  }, []);
+    if (accessToken) {
+      fetchCurrentUser();
+    }
+  }, [accessToken]);
+
+  const logoutCurrentUser = async () => {
+    try {
+      const response = await logoutUser();
+      if (response.message) {
+        new Notify({
+          status: "success",
+          title: "Success",
+          text: response?.message,
+          effect: "fade",
+          speed: 300,
+          customClass: null,
+          customIcon: null,
+          showIcon: true,
+          showCloseButton: true,
+          autoclose: true,
+          autotimeout: 3000,
+          gap: 20,
+          distance: 20,
+          type: 1,
+          position: "right bottom",
+        });
+        navigate("/auth/sign-in");
+        localStorage.removeItem("accessToken");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <nav className="top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
@@ -63,8 +101,26 @@ const Navbar = (props) => {
         >
           <FiAlignJustify className="h-5 w-5" />
         </span>
+        <div
+          className="cursor-pointer text-gray-600"
+          onClick={() => {
+            if (darkmode) {
+              document.body.classList.remove("dark");
+              setDarkmode(false);
+            } else {
+              document.body.classList.add("dark");
+              setDarkmode(true);
+            }
+          }}
+        >
+          {darkmode ? (
+            <RiSunFill className="h-4 w-4 text-gray-600 dark:text-white" />
+          ) : (
+            <RiMoonFill className="h-4 w-4 text-gray-600 dark:text-white" />
+          )}
+        </div>
         {/* start Notification */}
-        {/* <Dropdown
+        <Dropdown
           button={
             <p className="cursor-pointer">
               <IoMdNotificationsOutline className="h-4 w-4 text-gray-600 dark:text-white" />
@@ -112,68 +168,7 @@ const Navbar = (props) => {
             </div>
           }
           classNames={"py-2 top-4 -left-[230px] md:-left-[440px] w-max"}
-        /> */}
-        {/* start Horizon PRO */}
-        {/* <Dropdown
-          button={
-            <p className="cursor-pointer">
-              <IoMdInformationCircleOutline className="h-4 w-4 text-gray-600 dark:text-white" />
-            </p>
-          }
-          children={
-            <div className="flex w-[350px] flex-col gap-2 rounded-[20px] bg-white p-4 shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
-              <div
-                style={{
-                  backgroundImage: `url(${navbarimage})`,
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                }}
-                className="mb-2 aspect-video w-full rounded-lg"
-              />
-              <a
-                target="blank"
-                href="https://horizon-ui.com/pro?ref=live-free-tailwind-react"
-                className="px-full linear flex cursor-pointer items-center justify-center rounded-xl bg-brand-500 py-[11px] font-bold text-white transition duration-200 hover:bg-brand-600 hover:text-white active:bg-brand-700 dark:bg-brand-400 dark:hover:bg-brand-300 dark:active:bg-brand-200"
-              >
-                Buy Horizon UI PRO
-              </a>
-              <a
-                target="blank"
-                href="https://horizon-ui.com/docs-tailwind/docs/react/installation?ref=live-free-tailwind-react"
-                className="px-full linear flex cursor-pointer items-center justify-center rounded-xl border py-[11px] font-bold text-navy-700 transition duration-200 hover:bg-gray-200 hover:text-navy-700 dark:!border-white/10 dark:text-white dark:hover:bg-white/20 dark:hover:text-white dark:active:bg-white/10"
-              >
-                See Documentation
-              </a>
-              <a
-                target="blank"
-                href="https://horizon-ui.com/?ref=live-free-tailwind-react"
-                className="hover:bg-black px-full linear flex cursor-pointer items-center justify-center rounded-xl py-[11px] font-bold text-navy-700 transition duration-200 hover:text-navy-700 dark:text-white dark:hover:text-white"
-              >
-                Try Horizon Free
-              </a>
-            </div>
-          }
-          classNames={"py-2 top-6 -left-[250px] md:-left-[330px] w-max"}
-          animation="origin-[75%_0%] md:origin-top-right transition-all duration-300 ease-in-out"
-        /> */}
-        <div
-          className="cursor-pointer text-gray-600"
-          onClick={() => {
-            if (darkmode) {
-              document.body.classList.remove("dark");
-              setDarkmode(false);
-            } else {
-              document.body.classList.add("dark");
-              setDarkmode(true);
-            }
-          }}
-        >
-          {darkmode ? (
-            <RiSunFill className="h-4 w-4 text-gray-600 dark:text-white" />
-          ) : (
-            <RiMoonFill className="h-4 w-4 text-gray-600 dark:text-white" />
-          )}
-        </div>
+        />
         {/* Profile & Dropdown */}
         <Dropdown
           button={
@@ -184,11 +179,18 @@ const Navbar = (props) => {
             />
           }
           children={
-            <div className="z-30 flex w-56 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
-              <div className="z-30 p-4">
+            <div className="flex w-64 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
+              <div className="p-4">
                 <div className="">
-                  <p className="text-sm font-bold text-navy-700 dark:text-white">
-                    👋 Hey, {currentUser.username}
+                  <p className="my-2 text-sm font-bold text-navy-700 dark:text-white">
+                    👋 Hey,
+                    <Link
+                      to="/admin/user-profile"
+                      state={currentUser}
+                      className="ml-2"
+                    >
+                      {currentUser.username}
+                    </Link>
                   </p>
                   <p className="text-sm font-bold text-navy-700 dark:text-white">
                     Email: {currentUser.email}
@@ -196,14 +198,12 @@ const Navbar = (props) => {
                 </div>
               </div>
               <div className="h-px w-full bg-gray-200 dark:bg-white/20 " />
-
-              <div className="flex flex-col p-4">
-                <a
-                  href=" "
-                  className="mt-3 text-sm font-medium text-red-500 hover:text-red-500"
-                >
-                  Log Out
-                </a>
+              <div
+                className="mt-3 flex cursor-pointer items-center justify-center p-4 text-red-500 hover:text-red-500"
+                onClick={() => logoutCurrentUser()}
+              >
+                <IoMdUnlock className="h-6 w-6" />
+                <p className="ml-1 text-sm font-medium">Log Out</p>
               </div>
             </div>
           }

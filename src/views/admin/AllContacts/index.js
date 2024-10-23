@@ -256,10 +256,10 @@ export default function AllContacts() {
           />
         </div>
         <div className="col-span-12 my-3 gap-5 md:grid-cols-4 lg:col-span-4">
-          <div className="rounded-[20px] bg-white px-3 py-2">
+          <div className="rounded-[20px] bg-white px-3 py-2 dark:!bg-navy-700">
             <button
               onClick={() => setOpenContactModal(true)}
-              className="linear mt-5 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
+              className="linear my-5 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
             >
               Add New Contact
             </button>
@@ -270,7 +270,6 @@ export default function AllContacts() {
         style={{
           height: 700,
           width: "100%",
-          backgroundColor: "#fff",
           padding: "10px 10px 40px 10px",
           borderRadius: "10px",
         }}
@@ -289,6 +288,7 @@ export default function AllContacts() {
           loading={isLoading}
           disableDensitySelector
           rowHeight={80}
+          className="bg-white text-black dark:border-gray-700 dark:!bg-navy-700 dark:text-white"
         />
       </div>
       <Modal

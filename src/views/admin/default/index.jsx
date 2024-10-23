@@ -20,7 +20,7 @@ import { FaCar, FaUsers } from "react-icons/fa";
 import { FaGears } from "react-icons/fa6";
 import { FetchAllJobs } from "services/jobsAPis";
 import { IoWalkSharp } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchProjects } from "../../../features/projects/projectsSlice";
 
 const Dashboard = () => {

@@ -130,15 +130,15 @@ const Projects = () => {
           title={"HCP specialities"}
           subtitle={"0"}
         />
-        {/* <Widget
+        <Widget
           icon={<MdBarChart className="h-7 w-7" />}
           title={"HCP Countries"}
           subtitle={"0"}
-        /> */}
-        <div className="rounded-[20px] bg-white px-3 py-2">
+        />
+        <div className="rounded-[20px] bg-white px-3 py-2 dark:!bg-navy-700">
           <button
             onClick={() => setOpenModal(true)}
-            className="linear mt-5 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
+            className="linear my-5 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
           >
             Add Project
           </button>
