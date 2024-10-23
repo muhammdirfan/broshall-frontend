@@ -65,7 +65,6 @@ export default function CheckTable(props) {
         style={{
           height: 700,
           width: "100%",
-          backgroundColor: "#fff",
           padding: "10px 10px 40px 10px",
           borderRadius: "10px",
         }}
@@ -95,6 +94,7 @@ export default function CheckTable(props) {
           getRowId={getRowId}
           paginationModel={paginationModel}
           onPaginationModelChange={setPaginationModel}
+          className="bg-white text-black dark:border-gray-700 dark:!bg-navy-700 dark:text-white"
         />
       </div>
       <Modal

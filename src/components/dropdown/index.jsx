@@ -36,6 +36,7 @@ const Dropdown = (props) => {
             ? animation
             : "origin-top-right transition-all duration-300 ease-in-out"
         } ${openWrapper ? "scale-100" : "scale-0"}`}
+        onClick={() => setOpenWrapper(!openWrapper)}
       >
         {children}
       </div>

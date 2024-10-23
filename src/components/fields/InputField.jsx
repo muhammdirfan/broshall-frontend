@@ -40,7 +40,7 @@ function InputField(props) {
         value={value}
         onChange={onChange}
         onKeyDown={onKeyDown}
-        className={`mt-2 flex h-12 w-full items-center justify-center rounded-xl border bg-white/0 p-3 text-sm outline-none ${
+        className={`mt-2 flex h-12 w-full items-center justify-center rounded-xl border !bg-white bg-white/0 p-3 text-sm outline-none dark:!bg-navy-900 ${
           disabled === true
             ? "!border-none !bg-gray-100 dark:!bg-white/5 dark:placeholder:!text-[rgba(255,255,255,0.15)]"
             : state === "error"
@@ -52,9 +52,15 @@ function InputField(props) {
       />
       {type === "password" &&
         (!showPass ? (
-          <IoMdEye onClick={handleShowPass} className="hover:cursor-pointer absolute top-12 right-5"/>
+          <IoMdEye
+            onClick={handleShowPass}
+            className="absolute top-12 right-5 hover:cursor-pointer"
+          />
         ) : (
-          <IoMdEyeOff onClick={handleShowPass} className="hover:cursor-pointer absolute top-12 right-5" />
+          <IoMdEyeOff
+            onClick={handleShowPass}
+            className="absolute top-12 right-5 hover:cursor-pointer"
+          />
         ))}
     </div>
   );

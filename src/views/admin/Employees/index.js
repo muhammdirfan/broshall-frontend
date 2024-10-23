@@ -1,5 +1,9 @@
 import CategoriesTable from "./components/CategoriesTable";
-import { VISIBLE_FIELDS, columnsDataComplex } from "./variables/columnsData";
+import {
+  VISIBLE_FIELDS,
+  columnsDataComplex,
+  paymentColumns,
+} from "./variables/columnsData";
 import Widget from "components/widget/Widget";
 import { MdBarChart, MdLocationPin } from "react-icons/md";
 import { IoDocuments } from "react-icons/io5";
@@ -12,6 +16,8 @@ import { FetchEmployee } from "services/employeesApis";
 import { MdDateRange } from "react-icons/md";
 import { FaArrowLeft, FaEnvelope, FaUserTie } from "react-icons/fa";
 import { GiPhone } from "react-icons/gi";
+import SimpleTable from "components/SimpleTable";
+import { FetchAllPayments } from "services/paymentsApis";
 
 const Employees = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -19,7 +25,7 @@ const Employees = () => {
   const [isLoading, setIsloading] = useState(false);
   const [AvailableEmployees, setAvailableEmployees] = useState([]);
   const [EmployeeDetails, setEmployeeDetails] = useState({});
-
+  const [payments, setPayments] = useState([]);
   const [modalData, setModalData] = useState({
     type: "",
     id: "",
@@ -103,6 +109,11 @@ const Employees = () => {
     try {
       const employeetDetails = await FetchEmployee(id);
       setEmployeeDetails(employeetDetails);
+      const allPayment = await FetchAllPayments();
+      const payments = employeetDetails.payments.map((item) =>
+        allPayment?.filter((pay) => pay._id === item)
+      );
+      setPayments(payments[0]);
     } catch (error) {
       console.log(error);
     }
@@ -111,62 +122,74 @@ const Employees = () => {
   return (
     <>
       {EmployeeDetails?._id ? (
-        <div className="space-y-6">
-          <Button
-            className="flex items-center"
-            onClick={() => setEmployeeDetails({})}
-          >
-            <FaArrowLeft />
-            <p className="ml-2">Back</p>
-          </Button>
-          <h2 className="mt-5 text-3xl font-bold text-gray-800">
-            {EmployeeDetails.name}
-          </h2>
-          <div className="rounded-md border p-4 shadow-md">
-            <div className="grid grid-cols-1 gap-6 text-gray-700 md:grid-cols-2">
-              <p className="flex items-center space-x-3">
-                <FaUserTie className="text-purple-500" />
-                <span>Employee Type: {EmployeeDetails.employee_type}</span>
-              </p>
-              <p className="flex items-center space-x-3">
-                <FaEnvelope className="text-purple-500" />
-                <span>Email (if any): {EmployeeDetails.email}</span>
-              </p>
-              <p className="flex items-center space-x-3">
-                <MdLocationPin className="text-green-500" />
-                <span>address: {EmployeeDetails.address}</span>
-              </p>
-              <p className="flex items-center space-x-3">
-                <GiPhone className="text-blue-500" />
-                <span>Contact Number: {EmployeeDetails.contact_no}</span>
-              </p>
-              <p className="flex items-center space-x-3">
-                <FaUserTie className="text-purple-500" />
-                <span>Designation: {EmployeeDetails.designation}</span>
-              </p>
-              <p className="flex items-center space-x-3">
-                <MdDateRange className="text-yellow-500" />
-                <span>
-                  Joining Date:
-                  {new Date(EmployeeDetails.joining_date).toLocaleDateString()}
-                </span>
-              </p>
-              {EmployeeDetails.end_date && (
+        <>
+          <div className="space-y-6">
+            <Button
+              className="flex items-center"
+              onClick={() => setEmployeeDetails({})}
+            >
+              <FaArrowLeft />
+              <p className="ml-2">Back</p>
+            </Button>
+            <h2 className="mt-5 text-3xl text-gray-800">
+              Employee Name:
+              <span className="font-bold"> {EmployeeDetails.name}</span>
+            </h2>
+            <div className="rounded-md border p-4 shadow-md">
+              <div className="grid grid-cols-1 gap-6 text-gray-700 md:grid-cols-2">
+                <p className="flex items-center space-x-3">
+                  <FaUserTie className="text-purple-500" />
+                  <span>Employee Type: {EmployeeDetails.employee_type}</span>
+                </p>
+                <p className="flex items-center space-x-3">
+                  <FaEnvelope className="text-purple-500" />
+                  <span>Email (if any): {EmployeeDetails.email}</span>
+                </p>
+                <p className="flex items-center space-x-3">
+                  <MdLocationPin className="text-green-500" />
+                  <span>address: {EmployeeDetails.address}</span>
+                </p>
+                <p className="flex items-center space-x-3">
+                  <GiPhone className="text-blue-500" />
+                  <span>Contact Number: {EmployeeDetails.contact_no}</span>
+                </p>
+                <p className="flex items-center space-x-3">
+                  <FaUserTie className="text-purple-500" />
+                  <span>Designation: {EmployeeDetails.designation}</span>
+                </p>
                 <p className="flex items-center space-x-3">
                   <MdDateRange className="text-yellow-500" />
                   <span>
-                    Contruct End Date:{" "}
-                    {new Date(EmployeeDetails.end_date).toLocaleDateString()}
+                    Joining Date:
+                    {new Date(
+                      EmployeeDetails.joining_date
+                    ).toLocaleDateString()}
                   </span>
                 </p>
-              )}
-              <p className="flex items-center space-x-3">
-                <FaUserTie className="text-purple-500" />
-                <span>Contruct Duration: {EmployeeDetails.duration}</span>
-              </p>
+                {EmployeeDetails.end_date && (
+                  <p className="flex items-center space-x-3">
+                    <MdDateRange className="text-yellow-500" />
+                    <span>
+                      Contruct End Date:{" "}
+                      {new Date(EmployeeDetails.end_date).toLocaleDateString()}
+                    </span>
+                  </p>
+                )}
+                <p className="flex items-center space-x-3">
+                  <FaUserTie className="text-purple-500" />
+                  <span>Contruct Duration: {EmployeeDetails.duration}</span>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
+          <div className="mt-5">
+            <SimpleTable
+              tableData={payments}
+              tableHeader="Employee Payments"
+              columnsData={paymentColumns}
+            />
+          </div>
+        </>
       ) : (
         <>
           <div className="mt-3 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -180,7 +203,7 @@ const Employees = () => {
               title={"Available Employees"}
               subtitle={AvailableEmployees?.length}
             />
-            <div className="rounded-[20px] bg-white px-3 py-2">
+            <div className="rounded-[20px] bg-white px-3 py-2 dark:!bg-navy-700">
               <button
                 onClick={() => setOpenModal(true)}
                 className="linear mt-5 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"

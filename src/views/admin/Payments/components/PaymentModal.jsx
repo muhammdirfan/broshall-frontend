@@ -6,6 +6,7 @@ import CustomDatePicker from "components/CustomDatePicker";
 import MultiFileInput from "components/MultiFileInput";
 import Select from "react-select";
 import { FetchAllProjects } from "services/projectAPIs";
+import { FetchAllEmployees } from "services/employeesApis";
 
 const AddPaymentModal = ({
   setOpenModal,
@@ -20,6 +21,8 @@ const AddPaymentModal = ({
     payment_type: "",
     payment_amount: "",
     payment_account: "",
+    to_account: "",
+    pay_to: "",
     payment_date: "",
     payment_project: "",
     payment_status: "",
@@ -27,6 +30,7 @@ const AddPaymentModal = ({
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [projects, setProjects] = useState([]);
+  const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
     if (selected) {
@@ -36,9 +40,22 @@ const AddPaymentModal = ({
         setPaymentData({
           payment_name: item.payment_name,
           payment_id: item.payment_id,
-          payment_type: item.payment_type,
+          payment_type: [
+            {
+              value: item.payment_type,
+              label: item.payment_type,
+            },
+          ],
           payment_amount: item.payment_amount,
           payment_account: item.payment_account,
+          to_account: item.to_account,
+          pay_to: employees.map(
+            (employee) =>
+              item.pay_to === employee._id && {
+                value: employee._id,
+                label: employee.name,
+              }
+          ),
           payment_date: item.payment_date,
           payment_project: projects.map(
             (project) =>
@@ -61,7 +78,9 @@ const AddPaymentModal = ({
   const fetchProjects = async () => {
     try {
       const project = await FetchAllProjects();
+      const employees = await FetchAllEmployees();
       setProjects(project);
+      setEmployees(employees);
     } catch (e) {
       console.log(e);
     }
@@ -78,6 +97,8 @@ const AddPaymentModal = ({
       ...PaymentData,
       payment_project: PaymentData.payment_project?.value,
       payment_status: PaymentData.payment_status?.value,
+      pay_to: PaymentData.pay_to?.value,
+      payment_type: PaymentData.payment_type?.value,
     };
 
     for (const key in data) {
@@ -95,6 +116,8 @@ const AddPaymentModal = ({
         !PaymentData.payment_type ||
         !PaymentData.payment_amount ||
         !PaymentData.payment_account ||
+        !PaymentData.to_account ||
+        !PaymentData.pay_to ||
         !PaymentData.payment_date
       ) {
         new Notify({
@@ -143,6 +166,8 @@ const AddPaymentModal = ({
             payment_type: "",
             payment_amount: "",
             payment_account: "",
+            to_account: "",
+            pay_to: "",
             payment_date: "",
             payment_project: "",
             payment_status: "",
@@ -178,15 +203,29 @@ const AddPaymentModal = ({
     try {
       const data = {
         ...PaymentData,
-        payment_project: PaymentData.payment_project?.value,
-        payment_status: PaymentData.payment_status?.value,
+        payment_project: PaymentData.payment_project.length
+          ? PaymentData.payment_project.find((item) => item).value
+          : PaymentData.payment_project.value,
+        payment_status: PaymentData.payment_status.length
+          ? PaymentData.payment_status.find((item) => item).value
+          : PaymentData.payment_status.value,
+        pay_to: PaymentData.pay_to.length
+          ? PaymentData.pay_to.find((item) => item).value
+          : PaymentData.pay_to.value,
+        payment_type: PaymentData.payment_type.length
+          ? PaymentData.payment_type.find((item) => item).value
+          : PaymentData.payment_type.value,
       };
+
+      console.log("data", data, PaymentData);
 
       if (
         !data.payment_name ||
         !data.payment_id ||
         !data.payment_type ||
         !data.payment_amount ||
+        !data.to_account ||
+        !data.pay_to ||
         !data.payment_account ||
         !data.payment_date
       ) {
@@ -237,6 +276,8 @@ const AddPaymentModal = ({
             payment_type: "",
             payment_amount: "",
             payment_account: "",
+            to_account: "",
+            pay_to: "",
             payment_date: "",
             payment_project: "",
             payment_status: "",
@@ -273,6 +314,11 @@ const AddPaymentModal = ({
     color: "#FF8B00",
   }));
 
+  const employeesOptions = employees.map((employee) => ({
+    value: employee._id,
+    label: employee.name,
+  }));
+
   const handleProjectChange = (selected) => {
     setPaymentData({
       ...PaymentData,
@@ -284,6 +330,20 @@ const AddPaymentModal = ({
     setPaymentData({
       ...PaymentData,
       payment_status: selected,
+    });
+  };
+
+  const handlePayToChange = (selected) => {
+    setPaymentData({
+      ...PaymentData,
+      pay_to: selected,
+    });
+  };
+
+  const handlePaymentMenthodChange = (selected) => {
+    setPaymentData({
+      ...PaymentData,
+      payment_type: selected,
     });
   };
 
@@ -319,17 +379,27 @@ const AddPaymentModal = ({
           />
         </div>
         <div className="col-span-12 md:col-span-6">
-          <InputField
-            variant="auth"
-            extra="mb-3"
-            label="Payment Type"
-            placeholder="First Payment"
-            id="name"
-            type="text"
+          <p>Payment Method</p>
+          <Select
+            name="colors"
+            options={[
+              {
+                value: "Easypasia",
+                label: "Easypasia",
+              },
+              {
+                value: "Bank Account",
+                label: "Bank Account",
+              },
+              {
+                value: "Cash",
+                label: "Cash",
+              },
+            ]}
+            className="basic-multi-select w-full"
+            classNamePrefix="select"
             value={PaymentData.payment_type}
-            onChange={(e) =>
-              setPaymentData({ ...PaymentData, payment_type: e.target.value })
-            }
+            onChange={handlePaymentMenthodChange}
           />
         </div>
         <div className="col-span-12 md:col-span-6">
@@ -361,6 +431,34 @@ const AddPaymentModal = ({
                 payment_account: e.target.value,
               })
             }
+          />
+        </div>
+        <div className="col-span-12 md:col-span-6">
+          <InputField
+            variant="auth"
+            extra="mb-3"
+            label="Payment to Account"
+            placeholder="NBP3462374523"
+            id="name"
+            type="text"
+            value={PaymentData.to_account}
+            onChange={(e) =>
+              setPaymentData({
+                ...PaymentData,
+                to_account: e.target.value,
+              })
+            }
+          />
+        </div>
+        <div className="col-span-12 md:col-span-6">
+          <p>Payment To</p>
+          <Select
+            name="colors"
+            options={employeesOptions}
+            className="basic-multi-select w-full"
+            classNamePrefix="select"
+            value={PaymentData.pay_to}
+            onChange={handlePayToChange}
           />
         </div>
         <div className="col-span-12 md:col-span-6">

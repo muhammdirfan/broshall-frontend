@@ -33,7 +33,7 @@ export default function Auth() {
                   />
                 </Routes>
                 <div className="absolute right-0 hidden h-full min-h-screen md:block lg:w-[49vw] 2xl:w-[44vw]">
-                  <div className="absolute flex h-full w-full items-end justify-center bg-[#4954fe] bg-cover bg-center lg:rounded-bl-[120px] xl:rounded-bl-[200px]" />
+                  <div className="absolute flex h-full w-full items-end justify-center bg-[#4954fe] bg-cover bg-center dark:!bg-navy-700 lg:rounded-bl-[120px] xl:rounded-bl-[200px]" />
                   <h2 className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center font-Raleway text-7xl text-white">
                     <img src={branchImg} alt="brand-img" />
                     Broshall

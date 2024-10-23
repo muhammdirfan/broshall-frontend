@@ -327,10 +327,14 @@ const ProjectDetails = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h2 className="mb-5 text-lg">Project Details</h2>
-      <div className="grid grid-cols-12 gap-5">
+      <h2 className="mb-5 text-lg text-black dark:text-white">
+        Project Details
+      </h2>
+      <div className="grid grid-cols-12 gap-6">
         <div className="col-span-12 md:col-span-4">
-          <p>Available Employees</p>
+          <p className="text-gray-600 dark:text-gray-300">
+            Available Employees
+          </p>
           <Select
             isMulti
             name="colors"
@@ -343,12 +347,12 @@ const ProjectDetails = () => {
           />
         </div>
         <div className="col-span-12 md:col-span-4">
-          <p>Available Machines</p>
+          <p className="text-gray-600 dark:text-gray-300">Available Machines</p>
           <Select
             isMulti
             name="colors"
             options={machinesOptions}
-            className="basic-multi-select w-full"
+            className="basic-multi-select w-full "
             classNamePrefix="select"
             onChange={handleMachineChange}
             value={selctedValues.machinery}
@@ -356,7 +360,9 @@ const ProjectDetails = () => {
           />
         </div>
         <div className="col-span-12 md:col-span-4">
-          <p>Available Equipments</p>
+          <p className="text-gray-600 dark:text-gray-300">
+            Available Equipments
+          </p>
           <Select
             isMulti
             name="colors"

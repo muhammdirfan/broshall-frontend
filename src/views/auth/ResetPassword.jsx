@@ -5,6 +5,7 @@ import "simple-notify/dist/simple-notify.min.css";
 import { useNavigate, useParams } from "react-router-dom";
 import branchImg from "assets/img/favicon.png";
 import { resetPassword } from "services/AuthApis";
+import FixedPlugin from "components/fixedPlugin/FixedPlugin";
 
 export default function ResetPassword() {
   const [isLoading, seIsloading] = React.useState(false);
@@ -84,7 +85,8 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="mt-5 mb-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
+    <div className="flex h-screen w-full items-center justify-center !bg-white px-2 dark:!bg-navy-900 md:mx-0 md:px-0 lg:items-center lg:justify-start">
+      <FixedPlugin />
       <div className="mx-auto mt-[10vh] w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:max-w-[420px]">
         <img
           src={branchImg}

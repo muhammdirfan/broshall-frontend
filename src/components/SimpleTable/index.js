@@ -36,7 +36,6 @@ const SimpleTable = (props) => {
     <div
       style={{
         height: 500,
-        backgroundColor: "#fff",
         padding: "10px 10px 40px 10px",
         borderRadius: "10px",
       }}
@@ -62,6 +61,7 @@ const SimpleTable = (props) => {
           //   onPaginationModelChange={setPaginationModel}
           rowHeight={50}
           //   onRowClick={handleDetails}
+          className="bg-white text-black dark:border-gray-700 dark:!bg-navy-700 dark:text-white"
         />
       ) : (
         <div className="mt-5 flex items-center justify-center">

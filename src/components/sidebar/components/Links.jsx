@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import DashIcon from "components/icons/DashIcon";
 import { logoutUser } from "services/AuthApis";
 import Notify from "simple-notify";
 // chakra imports

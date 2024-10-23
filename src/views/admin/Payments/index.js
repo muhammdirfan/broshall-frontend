@@ -18,6 +18,7 @@ import {
   FaUserTie,
 } from "react-icons/fa";
 import PaymentModal from "./components/PaymentModal";
+import EmployeeName from "components/EmployeeName";
 
 const Payments = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -146,9 +147,21 @@ const Payments = () => {
               <p className="flex items-center space-x-3">
                 <FaMoneyBillAlt className="text-purple-500" />
                 <span>
-                  Payment Account:{" "}
+                  Payment Account:
                   {PaymentsDetails.payment_account || "Not Mentioned"}
                 </span>
+              </p>
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-purple-500" />
+                <span>
+                  Payment To Account:
+                  {PaymentsDetails.to_account || "Not Mentioned"}
+                </span>
+              </p>
+              <p className="flex items-center space-x-3">
+                <FaMoneyBillAlt className="text-purple-500" />
+                <span>Payment to name:</span>
+                <EmployeeName employeeId={PaymentsDetails.pay_to} />
               </p>
               <p className="flex items-center space-x-3">
                 <MdDateRange className="text-yellow-500" />
@@ -183,7 +196,7 @@ const Payments = () => {
               title={"Total Payments"}
               subtitle={freePayments?.length}
             />
-            <div className="rounded-[20px] bg-white px-3 py-2">
+            <div className="rounded-[20px] bg-white px-3 py-2 dark:!bg-navy-700">
               <button
                 onClick={() => setOpenModal(true)}
                 className="linear mt-5 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
