@@ -34,16 +34,17 @@ const Dashboard = () => {
 
   const fetchAllDetails = async () => {
     try {
-      dispatch(fetchProjects());
-      const projects = await FetchAllProjects();
+      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+      dispatch(fetchProjects(accessToken));
+      const projects = await FetchAllProjects(accessToken);
       setProjects(projects);
-      const employee = await FetchAllEmployees();
+      const employee = await FetchAllEmployees(accessToken);
       setEmployees(employee);
-      const machine = await FetchAllMachines();
+      const machine = await FetchAllMachines(accessToken);
       setMachines(machine);
-      const equipments = await FetchAllEquipments();
+      const equipments = await FetchAllEquipments(accessToken);
       setEquipments(equipments);
-      const jobs = await FetchAllJobs();
+      const jobs = await FetchAllJobs(accessToken);
       setJobs(jobs);
     } catch (e) {
       console.log(e);

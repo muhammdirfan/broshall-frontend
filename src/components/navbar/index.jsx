@@ -17,9 +17,9 @@ const Navbar = (props) => {
 
   const navigate = useNavigate();
 
-  const fetchCurrentUser = async () => {
+  const fetchCurrentUser = async (accessToken) => {
     try {
-      const currentUser = await CurrentUser();
+      const currentUser = await CurrentUser(accessToken);
       setCurrentUser(currentUser, "currentUser");
     } catch (e) {
       console.log(e);
@@ -30,13 +30,14 @@ const Navbar = (props) => {
 
   useEffect(() => {
     if (accessToken) {
-      fetchCurrentUser();
+      fetchCurrentUser(accessToken);
     }
   }, [accessToken]);
 
   const logoutCurrentUser = async () => {
     try {
-      const response = await logoutUser();
+      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+      const response = await logoutUser(accessToken);
       if (response.message) {
         new Notify({
           status: "success",

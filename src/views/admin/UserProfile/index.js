@@ -8,7 +8,8 @@ const UserProfile = () => {
 
   const fetchCurrentUser = async () => {
     try {
-      const currentUser = await CurrentUser();
+      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+      const currentUser = await CurrentUser(accessToken);
       setCurrentUser(currentUser);
     } catch (e) {
       console.log(e);
