@@ -29,6 +29,7 @@ const Dashboard = () => {
   const [machines, setMachines] = useState([]);
   const [equipments, setEquipments] = useState([]);
   const [Jobs, setJobs] = useState([]);
+  const [activeProjects, setActiveProjects] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -38,6 +39,11 @@ const Dashboard = () => {
       dispatch(fetchProjects(accessToken));
       const projects = await FetchAllProjects(accessToken);
       setProjects(projects);
+      console.log(
+        "projects",
+        projects?.filter((item) => !item?.completed_date)
+      );
+      setActiveProjects(projects?.filter((item) => !item?.completed_date));
       const employee = await FetchAllEmployees(accessToken);
       setEmployees(employee);
       const machine = await FetchAllMachines(accessToken);
@@ -61,6 +67,11 @@ const Dashboard = () => {
           icon={<MdOutlineBusiness className="h-6 w-6" />}
           title={"Total Projects"}
           subtitle={projects?.length}
+        />
+        <Widget
+          icon={<MdOutlineBusiness className="h-6 w-6" />}
+          title={"Active Projects"}
+          subtitle={activeProjects?.length}
         />
         <Widget
           icon={<FaUsers className="h-7 w-7" />}

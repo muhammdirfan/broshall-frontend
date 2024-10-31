@@ -102,7 +102,7 @@ export default function CategoriesTable(props) {
                 showQuickFilter: true,
               },
             }}
-            disableColumnFilter
+            // disableColumnFilter
             disableColumnSelector
             disableDensitySelector
             getRowId={getRowId}

@@ -34,9 +34,9 @@ const Sidebar = ({ open, onClose }) => {
         <Links routes={routes} onClose={onClose} />
       </ul>
 
-      <p className="w-full px-3 text-center text-[15px]">
-        ©2024 All rights reserved by Broshall Pvt. <br /> Ltd. Proudly managed
-        by technoMetrix
+      <p className="px-3 text-center text-[14px]">
+        ©2024 All rights reserved by <br /> Broshall Pvt. Ltd.
+        <br /> Managed by Muhammad Irfan
       </p>
       {/* Nav item end */}
     </div>

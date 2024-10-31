@@ -1,6 +1,6 @@
 import CategoriesTable from "components/CategoriesTable";
 import Widget from "components/widget/Widget";
-import { Button, Modal } from "flowbite-react";
+import { Button, Carousel, Modal } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { IoDocuments } from "react-icons/io5";
 import { MdBarChart, MdDateRange } from "react-icons/md";
@@ -115,6 +115,8 @@ const Payments = () => {
     }
   };
 
+  const backendUrl = "http://localhost:5000"; // Adjust this to match your backend URL
+
   return (
     <>
       {console.log("PaymentsDetails", PaymentsDetails)}
@@ -181,6 +183,23 @@ const Payments = () => {
             <p className="mt-4 text-lg text-gray-600">
               Payment Project: {PaymentsDetails.payment_project}
             </p>
+          </div>
+          <div className="flex justify-center">
+            <Carousel
+              className="rounded-0 my-3 mx-auto h-[25rem] w-[40rem]"
+              style={{ borderRadius: "0px" }}
+              slide={true}
+            >
+              {PaymentsDetails.images?.map((image, index) => (
+                <div className="rounded-0 relative h-full w-full">
+                  <img
+                    src={`${backendUrl}${image}`}
+                    className="h-full w-full"
+                    alt={`Project Image ${index + 1}`}
+                  />
+                </div>
+              ))}
+            </Carousel>
           </div>
         </div>
       ) : (
