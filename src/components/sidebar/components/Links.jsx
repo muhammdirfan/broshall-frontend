@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import DashIcon from "components/icons/DashIcon";
 import { logoutUser } from "services/AuthApis";
 import Notify from "simple-notify";
 // chakra imports
@@ -26,7 +25,8 @@ export function SidebarLinks(props) {
 
   const logoutCurrentUser = async () => {
     try {
-      const response = await logoutUser();
+      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+      const response = await logoutUser(accessToken);
       if (response.message) {
         new Notify({
           status: "success",

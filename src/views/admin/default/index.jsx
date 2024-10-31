@@ -20,7 +20,7 @@ import { FaCar, FaUsers } from "react-icons/fa";
 import { FaGears } from "react-icons/fa6";
 import { FetchAllJobs } from "services/jobsAPis";
 import { IoWalkSharp } from "react-icons/io5";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchProjects } from "../../../features/projects/projectsSlice";
 
 const Dashboard = () => {
@@ -34,16 +34,17 @@ const Dashboard = () => {
 
   const fetchAllDetails = async () => {
     try {
-      dispatch(fetchProjects());
-      const projects = await FetchAllProjects();
+      const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+      dispatch(fetchProjects(accessToken));
+      const projects = await FetchAllProjects(accessToken);
       setProjects(projects);
-      const employee = await FetchAllEmployees();
+      const employee = await FetchAllEmployees(accessToken);
       setEmployees(employee);
-      const machine = await FetchAllMachines();
+      const machine = await FetchAllMachines(accessToken);
       setMachines(machine);
-      const equipments = await FetchAllEquipments();
+      const equipments = await FetchAllEquipments(accessToken);
       setEquipments(equipments);
-      const jobs = await FetchAllJobs();
+      const jobs = await FetchAllJobs(accessToken);
       setJobs(jobs);
     } catch (e) {
       console.log(e);

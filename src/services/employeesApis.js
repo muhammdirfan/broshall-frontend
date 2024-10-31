@@ -1,9 +1,9 @@
 import service, { accessToken } from "./index";
 
-export const FetchAllEmployees = async () => {
+export const FetchAllEmployees = async (token) => {
   const res = await service.get("/employees", {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${token ?? accessToken}`,
     },
   });
   return res.data;

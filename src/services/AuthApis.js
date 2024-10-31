@@ -5,19 +5,19 @@ export const AdminLogin = async (data) => {
   return res.data;
 };
 
-export const CurrentUser = async () => {
+export const CurrentUser = async (token) => {
   const res = await service.get("/users/current", {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${token ?? accessToken}`,
     },
   });
   return res.data;
 };
 
-export const logoutUser = async () => {
+export const logoutUser = async (token) => {
   const res = await service.get("/users/logout", {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${token ?? accessToken}`,
     },
   });
   return res.data;

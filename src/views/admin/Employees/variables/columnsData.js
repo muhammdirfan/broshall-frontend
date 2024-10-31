@@ -2,16 +2,6 @@ import ProjectName from "components/ProjectName";
 import { formatDate } from "utils";
 
 export const columnsDataComplex = [
-  // {
-  //   field: "name",
-  //   headerName: "Name",
-  //   width: 200,
-  //   renderCell: (params) => (
-  //     <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
-  //       {params.value}
-  //     </div>
-  //   ),
-  // },
   {
     field: "email",
     headerName: "Email (if any)",
@@ -101,4 +91,83 @@ export const columnsDataSpeciality = [
   { field: "type", headerName: "RELATED PROFESSION", width: 250 },
   { field: "status", headerName: "STATUS", width: 150 },
   { field: "total", headerName: "TOTAL", width: 200 },
+];
+
+export const paymentColumns = [
+  {
+    field: "payment_id",
+    headerName: "Payment Id",
+    width: 100,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "payment_type",
+    headerName: "Payment Type",
+    width: 130,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "payment_amount",
+    headerName: "Payment Amount",
+    width: 150,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "payment_account",
+    headerName: "Payment Account",
+    width: 160,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "payment_date",
+    headerName: "Payment Date",
+    width: 130,
+    renderCell: (params) => formatDate(params.value),
+  },
+  {
+    field: "payment_project",
+    headerName: "Payment Project",
+    width: 250,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {!params.value ? "Available" : <ProjectName projectId={params.value} />}
+      </div>
+    ),
+  },
+  {
+    field: "payment_status",
+    headerName: "Payment Status",
+    width: 120,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
+  {
+    field: "to_account",
+    headerName: "Payment To Account",
+    width: 170,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value}
+      </div>
+    ),
+  },
 ];

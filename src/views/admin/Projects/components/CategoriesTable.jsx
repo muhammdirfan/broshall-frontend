@@ -85,7 +85,6 @@ export default function CategoriesTable(props) {
         style={{
           height: 700,
           width: "100%",
-          backgroundColor: "#fff",
           padding: "10px 10px 40px 10px",
           borderRadius: "10px",
         }}
@@ -111,6 +110,7 @@ export default function CategoriesTable(props) {
             onPaginationModelChange={setPaginationModel}
             rowHeight={90}
             checkboxSelection
+            className="bg-white text-black dark:border-gray-700 dark:!bg-navy-700 dark:text-white"
           />
         ) : (
           <div className="mt-5 flex items-center justify-center">

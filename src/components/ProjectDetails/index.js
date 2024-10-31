@@ -7,11 +7,11 @@ import { Carousel } from "flowbite-react";
 const ProjectDetails = ({ projectDetails, backendUrl }) => {
   return (
     <div className="space-y-6 px-5">
-      <h2 className="text-3xl font-bold text-gray-800">
+      <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
         {projectDetails.name}
       </h2>
       <div className="rounded-md border p-4 shadow-md">
-        <div className="grid grid-cols-1 gap-6 text-gray-700 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-6 text-gray-600 dark:text-gray-300 md:grid-cols-2">
           <p className="flex items-center space-x-3">
             <FaBuilding className="text-green-500" />
             <span>Client: {projectDetails.client}</span>
@@ -53,7 +53,7 @@ const ProjectDetails = ({ projectDetails, backendUrl }) => {
             <span>Updated By: {projectDetails.updatedBy}</span>
           </p>
         </div>
-        <p className="mt-4 text-lg text-gray-600">
+        <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
           {projectDetails.descripton}
         </p>
       </div>

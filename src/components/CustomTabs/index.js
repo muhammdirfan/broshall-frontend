@@ -54,14 +54,14 @@ const CustomTabs = ({
   }, [projectDetails, employees, machines, equipments, bills, payments]);
 
   return (
-    <div className="my-5 space-y-6 overflow-hidden rounded-xl bg-white shadow-xl">
-      <div className="flex justify-between bg-gray-200 px-5">
+    <div className="my-5 space-y-6 overflow-hidden rounded-xl bg-white shadow-xl dark:!bg-navy-700">
+      <div className="flex justify-between bg-gray-200 px-5 dark:!bg-navy-800">
         <button
           onClick={() => setTab("details")}
           className={`${
             tab === "details"
               ? "border-b-2 border-blue-500 text-blue-500"
-              : "text-dark"
+              : "text-gray-600 dark:text-gray-300"
           } py-2`}
         >
           Details
@@ -71,7 +71,7 @@ const CustomTabs = ({
           className={`${
             tab === "employees"
               ? "border-b-2 border-blue-500 text-blue-500"
-              : "text-dark"
+              : "text-gray-600 dark:text-gray-300"
           } py-2`}
         >
           Employees
@@ -81,7 +81,7 @@ const CustomTabs = ({
           className={`${
             tab === "Machinery"
               ? "border-b-2 border-blue-500 text-blue-500"
-              : "text-dark"
+              : "text-gray-600 dark:text-gray-300"
           } py-2`}
         >
           Machinery
@@ -91,7 +91,7 @@ const CustomTabs = ({
           className={`${
             tab === "equipments"
               ? "border-b-2 border-blue-500 text-blue-500"
-              : "text-dark"
+              : "text-gray-600 dark:text-gray-300"
           } py-2`}
         >
           Equipments
@@ -101,7 +101,7 @@ const CustomTabs = ({
           className={`${
             tab === "bills"
               ? "border-b-2 border-blue-500 text-blue-500"
-              : "text-dark"
+              : "text-gray-600 dark:text-gray-300"
           } py-2`}
         >
           Bills
@@ -111,7 +111,7 @@ const CustomTabs = ({
           className={`${
             tab === "payments"
               ? "border-b-2 border-blue-500 text-blue-500"
-              : "text-dark"
+              : "text-gray-600 dark:text-gray-300"
           } py-2`}
         >
           Payments
