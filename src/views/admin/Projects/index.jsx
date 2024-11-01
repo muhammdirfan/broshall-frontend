@@ -1,39 +1,31 @@
-import CategoriesTable from "./components/CategoriesTable";
-import { VISIBLE_FIELDS, columnsDataComplex } from "./variables/columnsData";
-import Widget from "components/widget/Widget";
-import { MdBarChart } from "react-icons/md";
-import { IoDocuments } from "react-icons/io5";
-import { Button, Modal } from "flowbite-react";
-import React, { useState, useEffect } from "react";
 import CategoriesModal from "./components/CategoriesModal";
-import Notify from "simple-notify";
-
+import CategoriesTable from "./components/CategoriesTable";
 import { DeleteProject } from "services/projectAPIs";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProjects } from "features/projects/projectsSlice";
+import { Modal } from "flowbite-react";
+import Notify from "simple-notify";
+import React, { useState, useEffect } from "react";
+import Widget from "components/widget/Widget";
+import { VISIBLE_FIELDS, columnsDataComplex } from "./variables/columnsData";
+import { MdBarChart } from "react-icons/md";
+import { IoDocuments } from "react-icons/io5";
 
 const Projects = () => {
   const [openModal, setOpenModal] = useState(false);
   const [projects, setProjects] = useState();
-  const [allSpecialities, setAllSpecialities] = useState();
-  const [enableMessage, setEnableMessage] = useState(true);
   const [isLoading, setIsloading] = useState(false);
+  const [activeProjects, setActiveProjects] = useState([]);
 
   const [modalData, setModalData] = useState({
     type: "",
     id: "",
   });
   const [selectedProfession, setSelectedProfession] = useState("");
-  const [selectedProfessionUpdate, setSelectedProfessionUpdate] = useState("");
-  const [selectedAssociatesUpdate, setSelectedAssociatesUpdate] = useState("");
 
-  const { data, status, error } = useSelector((state) => state.projects);
+  const { data } = useSelector((state) => state.projects);
 
   const dispatch = useDispatch();
-
-  const handleToggle = () => {
-    setEnableMessage(!enableMessage);
-  };
 
   const fetchAllProjects = async () => {
     try {
@@ -49,24 +41,17 @@ const Projects = () => {
 
   useEffect(() => {
     setProjects(data);
+    setActiveProjects(data?.filter((item) => !item?.completed_date));
   }, [data]);
 
   React.useEffect(() => {
-    const slectedData = allSpecialities?.filter(
-      (item) => item?.id == modalData?.id
-    );
-    if (slectedData?.length) {
-      setSelectedProfessionUpdate(slectedData[0]?.name);
-      setSelectedAssociatesUpdate(slectedData[0]?.type);
-    }
-
     const slectedProfession = projects?.filter(
       (item) => item?.id == modalData?.id
     );
     if (slectedProfession?.length) {
       setSelectedProfession(slectedProfession[0]?.name);
     }
-  }, [allSpecialities, projects, modalData?.id]);
+  }, [projects, modalData?.id]);
 
   const handleProjectDelete = async (id) => {
     try {
@@ -127,13 +112,8 @@ const Projects = () => {
         />
         <Widget
           icon={<IoDocuments className="h-6 w-6" />}
-          title={"HCP specialities"}
-          subtitle={"0"}
-        />
-        <Widget
-          icon={<MdBarChart className="h-7 w-7" />}
-          title={"HCP Countries"}
-          subtitle={"0"}
+          title={"Active Projects"}
+          subtitle={activeProjects?.length}
         />
         <div className="rounded-[20px] bg-white px-3 py-2 dark:!bg-navy-700">
           <button

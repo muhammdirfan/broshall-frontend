@@ -11,12 +11,7 @@ import {
   DeletePayment,
   FetchPayment,
 } from "services/paymentsApis";
-import {
-  FaArrowLeft,
-  FaBookOpen,
-  FaMoneyBillAlt,
-  FaUserTie,
-} from "react-icons/fa";
+import { FaArrowLeft, FaMoneyBillAlt, FaUserTie } from "react-icons/fa";
 import PaymentModal from "./components/PaymentModal";
 import EmployeeName from "components/EmployeeName";
 

@@ -3,9 +3,7 @@ import WeeklyRevenue from "views/admin/default/components/WeeklyRevenue";
 import TotalSpent from "views/admin/default/components/TotalSpent";
 import PieChartCard from "views/admin/default/components/PieChartCard";
 import { MdOutlineBusiness } from "react-icons/md";
-
 import { columnsDataComplex } from "./variables/columnsData";
-
 import Widget from "components/widget/Widget";
 import CategoriesTable from "views/admin/default/components/CategoriesTable";
 import DailyTraffic from "views/admin/default/components/DailyTraffic";
@@ -39,10 +37,6 @@ const Dashboard = () => {
       dispatch(fetchProjects(accessToken));
       const projects = await FetchAllProjects(accessToken);
       setProjects(projects);
-      console.log(
-        "projects",
-        projects?.filter((item) => !item?.completed_date)
-      );
       setActiveProjects(projects?.filter((item) => !item?.completed_date));
       const employee = await FetchAllEmployees(accessToken);
       setEmployees(employee);

@@ -1,10 +1,11 @@
 /** @type {import('tailwindcss').Config} */
-// {/* <style> */}
-//   import 'https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,500;1,700;1,900&display=swap';
-// {/* </style> */}
+
 module.exports = {
   darkMode: "class",
-  content: ["./src/**/*.{js,jsx,ts,tsx}", 'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
     extend: {
       width: {
@@ -111,7 +112,7 @@ module.exports = {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
         dm: ["DM Sans", "sans-serif"],
-        Raleway: ["Raleway", "sans-serif"]
+        Raleway: ["Raleway", "sans-serif"],
       },
       boxShadow: {
         "3xl": "14px 17px 40px 4px",
@@ -328,5 +329,5 @@ module.exports = {
       },
     }),
   },
-  plugins: [require("tailwindcss-rtl"), require('flowbite/plugin')],
+  plugins: [require("tailwindcss-rtl"), require("flowbite/plugin")],
 };

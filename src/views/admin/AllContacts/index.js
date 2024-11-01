@@ -278,7 +278,6 @@ export default function AllContacts() {
           rows={dataWithIds}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
-          // height="50vh"
           slotProps={{
             toolbar: {
               showQuickFilter: true,

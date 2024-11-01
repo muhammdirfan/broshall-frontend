@@ -1,12 +1,6 @@
 import React from "react";
-
-// Admin Imports
 import MainDashboard from "views/admin/default";
-
-// Auth Imports
 import SignIn from "views/auth/SignIn";
-
-// Icon Imports
 import { MdHome, MdRequestPage, MdOutlineBusiness } from "react-icons/md";
 import { IoMdUnlock } from "react-icons/io";
 import Projects from "views/admin/Projects";
@@ -41,10 +35,8 @@ const routes = [
     secondary: true,
   },
   {
-    // name: "Project Details",
     layout: "/admin",
     path: "project-details/:id",
-    // icon: <IoMdPaper className="h-6 w-6" />,
     component: <ProjectDetails />,
   },
   {

@@ -1,17 +1,6 @@
-import ProjectName from "components/ProjectName";
 import { formatDate } from "utils";
 
 export const columnsDataComplex = [
-  // {
-  //   field: "title",
-  //   headerName: "Job Title",
-  //   width: 200,
-  //   renderCell: (params) => (
-  //     <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
-  //       {params.value}
-  //     </div>
-  //   ),
-  // },
   {
     field: "type",
     headerName: "Type",

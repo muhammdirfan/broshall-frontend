@@ -2,16 +2,6 @@ import ProjectName from "components/ProjectName";
 import { formatDate } from "utils";
 
 export const columnsDataComplex = [
-  // {
-  //   field: "name",
-  //   headerName: "Name",
-  //   width: 160,
-  //   renderCell: (params) => (
-  //     <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
-  //       {params.value}
-  //     </div>
-  //   ),
-  // },
   {
     field: "type",
     headerName: "Type",
@@ -52,7 +42,16 @@ export const columnsDataComplex = [
       </div>
     ),
   },
-  { field: "partner", headerName: "Partner (if any)", width: 150 },
+  {
+    field: "partner",
+    headerName: "Partner (if any)",
+    width: 150,
+    renderCell: (params) => (
+      <div className="overflow-hidden text-ellipsis whitespace-normal break-words">
+        {params.value || "None"}
+      </div>
+    ),
+  },
   { field: "machine_value", headerName: "Machine Value", width: 120 },
   {
     field: "",

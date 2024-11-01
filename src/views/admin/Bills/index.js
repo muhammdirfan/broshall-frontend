@@ -7,12 +7,7 @@ import { MdBarChart, MdDateRange } from "react-icons/md";
 import { columnsDataComplex, VISIBLE_FIELDS } from "./variables/columnsData";
 import Notify from "simple-notify";
 import { FetchAllBills, DeleteBill, FetchBill } from "services/billsApis";
-import {
-  FaArrowLeft,
-  FaBookOpen,
-  FaMoneyBillAlt,
-  FaUserTie,
-} from "react-icons/fa";
+import { FaArrowLeft, FaMoneyBillAlt, FaUserTie } from "react-icons/fa";
 import BillModal from "./components/BillModal";
 
 const Bills = () => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { FetchProject } from "services/projectAPIs";
 import CustomTabs from "components/CustomTabs";
 import Select from "react-select";

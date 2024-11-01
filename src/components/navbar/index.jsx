@@ -3,7 +3,7 @@ import Dropdown from "components/dropdown";
 import { FiAlignJustify } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
-import avatar from "assets/img/avatars/avatar4.png";
+import avatar from "assets/img/avatars/avatar6.png";
 import { CurrentUser } from "services/AuthApis";
 import { logoutUser } from "services/AuthApis";
 import Notify from "simple-notify";

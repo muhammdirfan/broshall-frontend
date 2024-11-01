@@ -43,6 +43,7 @@ export default function SignIn() {
         if (auth.accessToken) {
           seIsloading(false);
           navigate("/admin/default");
+          window.location.reload();
           new Notify({
             status: "success",
             title: "Success",
